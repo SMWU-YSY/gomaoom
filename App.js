@@ -17,24 +17,25 @@ export default function App() {
           감성글 한두줄. 예를들면, 사랑하는 이에게 마음을 보내봐요. 사랑하는 이의 편지를 움켜쥐어봐요
         </Text>
         <View style={styles.btnContainer}>
+        <TouchableOpacity onPress={loginNaver}>
           <View style={{marginBottom:20,...styles.loginBtn}}>
-            <TouchableOpacity onPress={loginNaver}>
               <Text style={{
                 fontSize:30,
               }}>
                 네이버 로그인
               </Text>
-            </TouchableOpacity>
           </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={loginKakao}>
           <View style={styles.loginBtn}>
-            <TouchableOpacity onPress={loginKakao}>
               <Text style={{
                 fontSize:30,
               }}>
                 카카오 로그인
               </Text>
-            </TouchableOpacity>
           </View>
+        </TouchableOpacity>
+
         </View>
       </View>
       <StatusBar style="auto" />
