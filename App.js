@@ -1,47 +1,51 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image,TouchableOpacity } from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Home from './components/Home';
+import Write from './components/Write';
+import Receive from './components/Receive';
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const loginNaver=()=>{
-    console.log('네이버로그인..');
-  };
-  const loginKakao=()=>{
-    console.log('카카오로그인..');
-  };
   return (
     <View style={styles.background}>
       <Image source={require('gomaoom/assets/blueTop.png')}/>
-      <View style={styles.container}>
-        <Image source={require('gomaoom/assets/fakeLogo.png')}/>
-        <Text style={styles.desc}>
-          감성글 한두줄. 예를들면, 사랑하는 이에게 마음을 보내봐요. 사랑하는 이의 편지를 움켜쥐어봐요
-        </Text>
-        <View style={styles.btnContainer}>
-        <TouchableOpacity onPress={loginNaver}>
-          <View style={{marginBottom:20,...styles.loginBtn}}>
-              <Text style={{
-                fontSize:30,
-              }}>
-                네이버 로그인
-              </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={loginKakao}>
-          <View style={styles.loginBtn}>
-              <Text style={{
-                fontSize:30,
-              }}>
-                카카오 로그인
-              </Text>
-          </View>
-        </TouchableOpacity>
 
-        </View>
-      </View>
+
       <StatusBar style="auto" />
-      <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
-        <Image  source={require('gomaoom/assets/greenBottom.png')}/>
-      </View>
+      <NavigationContainer style={styles.nav}>
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
+              let iconName;
+              if (route.name === '홈') {
+                iconName = focused
+                  ? require('./assets/icons/Home.png')
+                  : require('./assets/icons/Home.png');
+              } else if (route.name === '보관함') {
+                iconName = focused
+                  ? require('./assets/icons/mailbox.png')
+                  : require('./assets/icons/mailbox.png');
+              } else if (route.name === '작성하기') {
+                iconName = focused
+                  ? require('./assets/icons/Write.png')
+                  : require('./assets/icons/Write.png');
+              } 
+
+              return (
+                <Image source={iconName} style={{width: 25, height: 25}} />
+              );
+            },
+          })}>
+          <Tab.Screen name="보관함" component={Receive}/>
+          <Tab.Screen name="홈" component={Home}/>
+          <Tab.Screen name="작성하기" component={Write}/>
+        </Tab.Navigator>
+      </NavigationContainer>
+      
 
     </View>
   );
@@ -57,21 +61,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  desc:{
-    fontSize:25,
-    marginTop:30,
-    marginHorizontal:30,
+  nav:{
+    backgroundColor:'#CCE0CC',
+    padding:40,
   },
-  btnContainer:{
-    // flexDirection:'column',
-    // justifyContent:'flex-end',
-    marginTop:110,
-    // backgroundColor:'pink',
-  },
-  loginBtn:{
-    backgroundColor:'#F1F1F1',
-    paddingHorizontal:30,
-    paddingVertical:7,
-    borderRadius:20,
-  },
+  
+  
 });
