@@ -4,9 +4,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './components/Home';
-import Write from './components/Write';
-import Receive from './components/Receive';
 import WritePage from './pages/WritePage';
+import ListPage from './pages/ListPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -41,7 +40,7 @@ export default function App() {
               );
             },
           })}>
-          <Tab.Screen name="보관함" component={Receive}/>
+          <Tab.Screen name="보관함" component={ListPage} options={{headerShown: false,}}/>
           <Tab.Screen name="홈" component={Home}/>
           <Tab.Screen name="작성하기" component={WritePage} options={{headerShown: false,}}/>
         </Tab.Navigator>
