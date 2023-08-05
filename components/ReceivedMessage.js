@@ -1,12 +1,65 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from "react-native";
+import React, { useRef, useState } from "react";
+import { StyleSheet, View, Text, Button, Image, TouchableOpacity, ScrollView } from "react-native";
 import BalloonBox from '../components/BalloonBox';
 
 const ReceivedMessage = ({ navigation }) => {
     const [selectedButton, setSelectedButton] = useState('picture');
 
+    const [contentToSave, setContentToSave] = useState('');
+
+    const balloonRef = useRef(null);
+    const pictureRef = useRef(null);
+    const allRef = useRef(null);
+    const letterRef = useRef(null);
+
     const handleButtonPress = (buttonType) => {
         setSelectedButton(buttonType);
+    };
+
+    const handleSaveButtonPress = async () => {
+        let contentToSaveRef;
+        switch (selectedButton) {
+        case 'picture':
+            contentToSaveRef = pictureRef;
+            break;
+        case 'all':
+            contentToSaveRef = allRef;
+            break;
+        case 'letter':
+            contentToSaveRef = letterRef;
+            break;
+        default:
+            contentToSaveRef = balloonRef;
+            break;
+        }
+    
+        if (contentToSaveRef && contentToSaveRef.current) {
+          const uri = await takeScreenshot(contentToSaveRef.current);
+          if (uri) {
+            saveToMediaLibrary(uri);
+          }
+        }
+    };
+    
+    const takeScreenshot = async (viewRef) => {
+    try {
+        const uri = await viewRef.current.capture();
+        return uri;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+    };
+
+    const saveToMediaLibrary = async (uri) => {
+    try {
+        const asset = await MediaLibrary.createAssetAsync(uri);
+        await MediaLibrary.createAlbumAsync('YourAlbumName', asset, false);
+        alert('이미지가 저장되었습니다.');
+    } catch (error) {
+        console.error(error);
+        alert('이미지 저장에 실패했습니다.');
+    }
     };
 
     return (
@@ -56,17 +109,29 @@ const ReceivedMessage = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {/* 두번째 사진 */}
-            <View style={styles.bottomImageContainer}>
-                <Image
-                source={require('gomaoom/assets/images/dailydiary.png')}
-                style={styles.image}
-                resizeMode="contain"
-                />
-            </View>
+            {/* 바뀔 View */}
+            {selectedButton === 'picture' && (
+                <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
+                    <Text>그림 버튼 눌렀을 때 사진 왜 안보일까</Text>
+                    <Image
+                        source={require('gomaoom/assets/images/dailydiary.png')}
+                        style={styles.image}
+                    />
+                </ScrollView>
+            )}
+            {selectedButton === 'all' && (
+                <ScrollView ref={allRef} contentContainerStyle={styles.contentContainer}>
+                    <Text>모두 버튼을 누를 때 바뀌는 내용이다.</Text>
+                </ScrollView>
+            )}
+            {selectedButton === 'letter' && (
+                <ScrollView ref={letterRef} contentContainerStyle={styles.contentContainer}>
+                <Text>편지 버튼을 누를 때 바뀌는 내용이다.</Text>
+                </ScrollView>
+            )}
 
             {/* 저장하기 버튼 */}
-            <TouchableOpacity style={styles.saveButton}>
+            <TouchableOpacity style={styles.saveButton} onPress={handleSaveButtonPress}>
                 <Text style={styles.saveButtonText}>저장하기</Text>
             </TouchableOpacity>
         </View>
@@ -125,19 +190,28 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginTop: 20,
     },
+    contentContainer: {
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        marginVertical: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        backgroundColor: '#f0f0f0',
+        height: 150, // 크기 조절
+    },
     saveButton: {
       backgroundColor: '#f0f0f0',
-      paddingHorizontal: 16,
-      paddingVertical: 12,
+      paddingHorizontal: 14,
+      paddingVertical: 6,
       borderRadius: 20,
       borderWidth: 1,
       borderColor: '#ccc',
       alignSelf: 'center',
-      marginVertical: 20,
+      marginVertical: 10,
     },
     saveButtonText: {
       color: '#333',
-      fontSize: 18,
+      fontSize: 14,
       fontWeight: 'bold',
     },
   });
