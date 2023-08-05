@@ -1,8 +1,17 @@
 // src/OtherScreen.js
 import React from 'react';
 import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const MessageBox = ({ navigation }) => {
+const MessageBox = ({ }) => {
+
+  const navigation = useNavigation();
+
+  const handleReceivedMessage = () => {
+    console.log('편지확인하러 이동');
+    navigation.navigate('ReceivedMessage');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.messageContainer}>
@@ -18,7 +27,7 @@ const MessageBox = ({ navigation }) => {
             <TouchableOpacity onPress={() => alert('해당 알림 사라지게')} style={styles.buttonMargin}>
               <Text style={styles.buttonText}>다음에 읽기</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => alert('편지확인하러 이동')} style={styles.buttonMargin}>
+            <TouchableOpacity onPress={handleReceivedMessage} style={styles.buttonMargin}>
               <Text style={styles.buttonText}>편지 확인하기</Text>
             </TouchableOpacity>
           </View>
