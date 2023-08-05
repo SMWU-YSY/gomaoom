@@ -18,31 +18,33 @@ export default function App() {
       <StatusBar style="auto" />
       <NavigationContainer style={styles.nav}>
         <Tab.Navigator
-          screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
-              let iconName;
-              if (route.name === '홈') {
-                iconName = focused
-                  ? require('./assets/icons/Home.png')
-                  : require('./assets/icons/Home.png');
-              } else if (route.name === '보관함') {
-                iconName = focused
-                  ? require('./assets/icons/mailbox.png')
-                  : require('./assets/icons/mailbox.png');
-              } else if (route.name === '작성하기') {
-                iconName = focused
-                  ? require('./assets/icons/Write.png')
-                  : require('./assets/icons/Write.png');
-              } 
+			initialRouteName='홈'
+			screenOptions={({route}) => ({
+				tabBarIcon: ({focused, color, size}) => {
+				let iconName;
+				if (route.name === '홈') {
+					iconName = focused
+					? require('./assets/icons/Home.png')
+					: require('./assets/icons/Home.png');
+				} else if (route.name === '보관함') {
+					iconName = focused
+					? require('./assets/icons/mailbox.png')
+					: require('./assets/icons/mailbox.png');
+				} else if (route.name === '작성하기') {
+					iconName = focused
+					? require('./assets/icons/Write.png')
+					: require('./assets/icons/Write.png');
+				} 
 
-              return (
-                <Image source={iconName} style={{width: 25, height: 25}} />
-              );
-            },
-          })}>
-          <Tab.Screen name="보관함" component={ListPage} options={{headerShown: false,}}/>
-          <Tab.Screen name="홈" component={Home}/>
-          <Tab.Screen name="작성하기" component={WritePage} options={{headerShown: false,}}/>
+				return (
+					<Image source={iconName} style={{width: 25, height: 25}} />
+				);
+				},
+			})}>
+			<Tab.Screen name="보관함" component={ListPage} options={{headerShown: false,}}/>
+			<Tab.Screen name="홈" component={Home}/>
+			<Tab.Screen name="작성하기" component={WritePage} options={{headerShown: false,}}/>
+			
         </Tab.Navigator>
       </NavigationContainer>
       
