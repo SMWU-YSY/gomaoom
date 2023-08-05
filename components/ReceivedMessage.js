@@ -1,6 +1,9 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, View, Text, Button, Image, TouchableOpacity, ScrollView } from "react-native";
 import BalloonBox from '../components/BalloonBox';
+import * as MediaLibrary from 'expo-media-library';
+import * as Permissions from 'expo-permissions';
+import ViewShot, { captureRef } from 'react-native-view-shot';
 
 const ReceivedMessage = ({ navigation }) => {
     const [selectedButton, setSelectedButton] = useState('picture');
@@ -17,20 +20,26 @@ const ReceivedMessage = ({ navigation }) => {
     };
 
     const handleSaveButtonPress = async () => {
+        const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+        if (status !== 'granted') {
+            alert('Please grant permission to access the media library.');
+            return;
+        }
+
         let contentToSaveRef;
         switch (selectedButton) {
-        case 'picture':
-            contentToSaveRef = pictureRef;
-            break;
-        case 'all':
-            contentToSaveRef = allRef;
-            break;
-        case 'letter':
-            contentToSaveRef = letterRef;
-            break;
-        default:
-            contentToSaveRef = balloonRef;
-            break;
+            case 'picture':
+                contentToSaveRef = pictureRef;
+                break;
+            case 'all':
+                contentToSaveRef = allRef;
+                break;
+            case 'letter':
+                contentToSaveRef = letterRef;
+                break;
+            default:
+                contentToSaveRef = balloonRef;
+                break;
         }
     
         if (contentToSaveRef && contentToSaveRef.current) {
@@ -42,13 +51,16 @@ const ReceivedMessage = ({ navigation }) => {
     };
     
     const takeScreenshot = async (viewRef) => {
-    try {
-        const uri = await viewRef.current.capture();
-        return uri;
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
+        try {
+            const uri = await captureRef(viewRef, {
+                format: 'png',
+                quality: 1,
+            });
+            return uri;
+          } catch (error) {
+                console.error(error);
+            return null;
+          }
     };
 
     const saveToMediaLibrary = async (uri) => {
