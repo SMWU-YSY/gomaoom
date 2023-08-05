@@ -1,34 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from "react-native";
 import BalloonBox from '../components/BalloonBox';
 
 const ReceivedMessage = ({ navigation }) => {
+    const [selectedButton, setSelectedButton] = useState('picture');
+
+    const handleButtonPress = (buttonType) => {
+        setSelectedButton(buttonType);
+    };
+
     return (
         <View style={styles.container}>
             {/* 첫번째 맨 위 사진 왼쪽, 말풍선 오른쪽 배치 */}
             <View style={styles.topContainer}>
                 <View style={styles.imageContainer}>
-                <Image
-                    source={require('gomaoom/assets/images/boy.png')}
-                    style={styles.image}
-                    resizeMode="contain"
-                />
+                    <Image
+                        source={require('gomaoom/assets/images/boy.png')}
+                        style={styles.image}
+                        resizeMode="contain"
+                    />
                 </View>
                 <View style={styles.balloonContainer}>
-                <BalloonBox content="안녕하세요! 말풍선 모양의 네모박스 예시입니다." />
+                    <BalloonBox content="안녕하세요! 말풍선 모양의 네모박스 예시입니다." />
                 </View>
             </View>
 
             {/* 그림, 모두, 편지 버튼 */}
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>그림</Text>
+                <TouchableOpacity
+                    style={[
+                        styles.button,
+                        selectedButton === 'picture' && styles.buttonPressed,
+                    ]}
+                    onPress={() => handleButtonPress('picture')}
+                    >
+                    <Text style={styles.buttonText}>그림</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>모두</Text>
+                <TouchableOpacity
+                    style={[
+                        styles.button,
+                        selectedButton === 'all' && styles.buttonPressed,
+                    ]}
+                    onPress={() => handleButtonPress('all')}
+                    >
+                    <Text style={styles.buttonText}>모두</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>편지</Text>
+                <TouchableOpacity
+                    style={[
+                        styles.button,
+                        selectedButton === 'letter' && styles.buttonPressed,
+                    ]}
+                    onPress={() => handleButtonPress('letter')}
+                    >
+                    <Text style={styles.buttonText}>편지</Text>
                 </TouchableOpacity>
             </View>
 
@@ -45,7 +69,7 @@ const ReceivedMessage = ({ navigation }) => {
             <TouchableOpacity style={styles.saveButton}>
                 <Text style={styles.saveButtonText}>저장하기</Text>
             </TouchableOpacity>
-                </View>
+        </View>
       );
 };
 
@@ -83,15 +107,18 @@ const styles = StyleSheet.create({
       marginTop: 20,
     },
     button: {
-      backgroundColor: '#f0f0f0',
-      paddingHorizontal: 16,
-      paddingVertical: 8,
-      borderRadius: 20,
-      borderWidth: 1,
-      borderColor: '#ccc',
+        backgroundColor: '#CCE0CC',
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#006400',
+      },
+    buttonPressed: {
+        backgroundColor: 'green', // 눌렸을 때 초록색으로 변경
     },
     buttonText: {
-      color: '#333',
+      color: '#006400',
       fontSize: 16,
     },
     bottomImageContainer: {

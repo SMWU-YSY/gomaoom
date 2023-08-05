@@ -6,7 +6,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './components/Home';
 import Write from './components/Write';
 import MessageBox from './components/MessageBox';
+import ReceivedMessage from './components/ReceivedMessage';
+import SentMessage from './components/SentMessage';
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -14,8 +17,14 @@ export default function App() {
     <View style={styles.background}>
       <Image source={require('gomaoom/assets/blueTop.png')}/>
 
-
       <StatusBar style="auto" />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="MessageBox" component={MessageBox} />
+          <Stack.Screen name="ReceivedMessage" component={ReceivedMessage} />
+          <Stack.Screen name="SentMessage" component={SentMessage} />
+        </Stack.Navigator>
+      </NavigationContainer>
       <NavigationContainer style={styles.nav}>
         <Tab.Navigator
           screenOptions={({route}) => ({
@@ -46,7 +55,7 @@ export default function App() {
         </Tab.Navigator>
       </NavigationContainer>
       
-
+      
     </View>
   );
 }
