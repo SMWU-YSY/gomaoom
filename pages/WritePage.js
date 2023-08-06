@@ -15,7 +15,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function WritePage({ navigation }) {
 	const [pic, setPic] = useState(false);
-	const onPress = () => navigation.navigate('전송 정보 작성');
+	const onPress = () => navigation.navigate('send');
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
