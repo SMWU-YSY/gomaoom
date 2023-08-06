@@ -13,39 +13,38 @@ export default function SendPage() {
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-			<View style={styles.container}>
-				<StatusBar style="auto" />
-				<View style={styles.trans}>
-
-					<TextInput
-						multiline={true}
-						placeholder='같이 보낼 메세지'
-						style={styles.message}
-					>
-					</TextInput>
-					
-					<View style={styles.info}>
-						<Text style={styles.rText}>
-							받는 사람
-						</Text>
-
-						<Slist />
-
-						<View style={styles.sender}>
-							<Text style={styles.sText}>보내는 사람</Text>
-							<Text style={[styles.sText, styles.sName]}>예헌이가</Text>
-						</View>
-						
-					</View>
+		<View style={styles.container}>
+			<StatusBar style="auto" />
+			<View style={styles.trans}>
 				
-					<View style={styles.btn}>
-						<Pressable style={styles.btnStyle}>
-							<Text style={styles.textStyle}>전송하기</Text>
-						</Pressable>
+				<TextInput
+					multiline={true}
+					placeholder='같이 보낼 메세지'
+					style={styles.message}
+				>
+				</TextInput>
+				
+				<View style={styles.info}>
+					<Text style={styles.rText}>
+						받는 사람
+					</Text>
+
+					<Slist />
+
+					<View style={styles.sender}>
+						<Text style={styles.sText}>보내는 사람</Text>
+						<Text style={[styles.sText, styles.sName]}>예헌이가</Text>
 					</View>
-					
 				</View>
+				
+				<View style={styles.btn}>
+					<Pressable style={styles.btnStyle}>
+						<Text style={styles.textStyle}>전송하기</Text>
+					</Pressable>
+				</View>
+					
 			</View>
+		</View>	
 		</TouchableWithoutFeedback>
 	);
 }

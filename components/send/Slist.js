@@ -2,7 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState, useRef} from 'react';
 import {StyleSheet, View, Dimensions, Alert,
 		Text, TextInput, Pressable, Modal, TouchableOpacity,
-		ScrollView } from 'react-native';
+		ScrollView, 
+		TouchableWithoutFeedback} from 'react-native';
 import { theme } from '../../colors';
 import { AntDesign, Feather } from '@expo/vector-icons';
 
@@ -126,8 +127,8 @@ export default function Slist() {
 				</View>
 			</Modal> 
 
-			<View style={styles.member}>
-				<View style={styles.memlist}>
+			<ScrollView style={styles.member}>
+				<View style={styles.memlist} onStartShouldSetResponder={() => true}>
 					{member.map((item) => (
 						<View key={item.id} style={[styles.text, styles.id]}>
 							<Text style={styles.text}>
@@ -139,7 +140,7 @@ export default function Slist() {
 						</View>
 					))}
 				</View>
-				<View style={styles.memlist}>
+				<View style={styles.memlist} onStartShouldSetResponder={() => true}>
 					{notmember.map((item) => (
 						<View style={[styles.text, styles.tel]}>
 							<Text key={item.id} style={styles.text}>
@@ -151,7 +152,7 @@ export default function Slist() {
 						</View>
 					))}
 				</View>
-			</View>
+			</ScrollView>
 
 
 			<View style={styles.addBtn}> 
