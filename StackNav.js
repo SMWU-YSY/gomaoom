@@ -24,7 +24,7 @@ export default function StackNav({ screenName }){
 			{/* 그 외  페이지 이동 
 				(작성 후 전송 정보 작성 페이지, 보관함 리스트에서 선택 후 보여지는 상세 페이지)
 			*/}
-			<Stack.Screen name="send" component={SendPage} />
+			<Stack.Screen name="send" component={SendPage} options={{headerShown: false}} />
 			<Stack.Screen name="detail" component={DetailPage} options={{headerShown: false}} />
 
 		</Stack.Navigator>
