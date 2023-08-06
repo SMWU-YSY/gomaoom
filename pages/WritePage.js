@@ -9,7 +9,7 @@ import { theme } from '../colors';
 
 import Winfo from '../components/write/Winfo';
 import Wtitle from '../components/write/Wtitle';
-// import Wtext from '../components/write/Wtext';
+import Wtext from '../components/write/Wtext';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -18,7 +18,6 @@ export default function WritePage({ navigation }) {
 	const onPress = () => navigation.navigate('send');
 
 	return (
-		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 		<View style={styles.container}>
 			<StatusBar style="auto" />
 			<View style={styles.letter}>
@@ -29,15 +28,7 @@ export default function WritePage({ navigation }) {
 					{pic ? <Text>그림 O</Text> : <Text>그림 X</Text>}
 				</View>
 
-				{/* <Wtext /> */}
-				<KeyboardAvoidingView style={{flex: 5.5, backgroundColor: theme.b5}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-					<TextInput
-						style={{fontSize: 20, marginLeft: 8}}
-						multiline={true}
-						placeholder='편지를 작성하세요.'
-					>
-					</TextInput>
-				</KeyboardAvoidingView>
+				<Wtext />
 				
 				<View style={styles.letterBtn}>
 					{pic ? 
@@ -66,7 +57,6 @@ export default function WritePage({ navigation }) {
 			</View>
 			
 		</View>
-		</TouchableWithoutFeedback>
 	);
 }
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Alert, ScrollView, StyleSheet, Text, 
-	TextInput, View, Dimensions, Modal, Pressable } from 'react-native';
+	TextInput, View, Dimensions, Modal, Pressable, TouchableWithoutFeedback } from 'react-native';
 	import { theme } from '../../colors';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -53,16 +53,16 @@ export default function Wtext() {
 				onPress={() => setModalVisible(true)}>
 				<Text style={styles.textStyle}>편지 작성하기</Text>
 			</Pressable>
-			<ScrollView style={{flex: 1}}>
+
+			<ScrollView style={{flex: 1,}}>
 				<Text style={{fontSize: 23, 
 							paddingHorizontal: 14, 
 							paddingVertical: 8,
 							
 				}}>{text}</Text>
-			</ScrollView>
+			</ScrollView>			
 					
 		</View>
-		
 	);
 };
 
