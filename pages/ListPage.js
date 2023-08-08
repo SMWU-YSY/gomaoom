@@ -11,24 +11,13 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 export default function ListPage({navigation}) {
 
 	const onPress = () => navigation.navigate('detail', {date: selectedDate});
+	const [selectMarkDate, setSelectMarkDate] = useState(false);
 
 	const posts = [
-		{
-			id: 0,
-			date: "2023-08-01",
-		},
-		{
-			id: 1,
-			date: "2023-08-05",
-		},
-		{
-			id: 2,
-			date: "2023-08-14",
-		},
-		{
-			id: 3,
-			date: "2023-08-20",
-		}
+		{id: 0, date: "2023-08-01",},
+		{id: 1,	date: "2023-08-08",},
+		{id: 2,	date: "2023-08-14",},
+		{id: 3,	date: "2023-08-20",}
 	];
 
 	const markedDates = posts.reduce((acc, current) => {
@@ -49,6 +38,16 @@ export default function ListPage({navigation}) {
 		}
 	}	
 
+	const onChangeSelect = (day) => {
+		setSelectedDate(day.dateString)
+	}
+
+	function isSelected(element) {
+		if (element.date === selectedDate){
+			return true;
+		}
+	}	
+
 	return (
 		<View style={styles.container}>
 			<StatusBar style="auto" />
@@ -62,8 +61,9 @@ export default function ListPage({navigation}) {
 					dotColor: theme.b1,
 					todayTextColor: theme.b1,
 				}} 
-				onDayPress={(day) => setSelectedDate(day.dateString)}
+				onDayPress={onChangeSelect}
 			/>
+			{posts.find(isSelected) ?
 			<ScrollView style={styles.list}>
 				<View style={styles.oneLine}>
 					<Pressable style={styles.listPost} onPress={onPress}>
@@ -104,6 +104,7 @@ export default function ListPage({navigation}) {
 				</View>
 				
 			</ScrollView>
+			: <View style={styles.list}></View> }
 		</View>
 	);
 }
