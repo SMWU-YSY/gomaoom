@@ -9,7 +9,12 @@ import Slist from '../components/send/Slist';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 const STORAGE_KEY = "@sookYSY";
 
-export default function SendPage() {
+export default function SendPage({navigation}) {
+
+	const onClickSentMessage = () => {
+		console.log('편지작성완료');
+		navigation.navigate('SentMessage');
+	};
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -38,7 +43,7 @@ export default function SendPage() {
 				</View>
 				
 				<View style={styles.btn}>
-					<Pressable style={styles.btnStyle}>
+					<Pressable onPress={onClickSentMessage} style={styles.btnStyle}>
 						<Text style={styles.textStyle}>전송하기</Text>
 					</Pressable>
 				</View>
