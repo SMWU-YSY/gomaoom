@@ -2,10 +2,11 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { theme } from '../colors.js';
 
-const MessageBox = ({ }) => {
+const MessageBox = ({navigation}) => {
 
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
 
   const handleReceivedMessage = () => {
     console.log('편지확인하러 이동');
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // 뷰들을 평행하게 배치하기 위해 간격을 벌려줌
     alignItems: 'center', // 뷰들을 수직 중앙에 배치
     padding: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: theme.bg,
   },
   messageContainer: {
     flex: 0.6,

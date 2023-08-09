@@ -21,13 +21,6 @@ export default function App() {
       <Image source={require('gomaoom/assets/blueTop.png')}/>
 
       <StatusBar style="auto" />
-      {/* <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="MessageBox" component={MessageBox} />
-          <Stack.Screen name="ReceivedMessage" component={ReceivedMessage} />
-          <Stack.Screen name="SentMessage" component={SentMessage} />
-        </Stack.Navigator>
-      </NavigationContainer> */}
       <NavigationContainer style={styles.nav}>
         <Tab.Navigator
 			initialRouteName='홈'
@@ -57,14 +50,18 @@ export default function App() {
               );
             },
           })}>
-          <Tab.Screen name="받은 보관함" component={MessageBox}/>
+          <Tab.Screen name="받은 보관함" options={{headerShown: false,}}>
+          {() => <StackNav screenName="receivedList" />}
+          </Tab.Screen>
+
           <Tab.Screen name="보낸 보관함" options={{headerShown: false,}}>
 		  		{() => <StackNav screenName="sendList" />}
-			</Tab.Screen>
+			    </Tab.Screen>
+          
           <Tab.Screen name="홈" component={Home}/>
           <Tab.Screen name="작성하기" options={{headerShown: false,}}>
 		  		{() => <StackNav screenName="write" />}
-			</Tab.Screen>
+			    </Tab.Screen>
 
         </Tab.Navigator>
       </NavigationContainer>

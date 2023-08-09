@@ -1,8 +1,19 @@
 // src/OtherScreen.js
 import React from 'react';
 import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
+import { theme } from '../colors.js';
 
 const SentMessage = ({ navigation }) => {
+  
+  const onClickSendMessage = () => {
+    console.log('편지확인하러 이동');
+    navigation.navigate('sendList');
+  };
+
+  const onClickHome = () => {
+    navigation.navigate('홈');
+  }
+
   return (
     <View style={styles.container}>
         <Image
@@ -13,21 +24,13 @@ const SentMessage = ({ navigation }) => {
           마이 그랜마 님께 편지가 전송되었습니다. 
         </Text>
 
-      
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => alert('편지 보러가기')} style={styles.buttonMargin}>
+        <TouchableOpacity onPress={onClickSendMessage} style={styles.buttonMargin}>
           <Text style={styles.buttonText}>편지 보러가기</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => alert('홈으로 이동')} style={styles.buttonMargin}>
+        <TouchableOpacity onPress={onClickHome} style={styles.buttonMargin}>
           <Text style={styles.buttonText}>홈으로 이동</Text>
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.navigatonContainer}>
-        <Button
-          title="Go back to Home Screen"
-          onPress={() => navigation.goBack()}
-        />
       </View>
     </View>
   );
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // 뷰들을 평행하게 배치하기 위해 간격을 벌려줌
     alignItems: 'center', // 뷰들을 수직 중앙에 배치
     padding: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: theme.bg,
   },
   messageContainer: {
     flex: 0.6,
