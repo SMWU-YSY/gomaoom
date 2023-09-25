@@ -4,27 +4,25 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'reac
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 
-export default function Auth({ navigation }) {
-
-	// const onPress = () => ;
-
+export default function Auth() {
 	const onClick=async()=>{
 		try {
-			console.log(items);
-		  // setLoading(true);
+      console.log(value1);
 		  const response = await axios.post("http://3.34.212.92:8080/api/user/signup", 
 		  {	
-				age: "22",
-				gender: 1,
+				age: value1,
+				gender: value,
 				loginId: id,
 				nickname: nickname,
-				password:1143
+				password:password,
 			}
-		  , {
-			headers: {
-				Accept: 'application/json',
-				"Content-Type": "application/json",
-          }},);
+		  , 
+      {
+        headers: {
+          Accept: 'application/json',
+          "Content-Type": "application/json",
+        }
+      });
 	
 		  console.log(response.data);
 		  navigation.navigate('login');
@@ -32,28 +30,17 @@ export default function Auth({ navigation }) {
 		  //가져온 토큰은 보안을 위해 Encrypted-Storage에 넣어주는 코드..
 		} catch (error) {
 			console.log(error);
-
-		  // const errorResponse = AxiosError;
-		  // if (errorResponse) {
-		  //   console.log(errorResponse);
-		  // }
-		//   if (error) {
-		// 	console.log(error);
-		//   }
 		} finally {
-		  // setLoading(false);
 		  console.log('final');
 		}
-	  
-		  
-		};
+	};
 
   const [inputs,setInputs]=useState({
-    nickname:"유",
-    // nickname:'눈송이',
+    nickname:'',
     id:'',
+    password:'',
   });
-  const {nickname,id}=inputs;
+  const {nickname,id,password}=inputs;
   const onChange=(keyvalue,e)=>{
     const {text}=e.nativeEvent
     setInputs({
@@ -62,7 +49,6 @@ export default function Auth({ navigation }) {
     });
 	console.log(nickname)
   };
-  // console.log(inputs);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [open1, setOpen1] = useState(false);
@@ -112,6 +98,14 @@ export default function Auth({ navigation }) {
             style={styles.inputText}
             value={id}
             onChange={(e)=>{onChange("id",e)}}
+            />
+        </View>
+        <View style={styles.btn}>
+          <TextInput 
+            placeholder='비밀번호' 
+            style={styles.inputText}
+            value={password}
+            onChange={(e)=>{onChange("password",e)}}
             />
         </View>
         <View style={{zIndex:80}}>
