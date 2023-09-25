@@ -3,9 +3,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, Keyboard, View, 
-		Platform, TouchableWithoutFeedback, 
+		Platform, TouchableWithoutFeedback, Image,
 		Dimensions, Pressable, KeyboardAvoidingView, TextInput } from 'react-native';
-import { theme } from '../colors';
+import { color, commomStyle, images } from '../theme';
 import axios from 'axios';
 
 import Winfo from '../components/write/Winfo';
@@ -24,10 +24,10 @@ export default function WritePage({ navigation }) {
 	// 	weather: ''
 	// });
   
-
 	return (
 		<View style={styles.container}>
 			<StatusBar style="auto" />
+			<Image source={images.blueTop} style={commomStyle.backgroundImage}/>
 			<View style={styles.letter}>
 				<Winfo />
 				<Wtitle />
@@ -71,7 +71,7 @@ export default function WritePage({ navigation }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: theme.bg,
+		backgroundColor: color.bg,
 		// paddingHorizontal: 80,
 		alignItems: "center",
 		justifyContent: "center",
@@ -82,6 +82,8 @@ const styles = StyleSheet.create({
 		height: SCREEN_HEIGHT-200,
 		borderRadius: 15,
 		borderWidth: 1,
+		position: 'relative',
+		marginTop: 60
 	},
 	letterPic: {
 		flex: 3.5,
@@ -101,11 +103,11 @@ const styles = StyleSheet.create({
 		elevation: 2,
 	},
 	buttonN: {
-		backgroundColor: theme.b2,
+		backgroundColor: color.b2,
 		marginHorizontal: 15,
 	},
 	buttonY: {
-		backgroundColor: theme.b2,
+		backgroundColor: color.b2,
 		margin: 10,
 	},
 	textStyle: {

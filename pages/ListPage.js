@@ -4,7 +4,7 @@ import { StyleSheet, Text, View,
 		Dimensions, Pressable, ScrollView } from 'react-native';
 import { format } from "date-fns";
 import { Calendar } from 'react-native-calendars';
-import { theme } from '../colors';
+import { color, commomStyle, images } from '../theme';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -56,10 +56,10 @@ export default function ListPage({navigation}) {
 				style={styles.calendar} 
 				markedDates={markedSelectedDates}
 				theme={{
-					selectedDayBackgroundColor: theme.b1,
-					arrowColor: theme.b1,
-					dotColor: theme.b1,
-					todayTextColor: theme.b1,
+					selectedDayBackgroundColor: color.b1,
+					arrowColor: color.b1,
+					dotColor: color.b1,
+					todayTextColor: color.b1,
 				}} 
 				onDayPress={onChangeSelect}
 			/>
@@ -112,7 +112,7 @@ export default function ListPage({navigation}) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: theme.bg,
+		backgroundColor: color.bg,
 		alignItems: "center",
 		justifyContent: "center",
 	},
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		flex: 1,
-		// backgroundColor: theme.g3,
+		// backgroundColor: color.g3,
 		width: SCREEN_WIDTH-40,
 	},
 	oneLine: {
@@ -150,12 +150,12 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 	},
 	listPic: {
-		backgroundColor: theme.g1,
+		backgroundColor: color.g1,
 		flex: 3,
 		textAlign: "center",
 	},
 	listText: {
-		backgroundColor: theme.g5,
+		backgroundColor: color.g5,
 		flex: 1,
 		textAlign: "center",
 	},

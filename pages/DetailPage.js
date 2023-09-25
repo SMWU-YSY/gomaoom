@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, 
 		View, Dimensions } from 'react-native';
-import { theme } from '../colors';
+import { color, commomStyle, images } from '../theme';
 import Dinfo from '../components/detail/Dinfo';
 import Dtitle from '../components/detail/Dtitle';
 import Dtext from '../components/detail/Dtext';
@@ -55,7 +55,7 @@ export default function DetailPage({ route }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: theme.bg,
+		backgroundColor: color.bg,
 		// paddingHorizontal: 80,
 		alignItems: "center",
 		justifyContent: "center",
@@ -95,12 +95,12 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 	},
 	id: {
-		backgroundColor: theme.b1,
+		backgroundColor: color.b1,
 		borderWidth: 1,
 		borderRadius: 15,
 	},
 	tel: {
-		backgroundColor: theme.g5,
+		backgroundColor: color.g5,
 		borderWidth: 1,
 		borderRadius: 15,
 	},

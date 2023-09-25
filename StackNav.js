@@ -7,6 +7,8 @@ import DetailPage from "./pages/DetailPage";
 import MessageBox from "./components/MessageBox";
 import ReceivedMessage from "./components/ReceivedMessage";
 import SentMessage from "./components/SentMessage";
+import Auth from "./Auth";
+import Login from "./Login";
 import { NavigationContainer, StackActions, useNavigation } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator()
@@ -43,6 +45,10 @@ export default function StackNav({ screenName }){
 				<Stack.Screen name="receivedList" component={MessageBox} options={{headerShown: false}}/>
 			): null}
 
+			{screenName === 'signup' ? (
+				<Stack.Screen name="signup" component={Auth} options={{headerShown: false}}/>
+			): null}
+
 			{/* 그 외  페이지 이동 
 				(작성 후 전송 정보 작성 페이지, 보관함 리스트에서 선택 후 보여지는 상세 페이지)
 			*/}
@@ -50,6 +56,7 @@ export default function StackNav({ screenName }){
 			<Stack.Screen name="detail" component={DetailPage} options={{headerShown: false}} />
 			<Stack.Screen name="ReceivedMessage" component={ReceivedMessage} options={{headerShown: false}} />
 			<Stack.Screen name="SentMessage" component={SentMessage} options={{headerShown: false}} />
+			<Stack.Screen name="login" component={Login} options={{headerShown: false}} />
 		</Stack.Navigator>
 	);
 }
