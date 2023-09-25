@@ -1,0 +1,10 @@
+
+expo build:android has been superseded by eas build. Learn more: https://blog.expo.dev/turtle-goes-out-to-sea-d334db2a6b60
+
+Run the following:
+
+› npm install -g eas-cli
+› eas build -p android https://docs.expo.dev/build/setup/
+
+expo build:android has been discontinued (January 4, 2023).
+
