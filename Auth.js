@@ -2,33 +2,44 @@ import { StatusBar } from 'expo-status-bar';
 import React,{ useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import axios from 'axios';
 
+export default function Auth({ navigation }) {
 
-export default function Auth() {
+	// const onPress = () => ;
+
 	const onClick=async()=>{
 		try {
+			console.log(items);
 		  // setLoading(true);
-		  const response = await axios.post("http://3.34.212.92:8080/api/user/signup", {
-			data: {
-				age: 11,
-				gender:1,
-				loginId:"ys1y_id",
-				nickname:nickname,
-				password:1143,
+		  const response = await axios.post("http://3.34.212.92:8080/api/user/signup", 
+		  {	
+				age: "22",
+				gender: 1,
+				loginId: id,
+				nickname: nickname,
+				password:1143
 			}
-		  });
+		  , {
+			headers: {
+				Accept: 'application/json',
+				"Content-Type": "application/json",
+          }},);
 	
 		  console.log(response.data);
+		  navigation.navigate('login');
 		  //가져온 데이터 store에 넣어주는 코드..
 		  //가져온 토큰은 보안을 위해 Encrypted-Storage에 넣어주는 코드..
 		} catch (error) {
+			console.log(error);
+
 		  // const errorResponse = AxiosError;
 		  // if (errorResponse) {
 		  //   console.log(errorResponse);
 		  // }
-		  if (error) {
-			console.log(error);
-		  }
+		//   if (error) {
+		// 	console.log(error);
+		//   }
 		} finally {
 		  // setLoading(false);
 		  console.log('final');
@@ -38,7 +49,7 @@ export default function Auth() {
 		};
 
   const [inputs,setInputs]=useState({
-    nickname:'',
+    nickname:"유",
     // nickname:'눈송이',
     id:'',
   });
@@ -49,6 +60,7 @@ export default function Auth() {
       ...inputs,
       [keyvalue]:text
     });
+	console.log(nickname)
   };
   // console.log(inputs);
   const [open, setOpen] = useState(false);
@@ -76,7 +88,7 @@ export default function Auth() {
   
   return(
     <View style={styles.background}>
-      <Image source={require('gomaoom/assets/blueTop.png')}/>
+      {/* <Image source={require('gomaoom/assets/blueTop.png')}/> */}
       <View style={styles.container}>
           <Text style={styles.desc}>
             반가워요! 함께 마음을 전해봐요!

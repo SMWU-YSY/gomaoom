@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions,
 		Text, TextInput, Keyboard, TouchableWithoutFeedback,
 		Pressable } from 'react-native';
-import { theme } from '../colors';
+import { color, commomStyle, images } from '../theme';
 import Slist from '../components/send/Slist';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -57,7 +57,7 @@ export default function SendPage({navigation}) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: theme.bg,
+		backgroundColor: color.bg,
 		alignItems: "center",
 		justifyContent: "center",
 	},
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		padding: 10,
 		elevation: 2,
-		backgroundColor: theme.b2,
+		backgroundColor: color.b2,
 	},
 	textStyle: {
 		color: 'white',

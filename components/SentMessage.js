@@ -1,7 +1,7 @@
 // src/OtherScreen.js
 import React from 'react';
 import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
-import { theme } from '../colors.js';
+import { color, commomStyle, images } from '../theme.js';
 
 const SentMessage = ({ navigation }) => {
   
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // 뷰들을 평행하게 배치하기 위해 간격을 벌려줌
     alignItems: 'center', // 뷰들을 수직 중앙에 배치
     padding: 20,
-    backgroundColor: theme.bg,
+    backgroundColor: color.bg,
   },
   messageContainer: {
     flex: 0.6,

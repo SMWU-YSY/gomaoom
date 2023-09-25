@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Alert, ScrollView, StyleSheet, Text, 
 	TextInput, View, Dimensions, Modal, Pressable, TouchableWithoutFeedback } from 'react-native';
-	import { theme } from '../../colors';
+	import { color, commomStyle, images } from '../../theme';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 		flex: 5.5,
 		borderBottomWidth: 1,
 		borderBottomColor: "black",
-		backgroundColor: theme.b5,
+		backgroundColor: color.b5,
 	},
 	modalCenteredView: {
 		flex: 1,
@@ -100,12 +100,12 @@ const styles = StyleSheet.create({
 		elevation: 2,
 	},
 	buttonOpen: {
-		backgroundColor: theme.b2,
+		backgroundColor: color.b2,
 		marginVertical: 10,
 		marginHorizontal: 15,
 	},
 	buttonClose: {
-		backgroundColor: theme.b2,
+		backgroundColor: color.b2,
 		marginTop: 20
 	},
 	textStyle: {

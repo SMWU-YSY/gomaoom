@@ -1,3 +1,5 @@
+// 필요없는 페이지
+
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image,TouchableOpacity } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -43,6 +45,7 @@ export default function App() {
             <Tab.Screen name="보관함" component={Receive}/>
             <Tab.Screen name="홈" component={Home}/>
             <Tab.Screen name="작성하기" component={Write}/>
+			<Tab.Screen name="회원가입" component={Auth}/>
             </Tab.Navigator>
         </NavigationContainer>
         

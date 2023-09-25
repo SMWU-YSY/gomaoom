@@ -4,7 +4,7 @@ import {StyleSheet, View, Dimensions, Alert,
 		Text, TextInput, Pressable, Modal, TouchableOpacity,
 		ScrollView, 
 		TouchableWithoutFeedback} from 'react-native';
-import { theme } from '../../colors';
+import { color, commomStyle, images } from '../../theme';
 import { AntDesign, Feather } from '@expo/vector-icons';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	input: {
-		backgroundColor: theme.b5, 
+		backgroundColor: color.b5, 
 		fontSize: 22, 
 		margin: 10,
 		width: SCREEN_WIDTH-200,
@@ -230,13 +230,13 @@ const styles = StyleSheet.create({
 		alignItems: "center"
 	},
 	buttonOpen: {
-		backgroundColor: theme.g2,
+		backgroundColor: color.g2,
 		// marginVertical: 10,
 		marginHorizontal: 10,
 		width: SCREEN_WIDTH/1.8,
 	},
 	buttonClose: {
-		backgroundColor: theme.g2,
+		backgroundColor: color.g2,
 		marginTop: 10
 	},
 	textStyle: {
@@ -267,12 +267,12 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 	},
 	id: {
-		backgroundColor: theme.b1,
+		backgroundColor: color.b1,
 		borderWidth: 1,
 		borderRadius: 15,
 	},
 	tel: {
-		backgroundColor: theme.g5,
+		backgroundColor: color.g5,
 		borderWidth: 1,
 		borderRadius: 15,
 	},

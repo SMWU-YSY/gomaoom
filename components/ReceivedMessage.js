@@ -4,7 +4,7 @@ import BalloonBox from '../components/BalloonBox';
 import * as MediaLibrary from 'expo-media-library';
 import * as Permissions from 'expo-permissions';
 import ViewShot, { captureRef } from 'react-native-view-shot';
-import { theme } from '../colors.js';
+import { color, commomStyle, images } from '../theme.js';
 
 const ReceivedMessage = ({ navigation }) => {
     const [selectedButton, setSelectedButton] = useState('picture');
@@ -154,7 +154,7 @@ const ReceivedMessage = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-        backgroundColor: theme.bg,
+        backgroundColor: color.bg,
     },
     topContainer: {
       flexDirection: 'row',

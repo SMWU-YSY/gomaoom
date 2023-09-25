@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { theme } from '../../colors';
+import { color, commomStyle, images } from '../../theme';
 
 export default function Dtext() {
 
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
 		flex: 5,
 		borderBottomWidth: 1,
 		borderBottomColor: "black",
-		backgroundColor: theme.b5,
+		backgroundColor: color.b5,
 	},
 });

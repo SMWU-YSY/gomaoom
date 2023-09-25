@@ -10,7 +10,6 @@ export default function App() {
     };
     return (
         <View style={styles.background}>
-        <Image source={require('gomaoom/assets/blueTop.png')}/>
         <View style={styles.container}>
             <Image source={require('gomaoom/assets/fakeLogo.png')}/>
             <Text style={styles.desc}>
