@@ -6,6 +6,7 @@ import { StyleSheet, Text, Keyboard, View,
 		Platform, TouchableWithoutFeedback, 
 		Dimensions, Pressable, KeyboardAvoidingView, TextInput } from 'react-native';
 import { theme } from '../colors';
+import axios from 'axios';
 
 import Winfo from '../components/write/Winfo';
 import Wtitle from '../components/write/Wtitle';
@@ -16,6 +17,13 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 export default function WritePage({ navigation }) {
 	const [pic, setPic] = useState(false);
 	const onPress = () => navigation.navigate('send');
+
+	// const [formData, setFormData] = useState({
+	// 	title: '',
+	// 	text: '',
+	// 	weather: ''
+	// });
+  
 
 	return (
 		<View style={styles.container}>
