@@ -5,9 +5,38 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 
 export default function Auth() {
-  const onClick=()=>{
-    console.log('회원가입 완 ..');
-  }
+	const onClick=async()=>{
+		try {
+		  // setLoading(true);
+		  const response = await axios.post("http://3.34.212.92:8080/api/user/signup", {
+			data: {
+				age: 11,
+				gender:1,
+				loginId:"ys1y_id",
+				nickname:nickname,
+				password:1143,
+			}
+		  });
+	
+		  console.log(response.data);
+		  //가져온 데이터 store에 넣어주는 코드..
+		  //가져온 토큰은 보안을 위해 Encrypted-Storage에 넣어주는 코드..
+		} catch (error) {
+		  // const errorResponse = AxiosError;
+		  // if (errorResponse) {
+		  //   console.log(errorResponse);
+		  // }
+		  if (error) {
+			console.log(error);
+		  }
+		} finally {
+		  // setLoading(false);
+		  console.log('final');
+		}
+	  
+		  
+		};
+
   const [inputs,setInputs]=useState({
     nickname:'',
     // nickname:'눈송이',
