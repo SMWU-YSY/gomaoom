@@ -2,6 +2,7 @@ import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, View, Image,TouchableOpacity, TextInput } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation }) {
   const [inputs,setInputs]=useState({
@@ -33,12 +34,13 @@ export default function Login({ navigation }) {
         }
       });
 	
-		  console.log(response.data.data[0]);
+		  // console.log(response.data.data[0]);
 
       accessToken=response.headers.getAuthorization().split(" ");
-      accessToken=accessToken[1];
+      // accessToken=accessToken[1];
+      await AsyncStorage.setItem("accessToken", JSON.stringify(accessToken[1]));
       console.log(accessToken);
-      
+      navigation.navigate('isLogin');
 		} catch (error) {
 			console.log(error);
 		} 
