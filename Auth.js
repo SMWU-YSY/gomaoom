@@ -1,17 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{ useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 
 export default function Auth({navigation}) {
+  const isAuth=()=>{
+    Alert.alert(                    
+      "회원가입이 완료되었습니다.",                    // 첫번째 text: 타이틀 제목
+      "로그인해주세요.",                         // 두번째 text: 그 밑에 작은 제목
+      [{text: '확인', onPress: () => {}}],
+      { cancelable: false }
+    );
+    navigation.navigate('login');
+
+  };
 	const onClick=async()=>{
 		try {
       console.log(value1);
 		  const response = await axios.post("http://3.34.212.92:8080/api/user/signup", 
 		  {	
-				age: "11",
-				gender: 1,
+				age: value,
+				gender: value1,
 				loginId: id,
 				nickname: nickname,
 				password:password,
@@ -24,14 +34,12 @@ export default function Auth({navigation}) {
         }
       });
 	
-		  console.log(response.data);
-		  navigation.navigate('login');
-		  //가져온 데이터 store에 넣어주는 코드..
-		  //가져온 토큰은 보안을 위해 Encrypted-Storage에 넣어주는 코드..
+		  if(response){
+        isAuth();
+      }
 		} catch (error) {
 			console.log(error);
 		} finally {
-		  console.log('final');
 		}
 	};
 
@@ -47,7 +55,6 @@ export default function Auth({navigation}) {
       ...inputs,
       [keyvalue]:text
     });
-	console.log(nickname)
   };
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);

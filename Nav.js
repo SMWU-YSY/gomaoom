@@ -8,6 +8,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './components/Home';
 import Write from './components/Write';
 import Receive from './components/Receive';
+import Auth from './Auth';
+import Login from './Login';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,6 +48,7 @@ export default function App() {
             <Tab.Screen name="홈" component={Home}/>
             <Tab.Screen name="작성하기" component={Write}/>
 			<Tab.Screen name="회원가입" component={Auth}/>
+			<Tab.Screen name="로그인" component={Login}/>
             </Tab.Navigator>
         </NavigationContainer>
         

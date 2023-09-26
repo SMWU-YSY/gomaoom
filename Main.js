@@ -10,33 +10,30 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import Login from './Login';
 import Auth from './Auth';
-import Main from './Main';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function App() {
-  const [isLogin,setIsLogin]=useState(null);
+export default function Main() {
+  const [isLogin,setIsLogin]=useState(false);
   const [accessToken,setAccessToken]=useState('');
-  const getData = async () => {
-    const storageData = 
-      JSON.parse(await AsyncStorage.getItem("accessToken"));
-    if(storageData) {
-        console.log("GET data from storage");
-        setAccessToken(storageData);
-        setIsLogin(true);
-    }else{
-      setIsLogin(false);
-    }
-}
+  
   useEffect(() => {
-    
+    const getData = async () => {
+        const storageData = 
+          JSON.parse(await AsyncStorage.getItem("accessToken"));
+        if(storageData) {
+            console.log("GET data from storage");
+            setAccessToken(storageData);
+            setIsLogin(true);
+        }
+    }
     // AsyncStorage에 저장된 데이터가 있다면, 불러온다.
     getData();
-    
+
     // 데이터 지우기
     // AsyncStorage.clear();
-}, [isLogin]);
+}, []);
   return (
     <View style={styles.background}>
       {/* <Image source={require('gomaoom/assets/blueTop.png')}/> */}
@@ -85,17 +82,16 @@ export default function App() {
 		  		{() => <StackNav screenName="write" />}
 			</Tab.Screen>
 
-
         </Tab.Navigator>
        </NavigationContainer>
-      ):(!isLogin&&(
+      ):(
         <NavigationContainer independent={true} style={styles.nav}>
         <Tab.Navigator
-        initialRouteName='login'
+        initialRouteName='로그인'
         screenOptions={({route}) => ({
 				tabBarIcon: ({focused, color, size}) => {
 				let iconName;
-				if (route.name === 'login') {
+				if (route.name === '로그인') {
 					iconName = focused
 					? require('./assets/icons/Home.png')
 					: require('./assets/icons/Home.png');
@@ -106,16 +102,11 @@ export default function App() {
             },
           })}>
           
-          <Tab.Screen name="login" component={Login} options={{tabBarStyle: {display: 'none'}}}/>
+          <Tab.Screen name="로그인" component={Login} options={{tabBarStyle: {display: 'none'}}}/>
           <Tab.Screen name="signup" component={Auth} options={{tabBarStyle: {display: 'none'}}}/>
-          <Tab.Screen name="isLogin" component={Main} options={{tabBarStyle: {display: 'none'}}}/>
         </Tab.Navigator>
       </NavigationContainer>
-      )
-        
       )}
-        
-  
       
       
       
