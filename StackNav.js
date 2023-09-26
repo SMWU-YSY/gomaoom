@@ -59,6 +59,7 @@ export default function StackNav({ screenName }){
 			<Stack.Screen name="ReceivedMessage" component={ReceivedMessage} options={{headerShown: false}} />
 			<Stack.Screen name="SentMessage" component={SentMessage} options={{headerShown: false}} />
 			<Stack.Screen name="login" component={Login} options={{headerShown: false}} />
+			<Stack.Screen name="signup" component={Auth} options={{headerShown: false}}/>
 		</Stack.Navigator>
 	);
 }

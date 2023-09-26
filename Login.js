@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, View, Image,TouchableOpacity, TextInput } from 'react-native';
 
-export default function App({navigation}) {
+export default function Login({ navigation }) {
   const [inputs,setInputs]=useState({
     id:'',
     password:'',
@@ -43,10 +43,10 @@ export default function App({navigation}) {
 			console.log(error);
 		} 
 	};
-  const gotoRegister=()=>{
-      console.log('회원가입으로 이동');
-      navigation.navigate('sendList');
-  };
+	const gotoRegister=()=>{
+		console.log('회원가입으로 이동');
+		navigation.navigate('signup');
+	};
 
   return (
       <View style={styles.background}>

@@ -11,7 +11,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 const STORAGE_KEY = "@sookYSY";
 
 export default function SendLetter({navigation, route}) {
-	const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzA2NjA5MzQ2LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ1c2VySWQxIiwiaWF0IjoxNjk1NzA2NjA5LCJleHAiOjE2OTU3MzU0MDl9.QxQ9uFVffwStz-5qsDx6ZfyYdaeE67LpFd6Bk3GLcP4";
+	const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzM2MTY5OTIyLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLjhLHjhLEiLCJpYXQiOjE2OTU3MzYxNjksImV4cCI6MTY5NTc2NDk2OX0.ScJvDN72a7_wqiI-SpyBst12F20XyPenAmJXtWYzDS0";
 	const letterData = route.params.letterData;
 
 	const [extraValue, setExtraValue] = useState("");
