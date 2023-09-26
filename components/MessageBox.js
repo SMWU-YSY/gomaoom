@@ -1,12 +1,34 @@
 // src/OtherScreen.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { color, commomStyle, images } from '../theme.js';
+import axios from 'axios';
 
 const MessageBox = ({navigation}) => {
+  const [letters, setLetters] = useState([]);
 
-  //const navigation = useNavigation();
+  useEffect(() => {
+    const apiUrl = "http://3.34.212.92:8080/api/message/outbox"
+    const authToken = 'Bearer eyJyZWdEYXRlIjoxNjk1NzExNDY1MzE1LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLrrLTri4giLCJpYXQiOjE2OTU3MTE0NjUsImV4cCI6MTY5NTc0MDI2NX0.uIIN1aosCZZuTlC3aQCfbfYMEhvtYMzt8gchtsvm78k'; //test용
+    
+    axios.get(apiUrl, {
+      headers: {
+        Authorization: authToken, // Authorization 헤더 설정
+      },
+    })
+      .then((response) => {
+        // 성공적으로 응답 받았을 때 수행할 작업
+        const responseData = response.data;
+        if (responseData.data) {
+          setLetters(responseData.data)
+        }
+      })
+      .catch((error) => {
+        // 오류 처리
+        console.error('오류:', error);
+      });
+  }, []);
 
   const handleReceivedMessage = () => {
     console.log('편지확인하러 이동');
@@ -14,7 +36,27 @@ const MessageBox = ({navigation}) => {
   };
 
   return (
+    
+
     <View style={styles.container}>
+      <View>
+      {letters.map((letter) => (
+        <View key={letter.letterId} style={styles.messageRightContainer}>
+          <Text style={styles.messageText}>
+            {`${letter.senderNickname} 님이 편지를 보냈습니다.`}
+          </Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => alert('해당 알림 사라지게')} style={styles.buttonMargin}>
+              <Text style={styles.buttonText}>다음에 읽기</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => alert('편지확인하러 이동')} style={styles.buttonMargin}>
+              <Text style={styles.buttonText}>편지 확인하기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ))}
+    </View>
+    
       <View style={styles.messageContainer}>
         <View style={styles.messageLeftContainer}>
           <Image
