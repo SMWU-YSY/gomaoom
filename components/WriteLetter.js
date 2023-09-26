@@ -8,13 +8,13 @@ import { StyleSheet, Text, Keyboard, View,
 import { color, commomStyle, images } from '../theme';
 import axios from 'axios';
 
-import Winfo from '../components/write/Winfo';
-import Wtitle from '../components/write/Wtitle';
-import Wtext from '../components/write/Wtext';
+import Winfo from './write/Winfo';
+import Wtitle from './write/Wtitle';
+import Wtext from './write/Wtext';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export default function WritePage({ navigation }) {
+export default function WriteLetter({ navigation }) {
 	const [pic, setPic] = useState(false);
 	const onPress = () => navigation.navigate('send');
 

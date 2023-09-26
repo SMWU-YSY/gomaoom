@@ -8,7 +8,7 @@ import { color, commomStyle, images } from '../theme';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export default function ListPage({navigation}) {
+export default function Outbox({navigation}) {
 
 	const onPress = () => navigation.navigate('detail', {date: selectedDate});
 	const [selectMarkDate, setSelectMarkDate] = useState(false);

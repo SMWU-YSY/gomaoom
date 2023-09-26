@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import WritePage from "./pages/WritePage";
-import ListPage from "./pages/ListPage";
-import SendPage from "./pages/SendPage";
-import DetailPage from "./pages/DetailPage";
+import WriteLetter from "./components/WriteLetter";
+import Outbox from "./components/Outbox";
+import SendLetter from "./components/SendLetter";
+import OutboxDetail from "./components/OutboxDetail";
 import MessageBox from "./components/MessageBox";
 import ReceivedMessage from "./components/ReceivedMessage";
 import SentMessage from "./components/SentMessage";
@@ -34,11 +34,11 @@ export default function StackNav({ screenName }){
 				(작성하기, 보낸 보관함)
 			*/}
 			{screenName === 'write' ? (
-				<Stack.Screen name="write" component={WritePage} options={{headerShown: false}} />
+				<Stack.Screen name="write" component={WriteLetter} options={{headerShown: false}} />
 			) : null}
 
 			{screenName === 'sendList' ? (
-				<Stack.Screen name="sendList" component={ListPage} options={{headerShown: false}}/>
+				<Stack.Screen name="sendList" component={Outbox} options={{headerShown: false}}/>
 			) : null}
 
 			{screenName === 'receivedList' ? (
@@ -52,8 +52,8 @@ export default function StackNav({ screenName }){
 			{/* 그 외  페이지 이동 
 				(작성 후 전송 정보 작성 페이지, 보관함 리스트에서 선택 후 보여지는 상세 페이지)
 			*/}
-			<Stack.Screen name="send" component={SendPage} options={{headerShown: false}} />
-			<Stack.Screen name="detail" component={DetailPage} options={{headerShown: false}} />
+			<Stack.Screen name="send" component={SendLetter} options={{headerShown: false}} />
+			<Stack.Screen name="detail" component={OutboxDetail} options={{headerShown: false}} />
 			<Stack.Screen name="ReceivedMessage" component={ReceivedMessage} options={{headerShown: false}} />
 			<Stack.Screen name="SentMessage" component={SentMessage} options={{headerShown: false}} />
 			<Stack.Screen name="login" component={Login} options={{headerShown: false}} />

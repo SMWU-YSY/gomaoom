@@ -4,12 +4,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './components/Home';
-import Write from './components/Write';
-import MessageBox from './components/MessageBox';
-import ReceivedMessage from './components/ReceivedMessage';
-import SentMessage from './components/SentMessage';
-import WritePage from './pages/WritePage';
-import ListPage from './pages/ListPage';
 import StackNav from './StackNav';
 
 const Stack = createNativeStackNavigator();
