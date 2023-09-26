@@ -5,15 +5,48 @@ import {StyleSheet, View, Dimensions,
 		Pressable } from 'react-native';
 import { color, commomStyle, images } from '../theme';
 import Slist from './send/Slist';
+import axios from 'axios';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 const STORAGE_KEY = "@sookYSY";
 
-export default function SendLetter({navigation}) {
+export default function SendLetter({navigation, route}) {
+	const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzA2NjA5MzQ2LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ1c2VySWQxIiwiaWF0IjoxNjk1NzA2NjA5LCJleHAiOjE2OTU3MzU0MDl9.QxQ9uFVffwStz-5qsDx6ZfyYdaeE67LpFd6Bk3GLcP4";
+	const letterData = route.params.letterData;
 
-	const onClickSentMessage = () => {
-		console.log('편지작성완료');
-		navigation.navigate('SentMessage');
+	const [extraValue, setExtraValue] = useState("");
+	const [member, setMember] = useState([]);
+	const [recipientList, setRecipientList] = useState([]);
+
+	const onChangeText = (payload) => setExtraValue(payload);
+
+	const transferLetter = async () => {
+
+		console.log(extraValue);
+		console.log(letterData.lid)
+		console.log(member);
+
+		axios.post('http://3.34.212.92:8080/api/message/write', {
+			extra: extraValue,
+			letterId: letterData.lid,
+			recipientLoginIds: recipientList
+		}, {
+			headers: {
+				'Authorization': `Bearer ${JWT_TOKEN}`
+			}
+		})
+		.then(response => {
+			console.log(response.data.data[0]);
+			navigation.navigate('SentMessage');
+		})
+		.catch(error => {
+			// if (error.response.status === 401) {
+			// 	console.log("unauth");
+			// 	navigation.navigate('login');
+			// } else {
+				console.error(error);
+			// }
+		})
 	};
 
 	return (
@@ -26,6 +59,8 @@ export default function SendLetter({navigation}) {
 					multiline={true}
 					placeholder='같이 보낼 메세지'
 					style={styles.message}
+					value={extraValue}
+					onChangeText={onChangeText}
 				>
 				</TextInput>
 				
@@ -34,7 +69,7 @@ export default function SendLetter({navigation}) {
 						받는 사람
 					</Text>
 
-					<Slist />
+					<Slist member={member} setMember={setMember}/>
 
 					<View style={styles.sender}>
 						<Text style={styles.sText}>보내는 사람</Text>
@@ -43,7 +78,7 @@ export default function SendLetter({navigation}) {
 				</View>
 				
 				<View style={styles.btn}>
-					<Pressable onPress={onClickSentMessage} style={styles.btnStyle}>
+					<Pressable onPress={transferLetter} style={styles.btnStyle}>
 						<Text style={styles.textStyle}>전송하기</Text>
 					</Pressable>
 				</View>

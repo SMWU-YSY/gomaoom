@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity, StyleSheet, Text, View} from 'react-native';
 import { Fontisto } from '@expo/vector-icons';
 import { format } from "date-fns"; 
 
-export default function Dinfo() {
+export default function Winfo({ weatherValue, setWeatherValue, editable }) {
 
 	const date = format(new Date(),"yyyy-MM-dd");
 
@@ -11,6 +11,14 @@ export default function Dinfo() {
 	const[cloud, setCloud] = useState(false);
 	const[rain, setRain] = useState(false);
 	const[snow, setSnow] = useState(false);
+
+	useEffect(() => {
+		// weatherValue에 따라 Pressable을 자동 설정하는 로직
+		setSun(weatherValue === "sunny");
+		setCloud(weatherValue === "cloudy");
+		setRain(weatherValue === "rainy");
+		setSnow(weatherValue === "snowy");
+	}, [weatherValue]);
 
 	return (
 		<View style={styles.letterInfo}>
@@ -24,18 +32,18 @@ export default function Dinfo() {
 			</View>
 
 			<View style={styles.letterWeather}>
-				<Pressable onPress={() => {setSun(true); setCloud(false); setRain(false); setSnow(false);}}>
+				<TouchableOpacity disabled={!editable} onPress={() => {setSun(true); setCloud(false); setRain(false); setSnow(false); setWeatherValue("sunny");}}>
 					<Fontisto name="day-sunny" size={28} color={sun?"red":"grey"}></Fontisto>
-				</Pressable>
-				<Pressable onPress={() => {setSun(false); setCloud(true); setRain(false); setSnow(false);}}>
+				</TouchableOpacity>
+				<TouchableOpacity disabled={!editable} onPress={() => {setSun(false); setCloud(true); setRain(false); setSnow(false); setWeatherValue("cloudy");}}>
 					<Fontisto name="cloudy" size={28} color={cloud?"red":"grey"}></Fontisto>
-				</Pressable>
-				<Pressable onPress={() => {setSun(false); setCloud(false); setRain(true); setSnow(false);}}>
+				</TouchableOpacity>
+				<TouchableOpacity disabled={!editable} onPress={() => {setSun(false); setCloud(false); setRain(true); setSnow(false); setWeatherValue("rainy");}}>
 					<Fontisto name="rain" size={28} color={rain?"red":"grey"}></Fontisto>
-				</Pressable>
-				<Pressable onPress={() => {setSun(false); setCloud(false); setRain(false); setSnow(true);}}>
+				</TouchableOpacity>
+				<TouchableOpacity disabled={!editable} onPress={() => {setSun(false); setCloud(false); setRain(false); setSnow(true); setWeatherValue("snowy");}}>
 					<Fontisto name="snow" size={28} color={snow?"red":"grey"}></Fontisto>
-				</Pressable>
+				</TouchableOpacity>
 			</View>
 		</View>
 	);

@@ -5,12 +5,11 @@ import { Alert, ScrollView, StyleSheet, Text,
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export default function Wtext() {
-	const [text, setText] = useState("");
+export default function Wtext({ textValue, setTextValue, editable }) {
 	const [modalText, setModalText] = useState("");
 	const [modalVisible, setModalVisible] = useState(false);
 
-	const onChangeText = (payload) => setText(payload);
+	const onChangeText = (payload) => setTextValue(payload);
 	const onChangeModalText = (payload) => setModalText(payload);
 
 	return (
@@ -41,25 +40,28 @@ export default function Wtext() {
 							style={[styles.button, styles.buttonClose]}
 							onPress={() => {
 								setModalVisible(!modalVisible)
-								setText(modalText)
+								setTextValue(modalText)
 						}}>
 							<Text style={styles.textStyle}>작성 완료</Text>
 						</Pressable>
 					</View>
 				</View>
 			</Modal> 
-			<Pressable
+
+			{editable ? (
+				<Pressable
 				style={[styles.button, styles.buttonOpen]}
 				onPress={() => setModalVisible(true)}>
 				<Text style={styles.textStyle}>편지 작성하기</Text>
-			</Pressable>
+				</Pressable>
+			) : <View></View>}
 
 			<ScrollView style={{flex: 1,}}>
 				<Text style={{fontSize: 23, 
 							paddingHorizontal: 14, 
 							paddingVertical: 8,
 							
-				}}>{text}</Text>
+				}}>{textValue}</Text>
 			</ScrollView>			
 					
 		</View>

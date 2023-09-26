@@ -1,24 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View, Text} from 'react-native';
 
-export default function Wtitle() {
-	const [title, setTitle] = useState("");
-	const onChangeTitle = (payload) => setTitle(payload);
+export default function Wtitle({ titleValue, setTitleValue, editable }) {
+	const onChangeTitle = (payload) => setTitleValue(payload);
 
 	return (
 		<View style={styles.letterTitle}>
-			<TextInput 
+			{editable ? (
+				<TextInput 
 				onChangeText={onChangeTitle}
 				returnKeyType='done'
-				value={title}
+				value={titleValue}
 				placeholder="제목을 입력하세요" 
 				style={{
 					flex: 1,
 					fontSize: 23,
 					marginLeft: 10,
 				}}
-				// maxLength={17}
+			// maxLength={17}
 			/>
+			) : <Text style={{
+					flex: 1,
+					fontSize: 23,
+					marginLeft: 10,
+				}}>{titleValue}</Text>}
 		</View>
 	);
 };

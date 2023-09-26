@@ -4,14 +4,14 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'reac
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 
-export default function Auth() {
+export default function Auth({navigation}) {
 	const onClick=async()=>{
 		try {
       console.log(value1);
 		  const response = await axios.post("http://3.34.212.92:8080/api/user/signup", 
 		  {	
-				age: value1,
-				gender: value,
+				age: "11",
+				gender: 1,
 				loginId: id,
 				nickname: nickname,
 				password:password,
