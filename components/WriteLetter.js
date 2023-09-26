@@ -16,7 +16,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function WriteLetter({ navigation }) {
 	const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzA2NjA5MzQ2LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ1c2VySWQxIiwiaWF0IjoxNjk1NzA2NjA5LCJleHAiOjE2OTU3MzU0MDl9.QxQ9uFVffwStz-5qsDx6ZfyYdaeE67LpFd6Bk3GLcP4";
-	const GENERATE_TYPE = "dalle";
+	const GENERATE_TYPE = "karlo";
 
 	const [weatherValue, setWeatherValue] = useState('');
 	const [titleValue, setTitleValue] = useState('');

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Dimensions,
+import {StyleSheet, View, Dimensions, Image,
 		Text, TextInput, Keyboard, TouchableWithoutFeedback,
 		Pressable } from 'react-native';
 import { color, commomStyle, images } from '../theme';
@@ -25,6 +25,7 @@ export default function SendLetter({navigation, route}) {
 		console.log(extraValue);
 		console.log(letterData.lid)
 		console.log(member);
+		console.log(recipientList);
 
 		axios.post('http://3.34.212.92:8080/api/message/write', {
 			extra: extraValue,
@@ -40,12 +41,12 @@ export default function SendLetter({navigation, route}) {
 			navigation.navigate('SentMessage');
 		})
 		.catch(error => {
-			// if (error.response.status === 401) {
-			// 	console.log("unauth");
-			// 	navigation.navigate('login');
-			// } else {
+			if (error.response.status === 401) {
+				console.log("unauth");
+				navigation.navigate('login');
+			} else {
 				console.error(error);
-			// }
+			}
 		})
 	};
 
@@ -53,6 +54,7 @@ export default function SendLetter({navigation, route}) {
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 		<View style={styles.container}>
 			<StatusBar style="auto" />
+			<Image source={images.blueTop} style={commomStyle.backgroundImage}/>
 			<View style={styles.trans}>
 				
 				<TextInput
@@ -65,11 +67,8 @@ export default function SendLetter({navigation, route}) {
 				</TextInput>
 				
 				<View style={styles.info}>
-					<Text style={styles.rText}>
-						받는 사람
-					</Text>
 
-					<Slist member={member} setMember={setMember}/>
+					<Slist member={member} setMember={setMember} setRecipientList={setRecipientList}/>
 
 					<View style={styles.sender}>
 						<Text style={styles.sText}>보내는 사람</Text>
@@ -103,9 +102,11 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		borderWidth: 1,
 		alignItems: "center",
+		position: 'relative',
+		marginTop: 60
 	},
 	message: {
-		flex: 0.7,
+		flex: 1,
 		backgroundColor: "lightgrey",
 		borderWidth: 1,
 		width: SCREEN_WIDTH-90,
@@ -115,18 +116,15 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 	},
 	info: {
-		flex: 2.5,
+		flex: 1.8,
 		width: SCREEN_WIDTH - 90,
 		marginTop: 10,
 	},
-	rText: {
-		flex: 0.5,
-		fontSize: 18,
-		paddingHorizontal: 8,
-	},
 	sender: {
-		flex: 0.9,
-		justifyContent: "space-between"
+		flex: 1,
+		justifyContent: "space-between",
+		// backgroundColor: "blue",
+		padding: 10,
 	},
 	sText: {
 		fontSize: 18,
@@ -140,6 +138,7 @@ const styles = StyleSheet.create({
 		flex: 0.7,
 		alignItems: "center",
 		justifyContent: "center",
+		// backgroundColor: "red"
 	},
 	btnStyle: {
 		borderRadius: 20,
@@ -151,5 +150,7 @@ const styles = StyleSheet.create({
 		color: 'white',
 		fontWeight: 'bold',
 		textAlign: 'center',
+		fontSize: 20,
+		paddingHorizontal: 20
 	},
 });
