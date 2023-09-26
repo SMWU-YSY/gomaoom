@@ -9,8 +9,8 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export default function Slist() {
-	const [member, setMember] = useState([])
+export default function Slist({member, setMember, setRecipientList}) {
+	// const [member, setMember] = useState([]);
 	const nextMemId = useRef(4);
 
 	const [modalText, setModalText] = useState("");
@@ -28,6 +28,10 @@ export default function Slist() {
 			{id: nextMemId.current, name: modalText}
 		];
 		setMember(newList);
+
+		const recipientNames = newList.map(item => item.name);
+    	setRecipientList(recipientNames);
+
 		setMemModalVisible(false);
 		setModalText("");
 		nextMemId.current += 1;
@@ -39,11 +43,27 @@ export default function Slist() {
 				return user.id !== id;
 			})
 		)
+
+		const recipientNames = member.filter(user => user.id !== id).map(item => item.name);
+    	setRecipientList(recipientNames);
 	}
 
 	return (
 		
 		<View style={styles.rList}>
+			<View style={styles.recipList}>
+				<Text style={styles.rText}>
+					받는 사람
+				</Text>
+				<Pressable
+					style={[styles.button, styles.buttonOpen]}
+					onPress={() => {setMemModalVisible(true);}}
+				>
+					<AntDesign name="pluscircleo" size={20} color="black" />
+					{/* <Text style={styles.textStyle}>친구 추가 (아이디)</Text> */}
+				</Pressable>
+			</View>
+			
 			{/* 회원 추가 창 */}
 			<Modal
 				animationType="slide"
@@ -55,7 +75,6 @@ export default function Slist() {
 			}}>
 				<View style={styles.modalCenteredView}>
 					<View style={styles.modalView}>
-						<Text>아이디 추가</Text>
 						<TextInput
 							style={styles.input}
 							onChangeText={onChangeModalText}
@@ -66,7 +85,7 @@ export default function Slist() {
 						<Pressable
 							style={[styles.button, styles.buttonClose]}
 							onPress={addMemList}>
-							<Text style={styles.textStyle}>작성 완료</Text>
+							<Text style={styles.textStyle}>아이디 추가</Text>
 						</Pressable>
 					</View>
 				</View>
@@ -88,21 +107,30 @@ export default function Slist() {
 			</ScrollView>
 
 
-			<View style={styles.addBtn}> 
-				<Pressable
-					style={[styles.button, styles.buttonOpen]}
-					onPress={() => {setMemModalVisible(true);}}
-				>
-					<AntDesign name="pluscircleo" size={18} color="white" />
-					<Text style={styles.textStyle}>친구 추가 (아이디)</Text>
-				</Pressable>
-			</View>
+			
 			
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
+	recipList: {
+		flexDirection: "row",
+		// backgroundColor: "blue",
+		width: SCREEN_WIDTH-90,
+	},
+	rText: {
+		flex: 0.3,
+		fontSize: 20,
+		fontWeight: "bold",
+		paddingHorizontal: 8,
+		marginTop: 10,
+		// backgroundColor: "red"
+	},
+	addBtn: {
+		flex: 0.8,
+		alignContent: "center"
+	},
 	rList: {
 		flex: 5,
 		marginBottom: 8,
@@ -115,10 +143,7 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 		width: SCREEN_WIDTH-100,
 	},
-	addBtn: {
-		flex: 1,
-		alignContent: "center"
-	},
+	
 	modalCenteredView: {
 		flex: 1,
 		alignItems: 'center',
@@ -142,7 +167,12 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	input: {
-		backgroundColor: color.b5, 
+		// backgroundColor: color.b5, 
+		borderWidth: 1,
+		borderColor: color.b1, 
+		borderRadius: 15,
+		height: 50,
+		textAlign: "center",
 		fontSize: 22, 
 		margin: 10,
 		width: SCREEN_WIDTH-200,
@@ -156,21 +186,19 @@ const styles = StyleSheet.create({
 		alignItems: "center"
 	},
 	buttonOpen: {
-		backgroundColor: color.g2,
-		// marginVertical: 10,
-		marginHorizontal: 10,
-		width: SCREEN_WIDTH/1.8,
+		paddingHorizontal: 0
 	},
 	buttonClose: {
-		backgroundColor: color.g2,
-		marginTop: 10
+		marginTop: 10,
 	},
 	textStyle: {
-		color: 'white',
+		// color: 'white',
+		color: color.b1,
 		fontWeight: 'bold',
 		textAlign: 'center',
 		marginHorizontal: 12,
-		fontSize: 15,
+		fontSize: 20,
+		// fontSize: 20, fontWeight: "bold", 
 	},
 	modalText: {
 		marginBottom: 15,
@@ -183,17 +211,17 @@ const styles = StyleSheet.create({
 		paddingLeft: 4,
 	},
 	text: {
-		fontSize: 13,
+		fontSize: 15,
 		color: "white",
 		padding: 2,
-		paddingHorizontal: 3,
+		paddingHorizontal: 5,
 		margin: 5,
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
 	id: {
-		backgroundColor: color.b1,
+		backgroundColor: color.b2,
 		borderWidth: 1,
 		borderRadius: 15,
 	},

@@ -16,7 +16,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function WriteLetter({ navigation }) {
 	const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzA2NjA5MzQ2LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ1c2VySWQxIiwiaWF0IjoxNjk1NzA2NjA5LCJleHAiOjE2OTU3MzU0MDl9.QxQ9uFVffwStz-5qsDx6ZfyYdaeE67LpFd6Bk3GLcP4";
-	const GENERATE_TYPE = "dalle";
+	const GENERATE_TYPE = "karlo";
 
 	const [weatherValue, setWeatherValue] = useState('');
 	const [titleValue, setTitleValue] = useState('');
@@ -152,4 +152,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-// 나는 오늘 강아지와 공원을 산책했다.
+// 나는 오늘 친구들과 함께 놀이동산에 놀러갔다.
