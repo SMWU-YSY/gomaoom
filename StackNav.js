@@ -10,6 +10,7 @@ import SentMessage from "./components/SentMessage";
 import Auth from "./Auth";
 import Login from "./Login";
 import { NavigationContainer, StackActions, useNavigation } from '@react-navigation/native';
+import CreateLetterImg from "./components/CreateLetterImg";
 
 const Stack = createNativeStackNavigator()
 
@@ -52,6 +53,7 @@ export default function StackNav({ screenName }){
 			{/* 그 외  페이지 이동 
 				(작성 후 전송 정보 작성 페이지, 보관함 리스트에서 선택 후 보여지는 상세 페이지)
 			*/}
+			<Stack.Screen name="createImg" component={CreateLetterImg} options={{headerShown: false}} />
 			<Stack.Screen name="send" component={SendLetter} options={{headerShown: false}} />
 			<Stack.Screen name="detail" component={OutboxDetail} options={{headerShown: false}} />
 			<Stack.Screen name="ReceivedMessage" component={ReceivedMessage} options={{headerShown: false}} />

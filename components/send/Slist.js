@@ -10,14 +10,11 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function Slist() {
-	const [member, setMember] = useState([{id: 0, name: '회원1'}, {id: 1, name: '회원2'}, {id: 2, name: '회원3'}])
-	const [notmember, setNotmember] = useState([{id: 0, tel: '01012341234'}])
+	const [member, setMember] = useState([])
 	const nextMemId = useRef(4);
-	const nextNotMemId = useRef(1);
 
 	const [modalText, setModalText] = useState("");
 	const [memModalVisible, setMemModalVisible] = useState(false);
-	const [notMemModalVisible, setNotMemModalVisible] = useState(false);
 
 	const onChangeModalText = (payload) => setModalText(payload);
 
@@ -36,32 +33,9 @@ export default function Slist() {
 		nextMemId.current += 1;
 	}
 
-	const addNotMemList = () => {
-		if (modalText === ""){
-			setNotMemModalVisible(false);
-			return;
-		}
-		const newList = [
-			...notmember,
-			{id: nextNotMemId.current, tel: modalText}
-		];
-		setNotmember(newList);
-		setNotMemModalVisible(false);
-		setModalText("");
-		nextNotMemId.current += 1;
-	}
-
 	const deleteMemList = id => {
 		setMember(
 			member.filter(user => {
-				return user.id !== id;
-			})
-		)
-	}
-
-	const deleteNotMemList = id => {
-		setNotmember(
-			notmember.filter(user => {
 				return user.id !== id;
 			})
 		)
@@ -98,35 +72,6 @@ export default function Slist() {
 				</View>
 			</Modal> 
 
-			{/* 비회원 추가 창 */}
-			<Modal
-				animationType="slide"
-				transparent={true}
-				visible={notMemModalVisible}
-				onRequestClose={() => {
-				Alert.alert('Modal has been closed.');
-				setNotMemModalVisible(!notMemModalVisible);
-			}}>
-				<View style={styles.modalCenteredView}>
-					<View style={styles.modalView}>
-					<Text>전화번호 추가</Text>
-						<TextInput
-							style={styles.input}
-							keyboardType="decimal-pad"
-							onChangeText={onChangeModalText}
-							value={modalText}
-						>
-						</TextInput>
-								
-						<Pressable
-							style={[styles.button, styles.buttonClose]}
-							onPress={addNotMemList}>
-							<Text style={styles.textStyle}>작성 완료</Text>
-						</Pressable>
-					</View>
-				</View>
-			</Modal> 
-
 			<ScrollView style={styles.member}>
 				<View style={styles.memlist} onStartShouldSetResponder={() => true}>
 					{member.map((item) => (
@@ -140,35 +85,16 @@ export default function Slist() {
 						</View>
 					))}
 				</View>
-				<View style={styles.memlist} onStartShouldSetResponder={() => true}>
-					{notmember.map((item) => (
-						<View style={[styles.text, styles.tel]}>
-							<Text key={item.id} style={styles.text}>
-								{item.tel}
-							</Text>
-							<TouchableOpacity onPress={() => deleteNotMemList(item.id)}>
-								<Feather name="x" size={18} color="black" />
-							</TouchableOpacity>
-						</View>
-					))}
-				</View>
 			</ScrollView>
 
 
 			<View style={styles.addBtn}> 
 				<Pressable
 					style={[styles.button, styles.buttonOpen]}
-					onPress={() => {setMemModalVisible(true); setNotMemModalVisible(false);}}
+					onPress={() => {setMemModalVisible(true);}}
 				>
 					<AntDesign name="pluscircleo" size={18} color="white" />
 					<Text style={styles.textStyle}>친구 추가 (아이디)</Text>
-				</Pressable>
-				<Pressable
-					style={[styles.button, styles.buttonOpen]}
-					onPress={() => {setMemModalVisible(false); setNotMemModalVisible(true);}}
-				>
-					<AntDesign name="pluscircleo" size={18} color="white" />
-					<Text style={styles.textStyle}>비회원 추가 (전화번호)</Text>
 				</Pressable>
 			</View>
 			
