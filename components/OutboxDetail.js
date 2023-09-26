@@ -3,13 +3,13 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, 
 		View, Dimensions } from 'react-native';
 import { color, commomStyle, images } from '../theme';
-import Dinfo from '../components/detail/Dinfo';
-import Dtitle from '../components/detail/Dtitle';
-import Dtext from '../components/detail/Dtext';
+import Dinfo from './detail/Dinfo';
+import Dtitle from './detail/Dtitle';
+import Dtext from './detail/Dtext';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export default function DetailPage({ route }) {
+export default function OutboxDetail({ route }) {
 	const [member, setMember] = useState([{id: 0, name: '회원1'}, {id: 1, name: '회원2'}, {id: 2, name: '회원3'}])
 	const [notmember, setNotmember] = useState([{id: 0, tel: '01012341234'}])
 

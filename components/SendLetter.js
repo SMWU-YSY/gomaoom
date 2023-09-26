@@ -4,12 +4,12 @@ import {StyleSheet, View, Dimensions,
 		Text, TextInput, Keyboard, TouchableWithoutFeedback,
 		Pressable } from 'react-native';
 import { color, commomStyle, images } from '../theme';
-import Slist from '../components/send/Slist';
+import Slist from './send/Slist';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 const STORAGE_KEY = "@sookYSY";
 
-export default function SendPage({navigation}) {
+export default function SendLetter({navigation}) {
 
 	const onClickSentMessage = () => {
 		console.log('편지작성완료');
