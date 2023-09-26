@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Dimensions, Image,
+import {StyleSheet, View, Dimensions, Image, Alert,
 		Text, TextInput, Keyboard, TouchableWithoutFeedback,
 		Pressable } from 'react-native';
 import { color, commomStyle, images } from '../theme';
@@ -41,9 +41,19 @@ export default function SendLetter({navigation, route}) {
 			navigation.navigate('SentMessage');
 		})
 		.catch(error => {
+			console.log(error.response.data);
 			if (error.response.status === 401) {
 				console.log("unauth");
 				navigation.navigate('login');
+			} else if (error.response.data.message === "찾을 수 없는 아이디") {
+				console.log("no user");
+				Alert.alert(
+					"에러",
+					`존재하지 않는 아이디입니다.\n [ ${error.response.data.data} ]`,
+					[
+						{ text: "확인" }
+					]
+				);
 			} else {
 				console.error(error);
 			}
@@ -72,7 +82,7 @@ export default function SendLetter({navigation, route}) {
 
 					<View style={styles.sender}>
 						<Text style={styles.sText}>보내는 사람</Text>
-						<Text style={[styles.sText, styles.sName]}>예헌이가</Text>
+						<Text style={[styles.sText, styles.sName]}>{letterData.userNick}</Text>
 					</View>
 				</View>
 				
@@ -132,7 +142,7 @@ const styles = StyleSheet.create({
 	},
 	sName: {
 		fontWeight: "bold",
-		fontSize: 28,
+		fontSize: 25,
 	},
 	btn: {
 		flex: 0.7,
