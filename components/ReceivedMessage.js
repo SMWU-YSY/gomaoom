@@ -1,15 +1,51 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View, Text, Button, Image, TouchableOpacity, ScrollView } from "react-native";
 import BalloonBox from '../components/BalloonBox';
 import * as MediaLibrary from 'expo-media-library';
 import * as Permissions from 'expo-permissions';
 import ViewShot, { captureRef } from 'react-native-view-shot';
 import { color, commomStyle, images } from '../theme.js';
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
 
 const ReceivedMessage = ({ navigation }) => {
     const [selectedButton, setSelectedButton] = useState('picture');
-
     const [contentToSave, setContentToSave] = useState('');
+    
+    const route = useRoute();
+    const letterId = route.params.letterId;
+    const messageId = route.params.messageId;
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+
+    const [message, setMessage] = useState({});
+    const [letter, setLetter] = useState({});
+
+    useEffect(() => {
+        const apiUrl = `http://3.34.212.92:8080/api/message/${messageId}`
+        const authToken = 'Bearer eyJyZWdEYXRlIjoxNjk1NzExNDY1MzE1LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLrrLTri4giLCJpYXQiOjE2OTU3MTE0NjUsImV4cCI6MTY5NTc0MDI2NX0.uIIN1aosCZZuTlC3aQCfbfYMEhvtYMzt8gchtsvm78k'; //test용
+
+        axios.get(apiUrl, {
+        headers: {
+            Authorization: authToken, // Authorization 헤더 설정
+        },
+        })
+        .then((response) => {
+            // 성공적으로 응답 받았을 때 수행할 작업
+            const responseData = response.data;
+            if (responseData.data) {
+                setMessage(responseData.data)
+                console.log(responseData.data)
+            }
+        })
+        .catch((error) => {
+            // 오류 처리
+            console.error('오류:', error);
+        })
+        .finally(() => {
+            // 비동기 작업 완료 후 로딩 상태 변경
+            setIsLoading(false);
+        });
+    }, [messageId]);
 
     const balloonRef = useRef(null);
     const pictureRef = useRef(null);
@@ -75,6 +111,15 @@ const ReceivedMessage = ({ navigation }) => {
     }
     };
 
+    // 로딩 상태가 true일 때 로딩 메시지 표시
+    if (isLoading) {
+    return (
+        <View style={styles.loadingContainer}>
+        <Text>Loading...</Text>
+        </View>
+    );
+    }
+    
     return (
         <View style={styles.container}>
             {/* 첫번째 맨 위 사진 왼쪽, 말풍선 오른쪽 배치 */}
@@ -82,12 +127,12 @@ const ReceivedMessage = ({ navigation }) => {
                 <View style={styles.imageContainer}>
                     <Image
                         source={require('gomaoom/assets/images/boy.png')}
-                        style={styles.image}
+                        style={styles.imageContainer}
                         resizeMode="contain"
                     />
                 </View>
                 <View style={styles.balloonContainer}>
-                    <BalloonBox content="안녕하세요! 말풍선 모양의 네모박스 예시입니다." />
+                    <BalloonBox content={message[0].extra} />
                 </View>
             </View>
 
@@ -125,21 +170,35 @@ const ReceivedMessage = ({ navigation }) => {
             {/* 바뀔 View */}
             {selectedButton === 'picture' && (
                 <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
-                    <Text>그림 버튼 눌렀을 때 사진 왜 안보일까</Text>
+                    <View style={styles.header}>
+                        <View style={styles.dateContainer}>
+                            <Text style={styles.date}>
+                                {message[0].letterDate.slice(0,4)}년 {message[0].letterDate.slice(5,7)}월 {message[0].letterDate.slice(8,10)}일
+                            </Text>
+                        </View>
+                        <View style={styles.weatherContainer}>
+                            <Text style={styles.weather}>{message[0].letterWeather}</Text>
+                        </View>
+                    </View>
+                    <Text style={styles.title}>제목:{message[0].letterTitle}</Text>
                     <Image
-                        source={require('gomaoom/assets/images/dailydiary.png')}
+                        source={{ uri: message[0].letterImage }}
                         style={styles.image}
                     />
                 </ScrollView>
             )}
             {selectedButton === 'all' && (
                 <ScrollView ref={allRef} contentContainerStyle={styles.contentContainer}>
-                    <Text>모두 버튼을 누를 때 바뀌는 내용이다.</Text>
+                    <Text>{message[0].letterText}</Text>
+                    <Image
+                        source={{ uri: message[0].letterImage }}
+                        style={styles.image}
+                    />
                 </ScrollView>
             )}
             {selectedButton === 'letter' && (
                 <ScrollView ref={letterRef} contentContainerStyle={styles.contentContainer}>
-                <Text>편지 버튼을 누를 때 바뀌는 내용이다.</Text>
+                    <Text>{message[0].letterText}</Text>
                 </ScrollView>
             )}
 
@@ -168,12 +227,62 @@ const styles = StyleSheet.create({
       borderRadius: 50, // 사진이 원 모양이 되도록
       backgroundColor: '#ccc', // 이미지 없을 시 배경색
     },
-    image: {
-      flex: 1,
-      width: undefined,
-      height: undefined,
+    contentContainer: {
+        margin:20,
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        marginVertical: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        backgroundColor: 'skyblue',
+        height: 500, // 크기 조절
     },
-    balloonContainer: {
+    header:{
+        flexDirection: 'row', // 가로로 배치
+        alignItems: 'center', // 수직 정렬을 가운데로
+        justifyContent: 'space-between', // 좌우 정렬 간격을 최대로
+        paddingHorizontal: 16, // 가로 여백
+        paddingVertical: 8, // 세로 여백
+        backgroundColor: '#eee', // 배경색
+    },
+    dateContainer: {
+        flex: 2, // 동적으로 크기 조절
+    },
+    date:{
+        fontSize: 20,
+        color: 'black',
+        fontWeight: 'bold',
+    },
+    weather:{
+        fontSize: 20,
+        color: 'black',
+        fontWeight: 'bold',
+    },
+    weatherContainer: {
+        flex: 1, // 동적으로 크기 조절
+        alignItems: 'flex-end', // 우측 정렬
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'black',
+        paddingHorizontal: 20,
+        padding:10,
+        backgroundColor: '#f0f0f0',
+    },
+    text: {
+        fontSize: 16,
+        color: '#9AA7DD',
+        paddingHorizontal: 20,
+        paddingTop: 20,
+    },
+    image: {
+        flex: 1,
+        resizeMode:'contain',
+        //backgroundColor: 'yellow',
+        //marginTop: 0,
+    },
+    balloonContainer: { 
       flex: 1,
       justifyContent: 'center',
       alignItems: 'flex-end',
@@ -184,6 +293,7 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between',
       paddingHorizontal: 20,
       marginTop: 20,
+      paddingBottom: 20,
     },
     button: {
         backgroundColor: '#CCE0CC',
@@ -203,15 +313,6 @@ const styles = StyleSheet.create({
     bottomImageContainer: {
       alignItems: 'center',
       marginTop: 20,
-    },
-    contentContainer: {
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        marginVertical: 10,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        backgroundColor: '#f0f0f0',
-        height: 150, // 크기 조절
     },
     saveButton: {
       backgroundColor: '#f0f0f0',

@@ -18,7 +18,7 @@ const SentMessage = ({ navigation }) => {
     <View style={styles.container}>
         <Image
             source={require('gomaoom/assets/images/grandma.png')}
-            stㅁyle={styles.image}
+            style={styles.image}
         />
         <Text style={styles.textContainer}>
           마이 그랜마 님께 편지가 전송되었습니다. 
