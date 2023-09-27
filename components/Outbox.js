@@ -31,9 +31,6 @@ export default function Outbox({navigation, route}) {
 
 	},[accessToken]);
 	const getSentMessage=()=>{
-				// Autorization:`Bearer ${accessToken}`,
-		// console.log(`Bearer ${accessToken}`);
-		console.log(typeof(accessToken));
 		axios.get("http://3.34.212.92:8080/api/message/outbox", 
 		{
 			headers: {

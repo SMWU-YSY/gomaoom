@@ -37,12 +37,11 @@ export default function Login({ navigation }) {
 		  // console.log(response.data.data[0]);
 
       accessToken=response.headers.getAuthorization().split(" ");
-      // accessToken=accessToken[1];
       await AsyncStorage.setItem("accessToken", JSON.stringify(accessToken[1]));
       //console.log(accessToken);
       navigation.navigate('isLogin');
 		} catch (error) {
-			console.log(error);
+			console.log("로그인시 에러 "+error);
 		} 
 	};
 	const gotoRegister=()=>{

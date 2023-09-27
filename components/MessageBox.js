@@ -10,8 +10,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const MessageBox = ({navigation}) => {
   const [messages, setMessages] = useState([]);
-  const [accessToken, setAccessToken] = useState('');
-  //const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const [accessToken, setAccessToken] = useState(null);
 
   useEffect(() => {
 		const getData = async () => {
@@ -19,7 +18,6 @@ const MessageBox = ({navigation}) => {
 			  JSON.parse(await AsyncStorage.getItem("accessToken"));
 			if(storageData) {
 				setAccessToken(storageData);
-        setIsLoading(false);
 			}
 		}
 		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
@@ -31,37 +29,29 @@ const MessageBox = ({navigation}) => {
 
   useEffect(() => {
     const apiUrl = "http://3.34.212.92:8080/api/message/inbox"
+    if(accessToken!==null){
+      axios.get(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // Authorization 헤더 설정
+        },
+      }).then((response) => {
+          // 성공적으로 응답 받았을 때 수행할 작업
+          const responseData = response.data;
+          if (responseData.data) {
+            setMessages(responseData.data)
+          }
+        })
+        .catch((error) => {
+          // 오류 처리
+          console.error('오류:', error);
+        });
+    }
     
-    axios.get(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`, // Authorization 헤더 설정
-      },
-    })
-      .then((response) => {
-        // 성공적으로 응답 받았을 때 수행할 작업
-        const responseData = response.data;
-        if (responseData.data) {
-          setMessages(responseData.data)
-        }
-      })
-      .catch((error) => {
-        // 오류 처리
-        console.error('오류:', error);
-      });
   }, [accessToken]);
 
   const handleReceivedMessage = (letterId, messageId) => {
     navigation.navigate('ReceivedMessage',{letterId: letterId, messageId: messageId});
   };
-
-  // 로딩 상태가 true일 때 로딩 메시지 표시
-  // if (isLoading) {
-  //   return (
-  //       <View style={styles.loadingContainer}>
-  //       <Text>Loading...</Text>
-  //       </View>
-  //   );
-  //   }
 
   return (  
     <View style={styles.container}>

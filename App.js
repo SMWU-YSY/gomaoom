@@ -34,7 +34,7 @@ export default function App({navigation}) {
     getData();
     
     // 데이터 지우기
-    //AsyncStorage.clear();
+    // AsyncStorage.clear();
 }, [isLogin]);
   return (
     <View style={styles.background}>

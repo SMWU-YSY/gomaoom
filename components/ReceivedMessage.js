@@ -20,7 +20,7 @@ const ReceivedMessage = ({ navigation }) => {
 
     const [message, setMessage] = useState([]);
 
-    const [accessToken, setAccessToken] = useState('');
+    const [accessToken, setAccessToken] = useState(null);
     useEffect(() => {
 		const getData = async () => {
 			const storageData = 
@@ -40,29 +40,31 @@ const ReceivedMessage = ({ navigation }) => {
         const apiUrl = `http://3.34.212.92:8080/api/message/${messageId}`
         const authToken = `Bearer ${accessToken}`;
         //const authToken = "Bearer eyJyZWdEYXRlIjoxNjk1ODA4NTk2NTc4LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJoZWxsbzEyIiwiaWF0IjoxNjk1ODA4NTk2LCJleHAiOjE2OTU4MzczOTZ9.B_oJ0g2ADJO36l912Pj0pkx_LZqb0AqtByNVhklAV2Q ";
-
-        axios.get(apiUrl, {
-            headers: {
-                Authorization: authToken, // Authorization 헤더 설정
-            },
-            })
-            .then((response) => {
-                // 성공적으로 응답 받았을 때 수행할 작업
-                const responseData = response.data;
-                if (responseData.data) {
-                    setMessage(responseData.data)
-                    console.log(responseData.data)
-                    console.log(responseData.data[0].letterDate)
-                }
-            })
-            .catch((error) => {
-                // 오류 처리
-                console.error('오류:', error);
-            })
-            .finally(() => {
-                // 비동기 작업 완료 후 로딩 상태 변경
-                setIsLoading(false);
-            });
+        if(accessToken!=null){
+            axios.get(apiUrl, {
+                headers: {
+                    Authorization: authToken, // Authorization 헤더 설정
+                },
+                })
+                .then((response) => {
+                    // 성공적으로 응답 받았을 때 수행할 작업
+                    const responseData = response.data;
+                    if (responseData.data) {
+                        setMessage(responseData.data)
+                        console.log(responseData.data)
+                        console.log(responseData.data[0].letterDate)
+                    }
+                })
+                .catch((error) => {
+                    // 오류 처리
+                    console.error('리시브오류:', error);
+                })
+                .finally(() => {
+                    // 비동기 작업 완료 후 로딩 상태 변경
+                    setIsLoading(false);
+                });
+        }
+        
     }, [messageId, accessToken]);
 
     const balloonRef = useRef(null);
