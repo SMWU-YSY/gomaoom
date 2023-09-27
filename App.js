@@ -80,7 +80,9 @@ export default function App() {
 		  		{() => <StackNav screenName="sendList" />}
 			    </Tab.Screen>
           
-          <Tab.Screen name="홈" component={Home} options={{headerShown: false,}}/>
+          <Tab.Screen name="홈" options={{headerShown: false,}}>
+		  	{() => <Home setIsLogin={setIsLogin} />}
+		  </Tab.Screen>
           <Tab.Screen name="작성하기" options={{headerShown: false,}}>
 		  		{() => <StackNav screenName="write" />}
 			</Tab.Screen>
@@ -106,9 +108,9 @@ export default function App() {
             },
           })}>
           
-          <Tab.Screen name="login" component={Login} options={{tabBarStyle: {display: 'none'}}}/>
-          <Tab.Screen name="signup" component={Auth} options={{tabBarStyle: {display: 'none'}}}/>
-          <Tab.Screen name="isLogin" component={App} options={{tabBarStyle: {display: 'none'}}}/>
+          <Tab.Screen name="login" component={Login} options={{headerShown: false, tabBarStyle: {display: 'none'}}}/>
+          <Tab.Screen name="signup" component={Auth} options={{headerShown: false, tabBarStyle: {display: 'none'}}}/>
+          <Tab.Screen name="isLogin" component={App} options={{headerShown: false, tabBarStyle: {display: 'none'}}}/>
         </Tab.Navigator>
       </NavigationContainer>
       )

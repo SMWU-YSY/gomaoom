@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, Keyboard, View, 
 		Platform, TouchableWithoutFeedback, Image,
 		Dimensions, Pressable, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from '@expo/vector-icons';
 import { color, commomStyle, images } from '../theme';
 import axios from 'axios';
@@ -16,7 +17,6 @@ import Wtext from './write/Wtext';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function CreateLetterImg({ navigation, route }) {
-	const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzM2MTY5OTIyLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLjhLHjhLEiLCJpYXQiOjE2OTU3MzYxNjksImV4cCI6MTY5NTc2NDk2OX0.ScJvDN72a7_wqiI-SpyBst12F20XyPenAmJXtWYzDS0";
 	const letterData = route.params.letterData;
 	const GENERATE_TYPE = "dalle";
 
@@ -24,6 +24,22 @@ export default function CreateLetterImg({ navigation, route }) {
 	// const [imgUrl, setImgUrl] = useState(`${letterData.limgUrl}`);
 	const [loading, setLoading] = useState(false);
 	const [cnt, setCnt] = useState(2);
+
+	const [accessToken,setAccessToken]=useState('');
+	useEffect(() => {
+		const getData = async () => {
+			const storageData = 
+			  JSON.parse(await AsyncStorage.getItem("accessToken"));
+			if(storageData) {
+				setAccessToken(storageData);
+			}
+		}
+		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
+		getData();
+	
+		// 데이터 지우기
+		// AsyncStorage.clear();
+	}, []);
 
 	const recreateImg = async () => {
 		setLoading(true);
@@ -35,7 +51,7 @@ export default function CreateLetterImg({ navigation, route }) {
 				generateType: `${GENERATE_TYPE}`
 			  },
 			  headers: {
-				'Authorization': `Bearer ${JWT_TOKEN}`
+				'Authorization': `Bearer ${accessToken}`
 			  }
 			});
 		
@@ -45,7 +61,7 @@ export default function CreateLetterImg({ navigation, route }) {
 			console.log(response.data.data[0]);
 
 		} catch (error) {
-			if (error.response.status === 401) {
+			if (error.response && error.response.status === 401) {
 			  console.log("unauth");
 			  navigation.navigate('login');
 			} else {
