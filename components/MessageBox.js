@@ -4,19 +4,37 @@ import { StyleSheet, View, Text, Button, Image, TouchableOpacity, ScrollView, Di
 import { color, commomStyle, images } from '../theme.js';
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const MessageBox = ({navigation}) => {
   const [messages, setMessages] = useState([]);
+  const [accessToken, setAccessToken] = useState('');
+  //const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
-    const apiUrl = "http://3.34.212.92:8080/api/message/outbox"
-    const authToken = 'Bearer eyJyZWdEYXRlIjoxNjk1NzExNDY1MzE1LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLrrLTri4giLCJpYXQiOjE2OTU3MTE0NjUsImV4cCI6MTY5NTc0MDI2NX0.uIIN1aosCZZuTlC3aQCfbfYMEhvtYMzt8gchtsvm78k'; //test용
+		const getData = async () => {
+			const storageData = 
+			  JSON.parse(await AsyncStorage.getItem("accessToken"));
+			if(storageData) {
+				setAccessToken(storageData);
+        setIsLoading(false);
+			}
+		}
+		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
+		getData();
+	
+		// 데이터 지우기
+		// AsyncStorage.clear();
+	}, []);
+
+  useEffect(() => {
+    const apiUrl = "http://3.34.212.92:8080/api/message/inbox"
     
     axios.get(apiUrl, {
       headers: {
-        Authorization: authToken, // Authorization 헤더 설정
+        Authorization: `Bearer ${accessToken}`, // Authorization 헤더 설정
       },
     })
       .then((response) => {
@@ -30,13 +48,20 @@ const MessageBox = ({navigation}) => {
         // 오류 처리
         console.error('오류:', error);
       });
-  }, []);
+  }, [accessToken]);
 
   const handleReceivedMessage = (letterId, messageId) => {
-    console.log('message.letterId',letterId)
-    console.log('message.messageId',messageId)
     navigation.navigate('ReceivedMessage',{letterId: letterId, messageId: messageId});
   };
+
+  // 로딩 상태가 true일 때 로딩 메시지 표시
+  // if (isLoading) {
+  //   return (
+  //       <View style={styles.loadingContainer}>
+  //       <Text>Loading...</Text>
+  //       </View>
+  //   );
+  //   }
 
   return (  
     <View style={styles.container}>

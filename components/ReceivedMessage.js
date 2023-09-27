@@ -7,6 +7,7 @@ import ViewShot, { captureRef } from 'react-native-view-shot';
 import { color, commomStyle, images } from '../theme.js';
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ReceivedMessage = ({ navigation }) => {
     const [selectedButton, setSelectedButton] = useState('picture');
@@ -17,35 +18,52 @@ const ReceivedMessage = ({ navigation }) => {
     const messageId = route.params.messageId;
     const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
-    const [message, setMessage] = useState({});
-    const [letter, setLetter] = useState({});
+    const [message, setMessage] = useState([]);
+
+    const [accessToken, setAccessToken] = useState('');
+    useEffect(() => {
+		const getData = async () => {
+			const storageData = 
+			  JSON.parse(await AsyncStorage.getItem("accessToken"));
+			if(storageData) {
+				setAccessToken(storageData);
+			}
+		}
+		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
+		getData();
+	
+		// 데이터 지우기
+		// AsyncStorage.clear();
+	}, []);
 
     useEffect(() => {
         const apiUrl = `http://3.34.212.92:8080/api/message/${messageId}`
-        const authToken = 'Bearer eyJyZWdEYXRlIjoxNjk1NzExNDY1MzE1LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLrrLTri4giLCJpYXQiOjE2OTU3MTE0NjUsImV4cCI6MTY5NTc0MDI2NX0.uIIN1aosCZZuTlC3aQCfbfYMEhvtYMzt8gchtsvm78k'; //test용
+        const authToken = `Bearer ${accessToken}`;
+        //const authToken = "Bearer eyJyZWdEYXRlIjoxNjk1ODA4NTk2NTc4LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJoZWxsbzEyIiwiaWF0IjoxNjk1ODA4NTk2LCJleHAiOjE2OTU4MzczOTZ9.B_oJ0g2ADJO36l912Pj0pkx_LZqb0AqtByNVhklAV2Q ";
 
         axios.get(apiUrl, {
-        headers: {
-            Authorization: authToken, // Authorization 헤더 설정
-        },
-        })
-        .then((response) => {
-            // 성공적으로 응답 받았을 때 수행할 작업
-            const responseData = response.data;
-            if (responseData.data) {
-                setMessage(responseData.data)
-                console.log(responseData.data)
-            }
-        })
-        .catch((error) => {
-            // 오류 처리
-            console.error('오류:', error);
-        })
-        .finally(() => {
-            // 비동기 작업 완료 후 로딩 상태 변경
-            setIsLoading(false);
-        });
-    }, [messageId]);
+            headers: {
+                Authorization: authToken, // Authorization 헤더 설정
+            },
+            })
+            .then((response) => {
+                // 성공적으로 응답 받았을 때 수행할 작업
+                const responseData = response.data;
+                if (responseData.data) {
+                    setMessage(responseData.data)
+                    console.log(responseData.data)
+                    console.log(responseData.data[0].letterDate)
+                }
+            })
+            .catch((error) => {
+                // 오류 처리
+                console.error('오류:', error);
+            })
+            .finally(() => {
+                // 비동기 작업 완료 후 로딩 상태 변경
+                setIsLoading(false);
+            });
+    }, [messageId, accessToken]);
 
     const balloonRef = useRef(null);
     const pictureRef = useRef(null);
@@ -112,14 +130,16 @@ const ReceivedMessage = ({ navigation }) => {
     };
 
     // 로딩 상태가 true일 때 로딩 메시지 표시
-    if (isLoading) {
-    return (
-        <View style={styles.loadingContainer}>
-        <Text>Loading...</Text>
-        </View>
-    );
+    if (isLoading | message.length == 0) {
+        console.log("로딩완료")
+        console.log("메시지", message)
+        return (
+            <View style={styles.loadingContainer}>
+            <Text>Loading...</Text>
+            </View>
+        );
     }
-    
+
     return (
         <View style={styles.container}>
             {/* 첫번째 맨 위 사진 왼쪽, 말풍선 오른쪽 배치 */}

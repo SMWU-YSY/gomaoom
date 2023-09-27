@@ -10,7 +10,6 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import Login from './Login';
 import Auth from './Auth';
-import Main from './Main';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -32,10 +31,9 @@ export default function App() {
     
     // AsyncStorage에 저장된 데이터가 있다면, 불러온다.
     getData();
-    console.log(accessToken);
     
     // 데이터 지우기
-    // AsyncStorage.clear();
+    //AsyncStorage.clear();
 }, [isLogin]);
   return (
     <View style={styles.background}>

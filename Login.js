@@ -39,14 +39,13 @@ export default function Login({ navigation }) {
       accessToken=response.headers.getAuthorization().split(" ");
       // accessToken=accessToken[1];
       await AsyncStorage.setItem("accessToken", JSON.stringify(accessToken[1]));
-      console.log(accessToken);
+      //console.log(accessToken);
       navigation.navigate('isLogin');
 		} catch (error) {
 			console.log(error);
 		} 
 	};
 	const gotoRegister=()=>{
-		console.log('회원가입으로 이동');
 		navigation.navigate('signup');
 	};
 

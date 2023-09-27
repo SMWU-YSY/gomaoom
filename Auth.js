@@ -17,7 +17,6 @@ export default function Auth({navigation}) {
   };
 	const onClick=async()=>{
 		try {
-      console.log(value1);
 		  const response = await axios.post("http://3.34.212.92:8080/api/user/signup", 
 		  {	
 				age: value,
