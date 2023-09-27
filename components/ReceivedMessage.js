@@ -133,8 +133,8 @@ const ReceivedMessage = ({ navigation }) => {
 
     // 로딩 상태가 true일 때 로딩 메시지 표시
     if (isLoading | message.length == 0) {
-        console.log("로딩완료")
-        console.log("메시지", message)
+        // console.log("로딩완료")
+        // console.log("메시지", message)
         return (
             <View style={styles.loadingContainer}>
             <Text>Loading...</Text>

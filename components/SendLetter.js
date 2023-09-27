@@ -54,7 +54,7 @@ export default function SendLetter({navigation, route}) {
 		})
 		.then(response => {
 			console.log(response.data.data[0]);
-			navigation.navigate('SentMessage');
+			navigation.navigate('SentMessage',{recipientList:recipientList.join(', ')});
 		})
 		.catch(error => {
 			console.log(error.response.data);

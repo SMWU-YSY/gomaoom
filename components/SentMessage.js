@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Button, Image, TouchableOpacity } from 'react-native';
 import { color, commomStyle, images } from '../theme.js';
 
-const SentMessage = ({ navigation }) => {
+const SentMessage = ({ navigation,route }) => {
   
   const onClickSendMessage = () => {
     console.log('편지확인하러 이동');
@@ -17,17 +17,17 @@ const SentMessage = ({ navigation }) => {
   return (
     <View style={styles.container}>
         <Image
-            source={require('gomaoom/assets/images/grandma.png')}
+            source={require('gomaoom/assets/icons/message.webp')}
             style={styles.image}
         />
         <Text style={styles.textContainer}>
-          마이 그랜마 님께 편지가 전송되었습니다. 
+          {route.params.recipientList} 님께 편지가 전송되었습니다. 
         </Text>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={onClickSendMessage} style={styles.buttonMargin}>
+        {/* <TouchableOpacity onPress={onClickSendMessage} style={styles.buttonMargin}>
           <Text style={styles.buttonText}>편지 보러가기</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={onClickHome} style={styles.buttonMargin}>
           <Text style={styles.buttonText}>홈으로 이동</Text>
         </TouchableOpacity>

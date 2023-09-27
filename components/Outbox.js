@@ -11,7 +11,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function Outbox({navigation, route}) {
-	const [userId,setUserId]=useState();
 	const [accessToken,setAccessToken]=useState(null);
 	const getData = async () => {
 		const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
@@ -24,7 +23,7 @@ export default function Outbox({navigation, route}) {
 		getData();
 	},[]);
 	useEffect(()=>{
-		console.log(accessToken);
+		// console.log(accessToken);
 		if(accessToken!=null){
 			getSentMessage();
 		}
@@ -38,7 +37,7 @@ export default function Outbox({navigation, route}) {
 			},
 			withCredentials:true,
 		}).then((response)=>{
-			console.log(response.data);
+			// console.log(response.data.data);
 		}).catch((error)=>{
 			console.log(error);
 
@@ -49,10 +48,10 @@ export default function Outbox({navigation, route}) {
 	const [selectMarkDate, setSelectMarkDate] = useState(false);
 
 	const posts = [
-		{id: 0, date: "2023-08-01",},
+		{id: 0, date: "2023-09-17",},
 		{id: 1,	date: "2023-08-08",},
 		{id: 2,	date: "2023-08-14",},
-		{id: 3,	date: "2023-08-20",}
+		{id: 3,	date: "2023-09-27",}
 	];
 
 	const markedDates = posts.reduce((acc, current) => {
@@ -107,16 +106,10 @@ export default function Outbox({navigation, route}) {
 						<Text style={styles.listPic}>
 							그림
 						</Text>
-						<Text style={styles.listText}>
-							제목
-						</Text>
 					</Pressable>
 					<Pressable style={styles.listPost} onPress={onPress}>
 						<Text style={styles.listPic}>
 							그림
-						</Text>
-						<Text style={styles.listText}>
-							제목
 						</Text>
 					</Pressable>
 				</View>
@@ -126,16 +119,10 @@ export default function Outbox({navigation, route}) {
 						<Text style={styles.listPic}>
 							그림
 						</Text>
-						<Text style={styles.listText}>
-							제목
-						</Text>
 					</Pressable>
 					<Pressable style={styles.listPost} onPress={onPress}>
 						<Text style={styles.listPic}>
 							그림
-						</Text>
-						<Text style={styles.listText}>
-							제목
 						</Text>
 					</Pressable>
 				</View>
