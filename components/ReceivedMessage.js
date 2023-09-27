@@ -51,8 +51,8 @@ const ReceivedMessage = ({ navigation }) => {
                     const responseData = response.data;
                     if (responseData.data) {
                         setMessage(responseData.data)
-                        console.log(responseData.data)
-                        console.log(responseData.data[0].letterDate)
+                        // console.log(responseData.data)
+                        // console.log(responseData.data[0].letterDate)
                     }
                 })
                 .catch((error) => {

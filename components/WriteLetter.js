@@ -15,34 +15,39 @@ import Wtext from './write/Wtext';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export default function WriteLetter({ navigation }) {
+export default function WriteLetter({ navigation, route }) {
 	
 	// const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzM2MTY5OTIyLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLjhLHjhLEiLCJpYXQiOjE2OTU3MzYxNjksImV4cCI6MTY5NTc2NDk2OX0.ScJvDN72a7_wqiI-SpyBst12F20XyPenAmJXtWYzDS0";
 	const GENERATE_TYPE = "karlo";
-
+	const [isNew,setIsNew]=useState(true);
 	const [weatherValue, setWeatherValue] = useState('');
 	const [titleValue, setTitleValue] = useState('');
 	const [textValue, setTextValue] = useState('');
 	const [loading, setLoading] = useState(false);
 
 	const [accessToken,setAccessToken]=useState('');
+	useEffect(()=>{
+		// setIsNew(route.params.isNew);
+		// console.log(route.params.isNew);
+		setIsNew(true);
+	},[isNew]);
 	useEffect(() => {
 		const getData = async () => {
-			const storageData = 
-			  JSON.parse(await AsyncStorage.getItem("accessToken"));
+			const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
+			// setIsNew(JSON.parse(await AsyncStorage.getItem("isNew")));
 			if(storageData) {
 				setAccessToken(storageData);
 			}
 		}
 		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
 		getData();
-	
+		console.log('뭐여');
 		// 데이터 지우기
 		// AsyncStorage.clear();
 	}, []);
 
 	const saveLetter = async () => {
-		console.log(accessToken);
+		// console.log(accessToken);
 		setLoading(true);
 		// 편지 저장
 		axios.post('http://3.34.212.92:8080/api/letter/write', {
@@ -56,7 +61,7 @@ export default function WriteLetter({ navigation }) {
 		})
 		// 편지 그림 생성
 		.then(response1 => {
-			console.log(response1.data.data[0]);
+			// console.log(response1.data.data[0]);
 			const lid = response1.data.data[0].lid;
 			
 			axios.get('http://3.34.212.92:8080/api/letter/write', {
@@ -71,9 +76,14 @@ export default function WriteLetter({ navigation }) {
 			.then(response2 => {
 				console.log(response2.data.data[0]);
 				navigation.navigate('createImg', { letterData: response2.data.data[0] });
+				setLoading(false);
+				setIsNew(false);
+				setWeatherValue('');
+				setTextValue('');
+				setTitleValue('');
 			})
 			.catch(error2 => {
-				console.log(error2.response.data);
+				// console.log(error2.response.data);
 				if (error2.response && error2.response.status === 401) {
 					console.log("unauth");
 					navigation.navigate('login');
@@ -81,6 +91,7 @@ export default function WriteLetter({ navigation }) {
 					console.error(error2);
 				}
 			});
+
 		})
 		.catch(error1 => {
 			if (error1.response && error1.response.status === 401) {
@@ -97,8 +108,8 @@ export default function WriteLetter({ navigation }) {
 			<StatusBar style="auto" />
 			<Image source={images.blueTop} style={commomStyle.backgroundImage}/>
 			<View style={styles.letter}>
-				<Winfo weatherValue={weatherValue} setWeatherValue={setWeatherValue} editable={true}/>
-				<Wtitle titleValue={titleValue} setTitleValue={setTitleValue} editable={true}/>
+				<Winfo weatherValue={weatherValue} setWeatherValue={setWeatherValue} editable={isNew}/>
+				<Wtitle titleValue={titleValue} setTitleValue={setTitleValue} editable={isNew}/>
 
 				<View style={styles.letterPic}>
 					{loading ? (
@@ -108,7 +119,7 @@ export default function WriteLetter({ navigation }) {
 					)}
 				</View>
 
-				<Wtext textValue={textValue} setTextValue={setTextValue} editable={true}/>
+				<Wtext textValue={textValue} setTextValue={setTextValue} editable={isNew}/>
 				
 				<View style={styles.letterBtn}>
 					<Pressable
