@@ -3,7 +3,7 @@ import { Button, StyleSheet, Text, View, Image } from 'react-native';
 const Home = ({navigation}) => {
     return (
         <View style={styles.container}>
-      <Image source={require('gomaoom/assets/blueTop.png')}/>
+          <Image source={require('gomaoom/assets/blueTop.png')}/>
 
             <Text style={styles.hello}>
                 눈송이님, 안녕하세요!

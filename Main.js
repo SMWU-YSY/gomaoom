@@ -23,7 +23,6 @@ export default function Main() {
         const storageData = 
           JSON.parse(await AsyncStorage.getItem("accessToken"));
         if(storageData) {
-            console.log("GET data from storage");
             setAccessToken(storageData);
             setIsLogin(true);
         }

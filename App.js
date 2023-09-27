@@ -22,7 +22,6 @@ export default function App() {
     const storageData = 
       JSON.parse(await AsyncStorage.getItem("accessToken"));
     if(storageData) {
-        console.log("GET data from storage");
         setAccessToken(storageData);
         setIsLogin(true);
     }else{
@@ -33,6 +32,7 @@ export default function App() {
     
     // AsyncStorage에 저장된 데이터가 있다면, 불러온다.
     getData();
+    console.log(accessToken);
     
     // 데이터 지우기
     // AsyncStorage.clear();
@@ -108,7 +108,7 @@ export default function App() {
           
           <Tab.Screen name="login" component={Login} options={{tabBarStyle: {display: 'none'}}}/>
           <Tab.Screen name="signup" component={Auth} options={{tabBarStyle: {display: 'none'}}}/>
-          <Tab.Screen name="isLogin" component={Main} options={{tabBarStyle: {display: 'none'}}}/>
+          <Tab.Screen name="isLogin" component={App} options={{tabBarStyle: {display: 'none'}}}/>
         </Tab.Navigator>
       </NavigationContainer>
       )
