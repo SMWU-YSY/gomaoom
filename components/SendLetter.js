@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions, Image, Alert,
 		Text, TextInput, Keyboard, TouchableWithoutFeedback,
 		Pressable } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { color, commomStyle, images } from '../theme';
 import Slist from './send/Slist';
 import axios from 'axios';
@@ -11,7 +12,6 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 const STORAGE_KEY = "@sookYSY";
 
 export default function SendLetter({navigation, route}) {
-	const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzM2MTY5OTIyLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLjhLHjhLEiLCJpYXQiOjE2OTU3MzYxNjksImV4cCI6MTY5NTc2NDk2OX0.ScJvDN72a7_wqiI-SpyBst12F20XyPenAmJXtWYzDS0";
 	const letterData = route.params.letterData;
 
 	const [extraValue, setExtraValue] = useState("");
@@ -19,6 +19,22 @@ export default function SendLetter({navigation, route}) {
 	const [recipientList, setRecipientList] = useState([]);
 
 	const onChangeText = (payload) => setExtraValue(payload);
+
+	const [accessToken,setAccessToken]=useState('');
+	useEffect(() => {
+		const getData = async () => {
+			const storageData = 
+			  JSON.parse(await AsyncStorage.getItem("accessToken"));
+			if(storageData) {
+				setAccessToken(storageData);
+			}
+		}
+		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
+		getData();
+	
+		// 데이터 지우기
+		// AsyncStorage.clear();
+	}, []);
 
 	const transferLetter = async () => {
 
@@ -33,7 +49,7 @@ export default function SendLetter({navigation, route}) {
 			recipientLoginIds: recipientList
 		}, {
 			headers: {
-				'Authorization': `Bearer ${JWT_TOKEN}`
+				'Authorization': `Bearer ${accessToken}`
 			}
 		})
 		.then(response => {
@@ -42,10 +58,10 @@ export default function SendLetter({navigation, route}) {
 		})
 		.catch(error => {
 			console.log(error.response.data);
-			if (error.response.status === 401) {
+			if (error.response && error.response.status === 401) {
 				console.log("unauth");
 				navigation.navigate('login');
-			} else if (error.response.data.message === "찾을 수 없는 아이디") {
+			} else if (error.response && error.response.data.message === "찾을 수 없는 아이디") {
 				console.log("no user");
 				Alert.alert(
 					"에러",

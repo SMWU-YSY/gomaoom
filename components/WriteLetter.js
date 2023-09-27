@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, Keyboard, View, 
 		Platform, TouchableWithoutFeedback, Image,
 		Dimensions, Pressable, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { color, commomStyle, images } from '../theme';
 import axios from 'axios';
 
@@ -15,7 +16,8 @@ import Wtext from './write/Wtext';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function WriteLetter({ navigation }) {
-	const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzM2MTY5OTIyLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLjhLHjhLEiLCJpYXQiOjE2OTU3MzYxNjksImV4cCI6MTY5NTc2NDk2OX0.ScJvDN72a7_wqiI-SpyBst12F20XyPenAmJXtWYzDS0";
+	
+	// const JWT_TOKEN = "eyJyZWdEYXRlIjoxNjk1NzM2MTY5OTIyLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiLjhLHjhLEiLCJpYXQiOjE2OTU3MzYxNjksImV4cCI6MTY5NTc2NDk2OX0.ScJvDN72a7_wqiI-SpyBst12F20XyPenAmJXtWYzDS0";
 	const GENERATE_TYPE = "karlo";
 
 	const [weatherValue, setWeatherValue] = useState('');
@@ -23,7 +25,24 @@ export default function WriteLetter({ navigation }) {
 	const [textValue, setTextValue] = useState('');
 	const [loading, setLoading] = useState(false);
 
+	const [accessToken,setAccessToken]=useState('');
+	useEffect(() => {
+		const getData = async () => {
+			const storageData = 
+			  JSON.parse(await AsyncStorage.getItem("accessToken"));
+			if(storageData) {
+				setAccessToken(storageData);
+			}
+		}
+		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
+		getData();
+	
+		// 데이터 지우기
+		// AsyncStorage.clear();
+	}, []);
+
 	const saveLetter = async () => {
+		console.log(accessToken);
 		setLoading(true);
 		// 편지 저장
 		axios.post('http://3.34.212.92:8080/api/letter/write', {
@@ -32,7 +51,7 @@ export default function WriteLetter({ navigation }) {
 			text: textValue,
 		}, {
 			headers: {
-				'Authorization': `Bearer ${JWT_TOKEN}`
+				'Authorization': `Bearer ${accessToken}`
 			}
 		})
 		// 편지 그림 생성
@@ -46,7 +65,7 @@ export default function WriteLetter({ navigation }) {
 					generateType: `${GENERATE_TYPE}`
 				},
 				headers: {
-					'Authorization': `Bearer ${JWT_TOKEN}`
+					'Authorization': `Bearer ${accessToken}`
 				}
 			})
 			.then(response2 => {
@@ -54,7 +73,8 @@ export default function WriteLetter({ navigation }) {
 				navigation.navigate('createImg', { letterData: response2.data.data[0] });
 			})
 			.catch(error2 => {
-				if (error2.response.status === 401) {
+				console.log(error2.response.data);
+				if (error2.response && error2.response.status === 401) {
 					console.log("unauth");
 					navigation.navigate('login');
 				} else {
@@ -63,7 +83,7 @@ export default function WriteLetter({ navigation }) {
 			});
 		})
 		.catch(error1 => {
-			if (error1.response.status === 401) {
+			if (error1.response && error1.response.status === 401) {
 				console.log("unauth");
 				navigation.navigate('login');
 			} else {
@@ -152,4 +172,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-// 나는 오늘 친구들과 함께 놀이동산에 놀러갔다.
+// 나는 오늘 친구들과 함께 놀이동산에 놀러갔다. 나는 오늘 강아지와 공원에서 산책했다.
