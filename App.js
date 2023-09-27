@@ -14,12 +14,13 @@ import Auth from './Auth';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+export default function App({navigation}) {
   const [isLogin,setIsLogin]=useState(null);
   const [accessToken,setAccessToken]=useState('');
+  const [userId,setUserId]=useState('');
   const getData = async () => {
-    const storageData = 
-      JSON.parse(await AsyncStorage.getItem("accessToken"));
+    const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
+    setUserId(JSON.parse(await AsyncStorage.getItem("userId")));
     if(storageData) {
         setAccessToken(storageData);
         setIsLogin(true);
@@ -74,7 +75,7 @@ export default function App() {
           {() => <StackNav screenName="receivedList" />}
           </Tab.Screen>
 
-          <Tab.Screen name="보낸 보관함" options={{headerShown: false,}}>
+          <Tab.Screen name="보낸 보관함" options={{headerShown: false,userid:userId,token:accessToken}}>
 		  		{() => <StackNav screenName="sendList" />}
 			    </Tab.Screen>
           
