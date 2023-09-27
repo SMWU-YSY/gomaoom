@@ -1,15 +1,53 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View,
-		Dimensions, Pressable, ScrollView } from 'react-native';
+		Dimensions, Pressable, ScrollView, Image } from 'react-native';
 import { format } from "date-fns";
 import { Calendar } from 'react-native-calendars';
 import { color, commomStyle, images } from '../theme';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export default function Outbox({navigation}) {
+export default function Outbox({navigation, route}) {
+	const [userId,setUserId]=useState();
+	const [accessToken,setAccessToken]=useState(null);
+	const getData = async () => {
+		const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
+		
+		if(storageData) {
+			setAccessToken(storageData);
+		}
+	}
+	useEffect(()=>{
+		getData();
+	},[]);
+	useEffect(()=>{
+		console.log(accessToken);
+		if(accessToken!=null){
+			getSentMessage();
+		}
 
+	},[accessToken]);
+	const getSentMessage=()=>{
+				// Autorization:`Bearer ${accessToken}`,
+		// console.log(`Bearer ${accessToken}`);
+		console.log(typeof(accessToken));
+		axios.get("http://3.34.212.92:8080/api/message/outbox", 
+		{
+			headers: {
+				Authorization:`Bearer ${accessToken}`,
+			},
+			withCredentials:true,
+		}).then((response)=>{
+			console.log(response.data);
+		}).catch((error)=>{
+			console.log(error);
+
+		})
+		
+	};
 	const onPress = () => navigation.navigate('detail', {date: selectedDate});
 	const [selectMarkDate, setSelectMarkDate] = useState(false);
 
@@ -51,6 +89,8 @@ export default function Outbox({navigation}) {
 	return (
 		<View style={styles.container}>
 			<StatusBar style="auto" />
+			<Image source={images.blueTop} style={commomStyle.backgroundImage}/>
+			<View style={styles.letter}>
 			{/* <View style={{width: SCREEN_WIDTH-60,height: SCREEN_HEIGHT-200,alignItems: "center",backgroundColor: "red"}}> */}
 			<Calendar
 				style={styles.calendar} 
@@ -105,6 +145,7 @@ export default function Outbox({navigation}) {
 				
 			</ScrollView>
 			: <View style={styles.list}></View> }
+			</View>
 		</View>
 	);
 }
@@ -132,6 +173,9 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 4,
 		// elevation: 5,
+	},
+	letter:{
+		position: 'relative',
 	},
 	list: {
 		flex: 1,

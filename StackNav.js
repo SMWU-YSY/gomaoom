@@ -11,6 +11,7 @@ import Auth from "./Auth";
 import Login from "./Login";
 import { NavigationContainer, StackActions, useNavigation } from '@react-navigation/native';
 import CreateLetterImg from "./components/CreateLetterImg";
+import App from "./App";
 
 const Stack = createNativeStackNavigator()
 
@@ -55,11 +56,12 @@ export default function StackNav({ screenName }){
 			*/}
 			<Stack.Screen name="createImg" component={CreateLetterImg} options={{headerShown: false}} />
 			<Stack.Screen name="send" component={SendLetter} options={{headerShown: false}} />
-			<Stack.Screen name="detail" component={OutboxDetail} options={{headerShown: false}} />
+			<Stack.Screen name="detail" component={OutboxDetail} options={{headerShown: false}} initialParams={{userId:'', accessToken:''}} />
 			<Stack.Screen name="ReceivedMessage" component={ReceivedMessage} options={{headerShown: false}} />
 			<Stack.Screen name="SentMessage" component={SentMessage} options={{headerShown: false}} />
 			<Stack.Screen name="login" component={Login} options={{headerShown: false}} />
 			<Stack.Screen name="signup" component={Auth} options={{headerShown: false}} />
+			<Stack.Screen name="isLogin" component={App} options={{headerShown: false}} initialParams={{userId:'', accessToken:''}}/>
 		</Stack.Navigator>
 	);
 }
