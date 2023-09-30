@@ -64,8 +64,8 @@ export default function SendLetter({navigation, route}) {
 			} else if (error.response && error.response.data.message === "찾을 수 없는 아이디") {
 				console.log("no user");
 				Alert.alert(
-					"에러",
-					`존재하지 않는 아이디입니다.\n [ ${error.response.data.data} ]`,
+					"존재하지 않는 아이디",
+					`[ ${error.response.data.data} ]`,
 					[
 						{ text: "확인" }
 					]

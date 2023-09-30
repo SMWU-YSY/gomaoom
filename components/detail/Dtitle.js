@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-export default function Dtitle() {
+export default function Dtitle(props) {
 
 	return (
 		<View style={styles.letterTitle}>
@@ -12,7 +12,7 @@ export default function Dtitle() {
 					marginLeft: 10,
 				}}
 			>
-				안녕하세요.
+				{props.title}
 			</Text>
 		</View>
 	);

@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View,
-		Dimensions, Pressable, ScrollView, Image } from 'react-native';
+		Dimensions, Pressable, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { format } from "date-fns";
 import { Calendar } from 'react-native-calendars';
 import { color, commomStyle, images } from '../theme';
@@ -11,7 +11,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function Outbox({navigation, route}) {
-	const [accessToken,setAccessToken]=useState(null);
+	const [accessToken,setAccessToken] = useState(null);
+	const [data, setData] = useState({});
+	const [posts, setPosts] = useState([]);
+	const [selectedData, setSelectedData] = useState([]);
+
 	const getData = async () => {
 		const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
 		
@@ -19,16 +23,25 @@ export default function Outbox({navigation, route}) {
 			setAccessToken(storageData);
 		}
 	}
+
 	useEffect(()=>{
 		getData();
 	},[]);
+
 	useEffect(()=>{
 		// console.log(accessToken);
 		if(accessToken!=null){
 			getSentMessage();
 		}
-
 	},[accessToken]);
+
+	useEffect(() => {
+		if (selectedDate != null){
+			// console.log(selectedDate)
+			// console.log(selectedData)
+		}
+	}, [selectedDate, selectedData])
+
 	const getSentMessage=()=>{
 		axios.get("http://3.34.212.92:8080/api/message/outbox", 
 		{
@@ -36,23 +49,49 @@ export default function Outbox({navigation, route}) {
 				Authorization:`Bearer ${accessToken}`,
 			},
 			withCredentials:true,
-		}).then((response)=>{
-			// console.log(response.data.data);
-		}).catch((error)=>{
+		}).then((response) => {
+			setData(response.data.data[0]);
+
+			// 날짜만
+			const dates = Object.keys(response.data.data[0]);
+			const newPosts = dates.map((date, index) => ({
+				id : posts.length + index,
+				date: date,
+			}))
+			setPosts(newPosts);
+
+			const currentDate = format(new Date(), "yyyy-MM-dd")
+			if (dates.includes(currentDate)){
+				setSelectedData(response.data.data[0][currentDate])
+			}
+			console.log(selectedData);
+		}).catch((error) => {
 			console.log(error);
-
-		})
-		
+		})	
 	};
-	const onPress = () => navigation.navigate('detail', {date: selectedDate});
-	const [selectMarkDate, setSelectMarkDate] = useState(false);
 
-	const posts = [
-		{id: 0, date: "2023-09-17",},
-		{id: 1,	date: "2023-08-08",},
-		{id: 2,	date: "2023-08-14",},
-		{id: 3,	date: "2023-09-27",}
-	];
+	const onPressItem = (messageId) => {
+		return () => {
+			getMessageDetail(messageId);
+		};
+	}
+
+	const getMessageDetail = async (messageId) => {
+		console.log(messageId)
+		await axios.get(`http://3.34.212.92:8080/api/message/${messageId}`, 
+		{
+			headers: {
+				Authorization:`Bearer ${accessToken}`,
+			},
+			withCredentials:true,
+		}).then((response) => {
+			console.log(response.data.data[0])
+			navigation.navigate('detail', {day: selectedDate, data : response.data.data[0]});
+			// console.log(selectedData);
+		}).catch((error) => {
+			console.log(error);
+		})
+	}
 
 	const markedDates = posts.reduce((acc, current) => {
 		const formattedDate = format(new Date(current.date), 'yyyy-MM-dd');
@@ -74,6 +113,7 @@ export default function Outbox({navigation, route}) {
 
 	const onChangeSelect = (day) => {
 		setSelectedDate(day.dateString)
+		setSelectedData(data[day.dateString])
 	}
 
 	function isSelected(element) {
@@ -87,48 +127,36 @@ export default function Outbox({navigation, route}) {
 			<StatusBar style="auto" />
 			<Image source={images.blueTop} style={commomStyle.backgroundImage}/>
 			<View style={styles.letter}>
-			{/* <View style={{width: SCREEN_WIDTH-60,height: SCREEN_HEIGHT-200,alignItems: "center",backgroundColor: "red"}}> */}
-			<Calendar
-				style={styles.calendar} 
-				markedDates={markedSelectedDates}
-				theme={{
-					selectedDayBackgroundColor: color.b1,
-					arrowColor: color.b1,
-					dotColor: color.b1,
-					todayTextColor: color.b1,
-				}} 
-				onDayPress={onChangeSelect}
-			/>
-			{posts.find(isSelected) ?
-			<ScrollView style={styles.list}>
-				<View style={styles.oneLine}>
-					<Pressable style={styles.listPost} onPress={onPress}>
-						<Text style={styles.listPic}>
-							그림
-						</Text>
-					</Pressable>
-					<Pressable style={styles.listPost} onPress={onPress}>
-						<Text style={styles.listPic}>
-							그림
-						</Text>
-					</Pressable>
-				</View>
+				<Calendar
+					style={styles.calendar} 
+					markedDates={markedSelectedDates}
+					theme={{
+						selectedDayBackgroundColor: color.b1,
+						arrowColor: color.b1,
+						dotColor: color.b1,
+						todayTextColor: color.b1,
+					}} 
+					onDayPress={onChangeSelect}
+				/>
 
-				<View style={styles.oneLine}>
-					<Pressable style={styles.listPost} onPress={onPress}>
-						<Text style={styles.listPic}>
-							그림
-						</Text>
-					</Pressable>
-					<Pressable style={styles.listPost} onPress={onPress}>
-						<Text style={styles.listPic}>
-							그림
-						</Text>
-					</Pressable>
-				</View>
-				
-			</ScrollView>
-			: <View style={styles.list}></View> }
+				{posts.find(isSelected) ?
+				<ScrollView style={styles.outerScrollView}>
+					<View style={styles.innerContainer}>
+					{Array.from({ length: Math.ceil(selectedData.length / 2) }).map((_, rowIndex) => (
+						<View key={rowIndex} style={styles.row}>
+						{selectedData.slice(rowIndex * 2, rowIndex * 2 + 2).map((item, index) => (
+							<TouchableOpacity key={index} style={styles.listPost} onPress={onPressItem(item.messageId)}>
+								<Text style={styles.listPic}>
+									{item.messageId}
+								</Text>
+							</TouchableOpacity>
+						))}
+						</View>
+					))}
+					</View>
+				</ScrollView>
+				: <View style={styles.outerScrollView}></View> 
+				}
 			</View>
 		</View>
 	);
@@ -160,21 +188,26 @@ const styles = StyleSheet.create({
 	},
 	letter:{
 		position: 'relative',
+		marginTop: 60
 	},
-	list: {
+	outerScrollView: {
 		flex: 1,
-		// backgroundColor: color.g3,
 		width: SCREEN_WIDTH-40,
 	},
-	oneLine: {
-		flexDirection: "row",
+	innerContainer: {
+		flexDirection: "column",
 		justifyContent: "space-between",
 		marginHorizontal: 10,
 		marginVertical: 10,
+		// alignItems: "center"
+	},
+	row: {
+		flexDirection: "row"
 	},
 	listPost: {
 		width: SCREEN_WIDTH/2.5,
 		height: 160,
+		margin: 5,
 		borderWidth: 1,
 	},
 	listPic: {
