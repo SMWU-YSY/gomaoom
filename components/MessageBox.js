@@ -62,7 +62,7 @@ const MessageBox = ({navigation}) => {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Image source={images.inbox} style={commomStyle.backgroundImage}/>
-      <View style={{ marginVertical: 60}}></View>
+      <View style={{ marginVertical: 60 }}></View>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       {messages.map((message) => (
         <View style={styles.messageContainer}>
@@ -95,70 +95,43 @@ export default MessageBox;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //flexDirection: 'column', // 수평으로 배치하기 위해 flexDirection를 row로 설정
     padding: 10,
     backgroundColor: color.bg,
-    // backgroundColor: "#FAF3EB",
   },
   messageContainer: {
     flexDirection: 'row',
     flex: 0.6,
-    backgroundColor: '#D2E0FB',
+    backgroundColor: '#E8EDF4',
     padding: 10,
     paddingVertical: 18,
     borderRadius: 20,
     width: "100%",
-    // borderWidth: 2,
-    // borderBottomWidth: 2,
-    borderColor:"#D2E0FB",
+    borderColor:"#E8F1F9",
     borderStyle: 'solid',
-    marginBottom: 15,
+    marginBottom: 10,
   },
   scrollViewContainer:{
-    // backgroundColor:'green',
     alignItems: 'center',
-    // marginTop:15,
     padding:10,
-    //width: SCREEN_WIDTH-60,
-		//height: SCREEN_HEIGHT-200,
   },
   messageLeftContainer: {
     flex: 1,
     marginRight:5,
-    // backgroundColor: 'blue',
-    // justifyContent: 'center',
     alignItems: 'center',
   },
   messageRightContainer: {
     flex: 2,
-    // backgroundColor: 'purple',
     justifyContent:'space-between',
-    // flexDirection: 'column',
   },
-  image: {
-    // height: 100,
-    // width:100,
-    // width: "90%",
-    // height: "100%",
-    // marginLeft: "5%",
-  },
+  
   messageText:{
-    // height: 20,
     fontSize: 18,
-    color: '#3B628C',
+    color: '#5E86B1',
     fontWeight:'bold',
-    // backgroundColor: 'pink',
     paddingLeft: 10,
-    // margin: 5,
-    // textAlign: 'center',
   },
   buttonContainer:{
-    //paddingTop: 20,
-    // height: "30%",
-    // marginBottom: 40,
     alignItems:'flex-end',
-    
-    // backgroundColor: "red",
   },
   buttonMargin: {
     marginHorizontal: 8, // Add horizontal margin between buttons
@@ -166,7 +139,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: 'white',
-    backgroundColor: '#5E86B1',
+    backgroundColor: '#8EACCD',
     paddingHorizontal:10,
     paddingVertical:5,
     borderRadius: 20, 
