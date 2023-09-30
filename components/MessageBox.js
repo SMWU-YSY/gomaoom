@@ -43,7 +43,12 @@ const MessageBox = ({navigation}) => {
         })
         .catch((error) => {
           // 오류 처리
-          console.error('오류:', error);
+			if (error.response && error.response.status === 401) {
+				console.log("unauth");
+				navigation.navigate('login');
+			} else {
+				console.error(error);
+			}
         });
     }
     

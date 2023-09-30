@@ -56,8 +56,12 @@ const ReceivedMessage = ({ navigation }) => {
                     }
                 })
                 .catch((error) => {
-                    // 오류 처리
-                    console.error('리시브오류:', error);
+                    if (error.response && error.response.status === 401) {
+						console.log("unauth");
+						navigation.navigate('login');
+					} else {
+						console.error(error);
+					}
                 })
                 .finally(() => {
                     // 비동기 작업 완료 후 로딩 상태 변경

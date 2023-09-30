@@ -75,7 +75,12 @@ export default function Outbox({navigation, route}) {
 			}
 
 		}).catch((error) => {
-			console.log(error);
+			if (error.response && error.response.status === 401) {
+				console.log("unauth");
+				navigation.navigate('login');
+			} else {
+				console.error(error);
+			}
 		})	
 	};
 
@@ -98,7 +103,12 @@ export default function Outbox({navigation, route}) {
 		}).then((response) => {
 			navigation.navigate('detail', {day: selectedDate, receivers: selectedData[letterId][0].receiverNicknames, data : response.data.data[0]});
 		}).catch((error) => {
-			console.log(error);
+			if (error.response && error.response.status === 401) {
+				console.log("unauth");
+				navigation.navigate('login');
+			} else {
+				console.error(error);
+			}
 		})
 	}
 
