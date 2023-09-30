@@ -26,4 +26,7 @@ export const commomStyle = {
 
 export const images = {
 	blueTop: require('gomaoom/assets/blueTop.png'),
+	inbox: require('gomaoom/assets/inbox.png'),
+
 };
+

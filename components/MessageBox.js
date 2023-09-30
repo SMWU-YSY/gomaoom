@@ -61,8 +61,8 @@ const MessageBox = ({navigation}) => {
   return (  
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Image source={images.blueTop} style={commomStyle.backgroundImage}/>
-      <View style={{ marginVertical: 30 }}></View>
+      <Image source={images.inbox} style={commomStyle.backgroundImage}/>
+      <View style={{ marginVertical: 60}}></View>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       {messages.map((message) => (
         <View style={styles.messageContainer}>
@@ -103,22 +103,21 @@ const styles = StyleSheet.create({
   messageContainer: {
     flexDirection: 'row',
     flex: 0.6,
-    // backgroundColor: '#E8F1F9',
+    backgroundColor: '#D2E0FB',
     padding: 10,
     paddingVertical: 18,
-    borderRadius: 10,
+    borderRadius: 20,
     width: "100%",
     // borderWidth: 2,
-    borderBottomWidth: 2,
-    borderRadius: 5,
-    borderColor:"#E8F1F9",
+    // borderBottomWidth: 2,
+    borderColor:"#D2E0FB",
     borderStyle: 'solid',
-    // marginBottom: 30,
+    marginBottom: 15,
   },
   scrollViewContainer:{
     // backgroundColor:'green',
     alignItems: 'center',
-    marginTop:15,
+    // marginTop:15,
     padding:10,
     //width: SCREEN_WIDTH-60,
 		//height: SCREEN_HEIGHT-200,
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
   messageText:{
     // height: 20,
     fontSize: 18,
-    color: '#5E86B1',
+    color: '#3B628C',
     fontWeight:'bold',
     // backgroundColor: 'pink',
     paddingLeft: 10,
@@ -167,7 +166,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: 'white',
-    backgroundColor: '#8EACCD',
+    backgroundColor: '#5E86B1',
     paddingHorizontal:10,
     paddingVertical:5,
     borderRadius: 20, 
