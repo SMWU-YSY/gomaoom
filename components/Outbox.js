@@ -7,33 +7,38 @@ import { Calendar } from 'react-native-calendars';
 import { color, commomStyle, images } from '../theme';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 export default function Outbox({navigation, route}) {
 	const [accessToken,setAccessToken] = useState(null);
 	const [data, setData] = useState({});
-	const [posts, setPosts] = useState([]);
+	const [posts, setPosts] = useState([]);		// 날짜
 	const [selectedData, setSelectedData] = useState([]);
+	// const isFocused = useIsFocused();
 
-	const getData = async () => {
-		const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
-		
-		if(storageData) {
-			setAccessToken(storageData);
+	useEffect(() => {
+		const getData = async () => {
+			const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
+			if(storageData) {
+				setAccessToken(storageData);
+			}
 		}
-	}
-
-	useEffect(()=>{
 		getData();
-	},[]);
+	}, []);
 
 	useEffect(()=>{
-		// console.log(accessToken);
 		if(accessToken!=null){
 			getSentMessage();
 		}
 	},[accessToken]);
+
+	useFocusEffect(
+		React.useCallback(() => {
+			getSentMessage();
+		}, [])
+	);
 
 	useEffect(() => {
 		if (selectedDate != null){
@@ -42,8 +47,8 @@ export default function Outbox({navigation, route}) {
 		}
 	}, [selectedDate, selectedData])
 
-	const getSentMessage=()=>{
-		axios.get("http://3.34.212.92:8080/api/message/outbox", 
+	const getSentMessage = async()=>{
+		await axios.get("http://3.34.212.92:8080/api/message/outbox", 
 		{
 			headers: {
 				Authorization:`Bearer ${accessToken}`,
@@ -64,30 +69,30 @@ export default function Outbox({navigation, route}) {
 			if (dates.includes(currentDate)){
 				setSelectedData(response.data.data[0][currentDate])
 			}
-			console.log(selectedData);
+
 		}).catch((error) => {
 			console.log(error);
 		})	
 	};
 
-	const onPressItem = (messageId) => {
+	const onPressItem = (letterId) => {
 		return () => {
-			getMessageDetail(messageId);
+			// console.log(letterId)
+			// console.log(selectedData)
+			// console.log(selectedData[letterId])
+			getMessageDetail(letterId);
 		};
 	}
 
-	const getMessageDetail = async (messageId) => {
-		console.log(messageId)
-		await axios.get(`http://3.34.212.92:8080/api/message/${messageId}`, 
+	const getMessageDetail = async (letterId) => {
+		await axios.get(`http://3.34.212.92:8080/api/letter/${letterId}`, 
 		{
 			headers: {
 				Authorization:`Bearer ${accessToken}`,
 			},
 			withCredentials:true,
 		}).then((response) => {
-			console.log(response.data.data[0])
-			navigation.navigate('detail', {day: selectedDate, data : response.data.data[0]});
-			// console.log(selectedData);
+			navigation.navigate('detail', {day: selectedDate, receivers: selectedData[letterId][0].receiverNicknames, data : response.data.data[0]});
 		}).catch((error) => {
 			console.log(error);
 		})
@@ -120,6 +125,7 @@ export default function Outbox({navigation, route}) {
 		if (element.date === selectedDate){
 			return true;
 		}
+		return false
 	}	
 
 	return (
@@ -142,13 +148,11 @@ export default function Outbox({navigation, route}) {
 				{posts.find(isSelected) ?
 				<ScrollView style={styles.outerScrollView}>
 					<View style={styles.innerContainer}>
-					{Array.from({ length: Math.ceil(selectedData.length / 2) }).map((_, rowIndex) => (
+					{Array.from({ length: Math.ceil(Object.keys(selectedData).length / 2) }).map((_, rowIndex) => (
 						<View key={rowIndex} style={styles.row}>
-						{selectedData.slice(rowIndex * 2, rowIndex * 2 + 2).map((item, index) => (
-							<TouchableOpacity key={index} style={styles.listPost} onPress={onPressItem(item.messageId)}>
-								<Text style={styles.listPic}>
-									{item.messageId}
-								</Text>
+						{Object.keys(selectedData).slice(rowIndex * 2, rowIndex * 2 + 2).map((item, index) => (
+							<TouchableOpacity key={index} style={styles.listPost} onPress={onPressItem(item)}>
+								<Image source={{ uri: selectedData[item][0].letterImage }} style={styles.image} resizeMode='contain' />
 							</TouchableOpacity>
 						))}
 						</View>
@@ -209,6 +213,10 @@ const styles = StyleSheet.create({
 		height: 160,
 		margin: 5,
 		borderWidth: 1,
+	},
+	image: {
+		width: "100%",
+		height: "100%",
 	},
 	listPic: {
 		backgroundColor: color.g1,

@@ -71,22 +71,18 @@ export default function App({navigation}) {
               );
             },
           })}>
-          <Tab.Screen name="받은 보관함" options={{headerShown: false,}}>
-          {() => <StackNav screenName="receivedList" />}
-          </Tab.Screen>
-
-          <Tab.Screen name="보낸 보관함" options={{headerShown: false,userid:userId,token:accessToken}}>
-		  		{() => <StackNav screenName="sendList" />}
-			    </Tab.Screen>
-          
-          <Tab.Screen name="홈" options={{headerShown: false,}}>
-		  	{() => <Home setIsLogin={setIsLogin} />}
-		  </Tab.Screen>
-          <Tab.Screen name="작성하기" options={{headerShown: false,}}>
-		  		{() => <StackNav screenName="write" />}
+			<Tab.Screen name="홈" options={{headerShown: false,}}>
+				{() => <Home setIsLogin={setIsLogin} />}
 			</Tab.Screen>
-
-
+			<Tab.Screen name="작성하기" options={{headerShown: false,}}>
+				{() => <StackNav screenName="write" />}
+			</Tab.Screen>
+			<Tab.Screen name="보낸 보관함" options={{headerShown: false,userid:userId,token:accessToken}}>
+				{() => <StackNav screenName="sendList" />}
+			</Tab.Screen>
+			<Tab.Screen name="받은 보관함" options={{headerShown: false,}}>
+				{() => <StackNav screenName="receivedList" />}
+			</Tab.Screen>
         </Tab.Navigator>
        </NavigationContainer>
       ):(!isLogin&&(
