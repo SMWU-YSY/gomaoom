@@ -39,6 +39,7 @@ const MessageBox = ({navigation}) => {
           const responseData = response.data;
           if (responseData.data) {
             setMessages(responseData.data)
+            console.log(responseData.data)
           }
         })
         .catch((error) => {
@@ -71,7 +72,7 @@ const MessageBox = ({navigation}) => {
         <View key={message.messageId} style={styles.messageContainer}>
           <View style={styles.messageLeftContainer}>
             <Image
-              source={require('gomaoom/assets/images/boy.png')}
+              source={{uri: message.characterUrl}}
               style={styles.image}
             />
           </View>
