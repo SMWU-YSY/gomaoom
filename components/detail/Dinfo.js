@@ -4,10 +4,18 @@ import { Fontisto } from '@expo/vector-icons';
 
 export default function Dinfo(props) {
 
-	const[sun, setSun] = useState(true);
+	const[sun, setSun] = useState(false);
 	const[cloud, setCloud] = useState(false);
 	const[rain, setRain] = useState(false);
 	const[snow, setSnow] = useState(false);
+
+	useEffect(() => {
+		// weatherValue에 따라 Pressable을 자동 설정하는 로직
+		setSun(props.weather === "sunny");
+		setCloud(props.weather === "cloudy");
+		setRain(props.weather === "rainy");
+		setSnow(props.weather === "snowy");
+	}, [props.weather]);
 
 	return (
 		<View style={styles.letterInfo}>
@@ -16,7 +24,7 @@ export default function Dinfo(props) {
 					fontSize: 18,
 					fontWeight: "600",
 				}}>
-					{props.date}
+					{props.day}
 				</Text>
 			</View>
 

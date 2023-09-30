@@ -2,19 +2,27 @@ import React, {useEffect, useState} from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { color, commomStyle, images } from '../../theme';
 
-export default function Dtext() {
+export default function Dtext(props) {
 
 	return (
 		<View style={styles.letterText}>
 			<ScrollView style={{flex: 1}}>
+				{/* <Text>편지 내용</Text> */}
 				<Text style={{fontSize: 23, 
 							paddingHorizontal: 14, 
 							paddingVertical: 8,
 							
-				}}>안녕하세요. 저 ysy입니다. 오늘은 ~~~~했어요.</Text>
+				}}>{props.text}</Text>
 			</ScrollView>
+			{/* <ScrollView style={{flex: 1}}>
+				<Text>부가 메시지</Text>
+				<Text style={{fontSize: 23, 
+							paddingHorizontal: 14, 
+							paddingVertical: 8,
+							
+				}}>{props.extra}</Text>
+			</ScrollView> */}
 		</View>
-		
 	);
 };
 
