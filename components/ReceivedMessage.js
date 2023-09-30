@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, View, Text, Button, Image, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, View, Text, Button, Image, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions } from "react-native";
 import BalloonBox from '../components/BalloonBox';
 import * as MediaLibrary from 'expo-media-library';
 import * as Permissions from 'expo-permissions';
@@ -8,9 +8,15 @@ import { color, commomStyle, images } from '../theme.js';
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Winfo from "./write/Winfo";
+import Wtitle from "./write/Wtitle";
+import Wtext from "./write/Wtext";
+import { StatusBar } from "expo-status-bar";
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const ReceivedMessage = ({ navigation }) => {
     const [selectedButton, setSelectedButton] = useState('picture');
+    const [selectHeight, setSelectedHeight] = useState(0.4);
     const [contentToSave, setContentToSave] = useState('');
     
     const route = useRoute();
@@ -51,8 +57,6 @@ const ReceivedMessage = ({ navigation }) => {
                     const responseData = response.data;
                     if (responseData.data) {
                         setMessage(responseData.data)
-                        // console.log(responseData.data)
-                        // console.log(responseData.data[0].letterDate)
                     }
                 })
                 .catch((error) => {
@@ -77,6 +81,13 @@ const ReceivedMessage = ({ navigation }) => {
     const letterRef = useRef(null);
 
     const handleButtonPress = (buttonType) => {
+        if(buttonType==='picture'){
+            setSelectedHeight(0.4);
+        }else if (buttonType==='all'){
+            setSelectedHeight(0.7);
+        }else if(buttonType==='letter'){
+            setSelectedHeight(0.5);
+        }
         setSelectedButton(buttonType);
     };
 
@@ -148,6 +159,8 @@ const ReceivedMessage = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+        <StatusBar style="auto" />
+
             {/* 첫번째 맨 위 사진 왼쪽, 말풍선 오른쪽 배치 */}
             <View style={styles.topContainer}>
                 <View style={styles.imageContainer}>
@@ -163,90 +176,142 @@ const ReceivedMessage = ({ navigation }) => {
             </View>
 
             {/* 그림, 모두, 편지 버튼 */}
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    style={[
-                        styles.button,
-                        selectedButton === 'picture' && styles.buttonPressed,
-                    ]}
-                    onPress={() => handleButtonPress('picture')}
-                    >
-                    <Text style={styles.buttonText}>그림</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[
-                        styles.button,
-                        selectedButton === 'all' && styles.buttonPressed,
-                    ]}
-                    onPress={() => handleButtonPress('all')}
-                    >
-                    <Text style={styles.buttonText}>모두</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[
-                        styles.button,
-                        selectedButton === 'letter' && styles.buttonPressed,
-                    ]}
-                    onPress={() => handleButtonPress('letter')}
-                    >
-                    <Text style={styles.buttonText}>편지</Text>
-                </TouchableOpacity>
-            </View>
+            <View style={{height:SCREEN_HEIGHT*selectHeight,...styles.backContainer}}>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={[
+                            styles.button,
+                            selectedButton === 'picture' && styles.buttonPressed,
+                        ]}
+                        onPress={() => handleButtonPress('picture')}
+                        >
+                        <Text style={styles.buttonText}>그림</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            styles.button,
+                            selectedButton === 'all' && styles.buttonPressed,
+                        ]}
+                        onPress={() => handleButtonPress('all')}
+                        >
+                        <Text style={styles.buttonText}>모두</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            styles.button,
+                            selectedButton === 'letter' && styles.buttonPressed,
+                        ]}
+                        onPress={() => handleButtonPress('letter')}
+                        >
+                        <Text style={styles.buttonText}>편지</Text>
+                    </TouchableOpacity>
+                </View>
+
+            
+            
+            {/* </View> */}
 
             {/* 바뀔 View */}
             {selectedButton === 'picture' && (
-                <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
-                    <View style={styles.header}>
-                        <View style={styles.dateContainer}>
-                            <Text style={styles.date}>
-                                {message[0].letterDate.slice(0,4)}년 {message[0].letterDate.slice(5,7)}월 {message[0].letterDate.slice(8,10)}일
-                            </Text>
-                        </View>
-                        <View style={styles.weatherContainer}>
-                            <Text style={styles.weather}>{message[0].letterWeather}</Text>
+                // <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
+                    <View style={styles.letterContainer}>
+                        <View style={{height:SCREEN_HEIGHT*0.3,...styles.letter}}>
+                            <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                            <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
+                            <View style={styles.letterPic}>
+                                <View style={styles.imgContainer}>
+                                    <Image source={{ uri: message[0].letterImage }} style={styles.image} resizeMode='contain' />
+                                </View>
+                            </View>
                         </View>
                     </View>
-                    <Text style={styles.title}>제목:{message[0].letterTitle}</Text>
-                    <Image
-                        source={{ uri: message[0].letterImage }}
-                        style={styles.image}
-                    />
-                </ScrollView>
             )}
             {selectedButton === 'all' && (
-                <ScrollView ref={allRef} contentContainerStyle={styles.contentContainer}>
-                    <Text>{message[0].letterText}</Text>
-                    <Image
-                        source={{ uri: message[0].letterImage }}
-                        style={styles.image}
-                    />
-                </ScrollView>
+                <View style={styles.letterContainer}>
+                    <View style={{height:SCREEN_HEIGHT*0.6,...styles.letter}}>
+                        <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                        <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
+                        <View style={{borderBottomWidth: 1,borderBottomColor: "black",...styles.letterPic}}>
+                            <View style={styles.imgContainer}>
+                                <Image source={{ uri: message[0].letterImage }} style={styles.image} resizeMode='contain' />
+                            </View>
+                    </View>
+                    <Wtext isLast={true} textValue={message[0].letterText} setTextValue={null} editable={false}/>
+                    </View>
+                </View>
             )}
             {selectedButton === 'letter' && (
-                <ScrollView ref={letterRef} contentContainerStyle={styles.contentContainer}>
-                    <Text>{message[0].letterText}</Text>
-                </ScrollView>
+                <View style={styles.letterContainer}>
+                    <View style={{height:SCREEN_HEIGHT*0.4,...styles.letter}}>
+                        <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                        <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
+                        <Wtext isLast={true} textValue={message[0].letterText} setTextValue={null} editable={false}/>
+                    </View>
+                </View>
             )}
+        </View>
 
             {/* 저장하기 버튼 */}
             <TouchableOpacity style={styles.saveButton} onPress={handleSaveButtonPress}>
                 <Text style={styles.saveButtonText}>저장하기</Text>
             </TouchableOpacity>
         </View>
+
       );
 };
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
+        marginTop:40,    
+        flex: 1,
         backgroundColor: color.bg,
     },
-    topContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingHorizontal: 20,
-      paddingTop: 20,
+    letterContainer:{
+        alignItems:'center',
+        height:SCREEN_HEIGHT*0.65,
     },
+    letter: {
+		backgroundColor: "white",
+        // flex:1,
+		width: SCREEN_WIDTH*0.85,
+		// height: SCREEN_HEIGHT*0.55,
+		borderRadius: 15,
+		borderWidth: 1,
+		position: 'relative',
+		marginTop: 60
+	},
+    topContainer: {
+        // backgroundColor:'pink',
+      flexDirection: 'row',
+    //   justifyContent:'center',
+      paddingHorizontal: 20,
+      paddingTop: 10,
+    },
+    backContainer:{
+        backgroundColor:'#E8EDF4',
+        marginHorizontal: 15,
+        marginTop:15,
+        borderRadius: 15,
+        // height:"auto",
+		// borderWidth: 1,
+    },
+    letterPic: {
+		flex: 3.5,
+		// borderBottomWidth: 1,
+		// borderBottomColor: "black",
+		alignItems: "center",
+		justifyContent: "center"
+	},
+	imgContainer: {
+		width: "100%",
+		height: "100%",
+		position: 'relative',
+	},
+	image: {
+		// flex: 6,
+		width: "100%",
+		height: "100%",
+	},
     imageContainer: {
       width: 100, // 사진의 가로 크기
       height: 100, // 사진의 세로 크기
@@ -254,7 +319,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#ccc', // 이미지 없을 시 배경색
     },
     contentContainer: {
-        margin:20,
+        marginTop:60,
         paddingHorizontal: 20,
         paddingVertical: 20,
         marginVertical: 10,
@@ -309,51 +374,51 @@ const styles = StyleSheet.create({
         //marginTop: 0,
     },
     balloonContainer: { 
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'flex-end',
-      paddingHorizontal: 20,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        paddingHorizontal: 20,
     },
     buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingHorizontal: 20,
-      marginTop: 20,
-      paddingBottom: 20,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom:-50,
     },
     button: {
-        backgroundColor: '#CCE0CC',
+        backgroundColor: '#E8F1F9',
         paddingHorizontal: 16,
-        paddingVertical: 8,
+        paddingVertical: 8,        
         borderRadius: 20,
         borderWidth: 1,
-        borderColor: '#006400',
-      },
+        borderColor: '#5E86B1',
+        margin:3,
+    },
     buttonPressed: {
-        backgroundColor: 'green', // 눌렸을 때 초록색으로 변경
+        backgroundColor: '#5E86B1', // 눌렸을 때 초록색으로 변경
     },
     buttonText: {
-      color: '#006400',
-      fontSize: 16,
+        color: '#3B628C',
+        fontSize: 16,
     },
     bottomImageContainer: {
-      alignItems: 'center',
-      marginTop: 20,
+        alignItems: 'center',
+        marginTop: 20,
     },
     saveButton: {
-      backgroundColor: '#f0f0f0',
-      paddingHorizontal: 14,
-      paddingVertical: 6,
-      borderRadius: 20,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      alignSelf: 'center',
-      marginVertical: 10,
+        backgroundColor: '#f0f0f0',
+        paddingHorizontal: 14,
+        paddingVertical: 6,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        alignSelf: 'center',
+        marginVertical: 10,
     },
     saveButtonText: {
-      color: '#333',
-      fontSize: 14,
-      fontWeight: 'bold',
+        color: '#333',
+        fontSize: 14,
+        fontWeight: 'bold',
     },
   });
   

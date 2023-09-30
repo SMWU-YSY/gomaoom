@@ -61,21 +61,21 @@ const MessageBox = ({navigation}) => {
   return (  
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Image source={images.blueTop} style={commomStyle.backgroundImage}/>
-      <View style={{ paddingTop: 150 }}></View>
+      <Image source={images.inbox} style={commomStyle.backgroundImage}/>
+      <View style={{ marginVertical: 60 }}></View>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       {messages.map((message) => (
-        <View style={styles.messageContainer}>
-          <View key={message.letterId} style={styles.messageLeftContainer}>
+        <View key={message.messageId} style={styles.messageContainer}>
+          <View style={styles.messageLeftContainer}>
             <Image
               source={require('gomaoom/assets/images/boy.png')}
               style={styles.image}
             />
           </View>
 
-          <View key={message.letterId} style={styles.messageRightContainer}>
+          <View style={styles.messageRightContainer}>
             <Text style={styles.messageText}>
-              {`${message.senderNickname} 님이 편지를 보냈습니다.`}
+              {`${message.senderNickname} 님이\n편지를 보냈습니다.`}
             </Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={()=>handleReceivedMessage(message.letterId, message.messageId)}>
@@ -95,69 +95,53 @@ export default MessageBox;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //flexDirection: 'column', // 수평으로 배치하기 위해 flexDirection를 row로 설정
     padding: 10,
     backgroundColor: color.bg,
   },
   messageContainer: {
     flexDirection: 'row',
     flex: 0.6,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#E8EDF4',
     padding: 10,
-    margin: 5,
-    borderRadius: 10,
+    paddingVertical: 18,
+    borderRadius: 20,
     width: "100%",
-    marginVertical: "5%", 
-    marginHorizontal: "5%",
-    borderBottomWidth: 1,
-    borderBottomColor: 'red',
-    paddingHorizontal: 20,
-    marginBottom: 20,
+    borderColor:"#E8F1F9",
+    borderStyle: 'solid',
+    marginBottom: 10,
   },
   scrollViewContainer:{
-    //width: SCREEN_WIDTH-60,
-		//height: SCREEN_HEIGHT-200,
+    alignItems: 'center',
+    padding:10,
   },
   messageLeftContainer: {
     flex: 1,
-    marginRight: 10,
-    //backgroundColor: 'blue',
-    justifyContent: 'center',
-    alignContent: 'center',
+    marginRight:5,
+    alignItems: 'center',
   },
   messageRightContainer: {
     flex: 2,
-    //backgroundColor: 'purple',
-    flexDirection: 'column',
+    justifyContent:'space-between',
   },
-  image: {
-    width: "90%",
-    height: "100%",
-    marginLeft: "5%",
-  },
+  
   messageText:{
-    height: 20,
-    fontSize: 16,
-    color: 'black',
-    backgroundColor: '#f0f0f0',
-    padding: 5,
-    margin: 5,
-    textAlign: 'center',
+    fontSize: 18,
+    color: '#5E86B1',
+    fontWeight:'bold',
+    paddingLeft: 10,
   },
   buttonContainer:{
-    //paddingTop: 20,
-    height: "30%",
-    marginBottom: 40,
-    //backgroundColor: "red",
+    alignItems:'flex-end',
   },
   buttonMargin: {
     marginHorizontal: 8, // Add horizontal margin between buttons
   },
   buttonText: {
-    fontSize: 14,
-    color: 'black',
-    backgroundColor: '#CEE6F3',
-    padding: 8,
+    fontSize: 18,
+    color: 'white',
+    backgroundColor: '#8EACCD',
+    paddingHorizontal:10,
+    paddingVertical:5,
     borderRadius: 20, 
   },
 });

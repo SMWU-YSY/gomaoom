@@ -15,6 +15,8 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App({navigation}) {
+
+  
   const [isLogin,setIsLogin]=useState(null);
   const [accessToken,setAccessToken]=useState('');
   const [userId,setUserId]=useState('');
@@ -28,8 +30,8 @@ export default function App({navigation}) {
       setIsLogin(false);
     }
 }
+
   useEffect(() => {
-    
     // AsyncStorage에 저장된 데이터가 있다면, 불러온다.
     getData();
     
