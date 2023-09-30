@@ -62,7 +62,7 @@ const MessageBox = ({navigation}) => {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Image source={images.blueTop} style={commomStyle.backgroundImage}/>
-      <View style={{ paddingTop: 150 }}></View>
+      <View style={{ marginVertical: 30 }}></View>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       {messages.map((message) => (
         <View style={styles.messageContainer}>
@@ -75,7 +75,7 @@ const MessageBox = ({navigation}) => {
 
           <View key={message.letterId} style={styles.messageRightContainer}>
             <Text style={styles.messageText}>
-              {`${message.senderNickname} 님이 편지를 보냈습니다.`}
+              {`${message.senderNickname} 님이\n편지를 보냈습니다.`}
             </Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={()=>handleReceivedMessage(message.letterId, message.messageId)}>
@@ -98,66 +98,78 @@ const styles = StyleSheet.create({
     //flexDirection: 'column', // 수평으로 배치하기 위해 flexDirection를 row로 설정
     padding: 10,
     backgroundColor: color.bg,
+    // backgroundColor: "#FAF3EB",
   },
   messageContainer: {
     flexDirection: 'row',
     flex: 0.6,
-    backgroundColor: '#ffffff',
+    // backgroundColor: '#E8F1F9',
     padding: 10,
-    margin: 5,
+    paddingVertical: 18,
     borderRadius: 10,
     width: "100%",
-    marginVertical: "5%", 
-    marginHorizontal: "5%",
-    borderBottomWidth: 1,
-    borderBottomColor: 'red',
-    paddingHorizontal: 20,
-    marginBottom: 20,
+    // borderWidth: 2,
+    borderBottomWidth: 2,
+    borderRadius: 5,
+    borderColor:"#E8F1F9",
+    borderStyle: 'solid',
+    // marginBottom: 30,
   },
   scrollViewContainer:{
+    // backgroundColor:'green',
+    alignItems: 'center',
+    marginTop:15,
+    padding:10,
     //width: SCREEN_WIDTH-60,
 		//height: SCREEN_HEIGHT-200,
   },
   messageLeftContainer: {
     flex: 1,
-    marginRight: 10,
-    //backgroundColor: 'blue',
-    justifyContent: 'center',
-    alignContent: 'center',
+    marginRight:5,
+    // backgroundColor: 'blue',
+    // justifyContent: 'center',
+    alignItems: 'center',
   },
   messageRightContainer: {
     flex: 2,
-    //backgroundColor: 'purple',
-    flexDirection: 'column',
+    // backgroundColor: 'purple',
+    justifyContent:'space-between',
+    // flexDirection: 'column',
   },
   image: {
-    width: "90%",
-    height: "100%",
-    marginLeft: "5%",
+    // height: 100,
+    // width:100,
+    // width: "90%",
+    // height: "100%",
+    // marginLeft: "5%",
   },
   messageText:{
-    height: 20,
-    fontSize: 16,
-    color: 'black',
-    backgroundColor: '#f0f0f0',
-    padding: 5,
-    margin: 5,
-    textAlign: 'center',
+    // height: 20,
+    fontSize: 18,
+    color: '#5E86B1',
+    fontWeight:'bold',
+    // backgroundColor: 'pink',
+    paddingLeft: 10,
+    // margin: 5,
+    // textAlign: 'center',
   },
   buttonContainer:{
     //paddingTop: 20,
-    height: "30%",
-    marginBottom: 40,
-    //backgroundColor: "red",
+    // height: "30%",
+    // marginBottom: 40,
+    alignItems:'flex-end',
+    
+    // backgroundColor: "red",
   },
   buttonMargin: {
     marginHorizontal: 8, // Add horizontal margin between buttons
   },
   buttonText: {
-    fontSize: 14,
-    color: 'black',
-    backgroundColor: '#CEE6F3',
-    padding: 8,
+    fontSize: 18,
+    color: 'white',
+    backgroundColor: '#8EACCD',
+    paddingHorizontal:10,
+    paddingVertical:5,
     borderRadius: 20, 
   },
 });
