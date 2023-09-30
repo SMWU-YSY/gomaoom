@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Image,TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Image,TouchableOpacity, TextInput, Alert } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation }) {
@@ -10,40 +10,61 @@ export default function Login({ navigation }) {
     password:'',
   });  
   const {id,password}=inputs;
-  // const [accessToken,setAccessToken]=useState('');
   let accessToken='';
-  const onChange=(keyvalue,e)=>{
-    const {text}=e.nativeEvent
-    setInputs({
-      ...inputs,
-      [keyvalue]:text
-    });
-  };
-  const onLoginClick=async()=>{
+
+	const onChange=(keyvalue,e)=>{
+		const {text}=e.nativeEvent
+		setInputs({
+		...inputs,
+		[keyvalue]:text
+		});
+	};
+
+	const onLoginClick=async()=>{
 		try {
-		  const response = await axios.post("http://3.34.212.92:8080/api/user/login", 
-		  {	
+			const response = await axios.post("http://3.34.212.92:8080/api/user/login", 
+			{	
 				loginId: id,
 				password:password,
 			}
-		  , 
-      {
-        headers: {
-          Accept: 'application/json',
-          "Content-Type": "application/json",
-        }
-      });
-	
-		  // console.log(response.data.data[0]);
+			, 
+			{
+				headers: {
+				Accept: 'application/json',
+				"Content-Type": "application/json",
+				}
+			});
 
-      accessToken=response.headers.getAuthorization().split(" ");
-      await AsyncStorage.setItem("accessToken", JSON.stringify(accessToken[1]));
-      //console.log(accessToken);
-      navigation.navigate('isLogin');
+			accessToken=response.headers.getAuthorization().split(" ");
+			await AsyncStorage.setItem("accessToken", JSON.stringify(accessToken[1]));
+			await AsyncStorage.setItem("userNick", JSON.stringify(response.data.data[0].unickname));
+
+			navigation.navigate('isLogin');
 		} catch (error) {
-			console.log("로그인시 에러 "+error);
+			if (error.response && error.response.status === 404){
+				Alert.alert(
+					"아이디 확인",
+					"존재하지 않은 아이디입니다.",
+					[
+						{ text: "확인" }
+					]
+				);
+			}
+			else if (error.response && error.response.status === 400){
+				Alert.alert(
+					"비밀번호 확인",
+					"잘못된 비밀번호입니다.",
+					[
+						{ text: "확인" }
+					]
+				);
+			}
+			else{
+				console.log(error.response.data);
+			}
 		} 
 	};
+
 	const gotoRegister=()=>{
 		navigation.navigate('signup');
 	};
