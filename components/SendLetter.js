@@ -38,10 +38,10 @@ export default function SendLetter({navigation, route}) {
 
 	const transferLetter = async () => {
 
-		console.log(extraValue);
-		console.log(letterData.lid)
-		console.log(member);
-		console.log(recipientList);
+		// console.log(extraValue);
+		// console.log(letterData.lid)
+		// console.log(member);
+		// console.log(recipientList);
 
 		axios.post('http://3.34.212.92:8080/api/message/write', {
 			extra: extraValue,
@@ -53,7 +53,7 @@ export default function SendLetter({navigation, route}) {
 			}
 		})
 		.then(response => {
-			console.log(response.data.data[0]);
+			// console.log(response.data.data[0]);
 			navigation.navigate('SentMessage',{recipientList:recipientList.join(', ')});
 		})
 		.catch(error => {

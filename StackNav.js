@@ -15,9 +15,8 @@ import App from "./App";
 
 const Stack = createNativeStackNavigator()
 
-export default function StackNav({ screenName }){
+export default function StackNav({ screenName,navigation }){
 
-	const navigation = useNavigation();
 
 	// useEffect(() => {
 	// 	// 특정 조건이 충족되거나 이벤트가 발생할 때 Stack.Screen을 리셋
@@ -36,7 +35,8 @@ export default function StackNav({ screenName }){
 				(작성하기, 보낸 보관함)
 			*/}
 			{screenName === 'write' ? (
-				<Stack.Screen name="write" component={WriteLetter} options={{headerShown: false}} />
+				<Stack.Screen name="write" component={WriteLetter} options={{unmountOnBlur: true,headerShown: false}} initialParams={{isNew:true}} />
+			
 			) : null}
 
 			{screenName === 'sendList' ? (

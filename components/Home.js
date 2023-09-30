@@ -31,7 +31,7 @@ const Home = ({navigation, setIsLogin}) => {
 				'Authorization': `Bearer ${accessToken}`
 			  }
 			});
-			console.log(response.data.data[0]);
+			// console.log(response.data.data[0]);
 
 		} catch (error) {
 			if (error.response && error.response.status === 401) {

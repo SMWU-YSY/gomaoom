@@ -58,7 +58,7 @@ export default function CreateLetterImg({ navigation, route }) {
 			setRecreateImgResponse(response.data.data[0]);
 			// setImgUrl(response.data.data[0].limgUrl);
 			setCnt(cnt - 1);
-			console.log(response.data.data[0]);
+			// console.log(response.data.data[0]);
 
 		} catch (error) {
 			if (error.response && error.response.status === 401) {
@@ -72,9 +72,11 @@ export default function CreateLetterImg({ navigation, route }) {
 		}
 	};
 
-	const onPress = () => {
-		console.log(recreateImgResponse);
+	const onPress = async() => {
+		// console.log(recreateImgResponse);
 		navigation.navigate('send', {letterData : recreateImgResponse});
+		await AsyncStorage.setItem("isNew", JSON.stringify(false));
+
 	};
   
 	return (
