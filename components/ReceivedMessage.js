@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, View, Text, Button, Image, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, View, Text, Button, Image, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions } from "react-native";
 import BalloonBox from '../components/BalloonBox';
 import * as MediaLibrary from 'expo-media-library';
 import * as Permissions from 'expo-permissions';
@@ -8,6 +8,11 @@ import { color, commomStyle, images } from '../theme.js';
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Winfo from "./write/Winfo";
+import Wtitle from "./write/Wtitle";
+import Wtext from "./write/Wtext";
+import { StatusBar } from "expo-status-bar";
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const ReceivedMessage = ({ navigation }) => {
     const [selectedButton, setSelectedButton] = useState('picture');
@@ -148,6 +153,8 @@ const ReceivedMessage = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+        <StatusBar style="auto" />
+
             {/* 첫번째 맨 위 사진 왼쪽, 말풍선 오른쪽 배치 */}
             <View style={styles.topContainer}>
                 <View style={styles.imageContainer}>
@@ -163,6 +170,7 @@ const ReceivedMessage = ({ navigation }) => {
             </View>
 
             {/* 그림, 모두, 편지 버튼 */}
+            <View style={styles.backContainer}>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={[
@@ -192,9 +200,30 @@ const ReceivedMessage = ({ navigation }) => {
                     <Text style={styles.buttonText}>편지</Text>
                 </TouchableOpacity>
             </View>
+            <View style={styles.letterContainer}>
+                <View style={styles.letter}>
+                    <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                    <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
+
+                    <View style={styles.letterPic}>
+                        
+                        <View style={styles.imgContainer}>
+                            <Image source={{ uri: message[0].letterImage }} style={styles.image} resizeMode='contain' />
+                        </View>
+                    </View>
+
+                    <Wtext textValue={message[0].letterText} setTextValue={null} editable={false}/>
+                    
+            
+                </View>
+            </View>
+            </View>
+            
+            
+            {/* </View> */}
 
             {/* 바뀔 View */}
-            {selectedButton === 'picture' && (
+            {/* {selectedButton === 'picture' && (
                 <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
                     <View style={styles.header}>
                         <View style={styles.dateContainer}>
@@ -226,7 +255,7 @@ const ReceivedMessage = ({ navigation }) => {
                 <ScrollView ref={letterRef} contentContainerStyle={styles.contentContainer}>
                     <Text>{message[0].letterText}</Text>
                 </ScrollView>
-            )}
+            )} */}
 
             {/* 저장하기 버튼 */}
             <TouchableOpacity style={styles.saveButton} onPress={handleSaveButtonPress}>
@@ -238,14 +267,35 @@ const ReceivedMessage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
+        marginTop:40,    
+        flex: 1,
         backgroundColor: color.bg,
     },
+    letterContainer:{
+        alignItems:'center',
+    },
+    letter: {
+		backgroundColor: "white",
+		width: SCREEN_WIDTH-60,
+		height: SCREEN_HEIGHT-200,
+		borderRadius: 15,
+		borderWidth: 1,
+		position: 'relative',
+		marginTop: 60
+	},
     topContainer: {
+        // backgroundColor:'pink',
       flexDirection: 'row',
-      justifyContent: 'space-between',
+    //   justifyContent:'center',
       paddingHorizontal: 20,
-      paddingTop: 20,
+      paddingTop: 10,
+    },
+    backContainer:{
+        backgroundColor:'#E8EDF4',
+        marginHorizontal: 15,
+        marginTop:15,
+        borderRadius: 15,
+		// borderWidth: 1,
     },
     imageContainer: {
       width: 100, // 사진의 가로 크기
@@ -309,51 +359,51 @@ const styles = StyleSheet.create({
         //marginTop: 0,
     },
     balloonContainer: { 
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'flex-end',
-      paddingHorizontal: 20,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        paddingHorizontal: 20,
     },
     buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingHorizontal: 20,
-      marginTop: 20,
-      paddingBottom: 20,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom:-50,
     },
     button: {
-        backgroundColor: '#CCE0CC',
+        backgroundColor: '#E8F1F9',
         paddingHorizontal: 16,
-        paddingVertical: 8,
+        paddingVertical: 8,        
         borderRadius: 20,
         borderWidth: 1,
-        borderColor: '#006400',
-      },
+        borderColor: '#5E86B1',
+        margin:3,
+    },
     buttonPressed: {
-        backgroundColor: 'green', // 눌렸을 때 초록색으로 변경
+        backgroundColor: '#5E86B1', // 눌렸을 때 초록색으로 변경
     },
     buttonText: {
-      color: '#006400',
-      fontSize: 16,
+        color: '#3B628C',
+        fontSize: 16,
     },
     bottomImageContainer: {
-      alignItems: 'center',
-      marginTop: 20,
+        alignItems: 'center',
+        marginTop: 20,
     },
     saveButton: {
-      backgroundColor: '#f0f0f0',
-      paddingHorizontal: 14,
-      paddingVertical: 6,
-      borderRadius: 20,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      alignSelf: 'center',
-      marginVertical: 10,
+        backgroundColor: '#f0f0f0',
+        paddingHorizontal: 14,
+        paddingVertical: 6,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        alignSelf: 'center',
+        marginVertical: 10,
     },
     saveButtonText: {
-      color: '#333',
-      fontSize: 14,
-      fontWeight: 'bold',
+        color: '#333',
+        fontSize: 14,
+        fontWeight: 'bold',
     },
   });
   
