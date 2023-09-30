@@ -5,7 +5,7 @@ import { Alert, ScrollView, StyleSheet, Text,
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-export default function Wtext({ textValue, setTextValue, editable }) {
+export default function Wtext({ textValue, setTextValue, editable, isLast }) {
 	const [modalText, setModalText] = useState("");
 	const [modalVisible, setModalVisible] = useState(false);
 
@@ -19,7 +19,22 @@ export default function Wtext({ textValue, setTextValue, editable }) {
 	},[editable]);
 
 	return (
-		<View style={styles.letterText}>
+		isLast?(
+			<View style={{borderBottomEndRadius:20,borderBottomStartRadius:20,...styles.letterText}}>
+
+			<View></View>
+
+			<ScrollView style={{flex: 1,}}>
+				<Text style={{fontSize: 23, 
+							paddingHorizontal: 14, 
+							paddingVertical: 8,
+							
+				}}>{textValue}</Text>
+			</ScrollView>			
+					
+		</View>
+		):(
+			<View style={{borderBottomWidth: 1,...styles.letterText}}>
 			<Modal
 				animationType="slide"
 				transparent={true}
@@ -71,13 +86,14 @@ export default function Wtext({ textValue, setTextValue, editable }) {
 			</ScrollView>			
 					
 		</View>
+		)
+		
 	);
 };
 
 const styles = StyleSheet.create({
 	letterText: {
 		flex: 5.5,
-		borderBottomWidth: 1,
 		borderBottomColor: "black",
 		backgroundColor: color.b5,
 	},

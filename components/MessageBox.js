@@ -65,15 +65,15 @@ const MessageBox = ({navigation}) => {
       <View style={{ marginVertical: 60 }}></View>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       {messages.map((message) => (
-        <View style={styles.messageContainer}>
-          <View key={message.letterId} style={styles.messageLeftContainer}>
+        <View key={message.messageId} style={styles.messageContainer}>
+          <View style={styles.messageLeftContainer}>
             <Image
               source={require('gomaoom/assets/images/boy.png')}
               style={styles.image}
             />
           </View>
 
-          <View key={message.letterId} style={styles.messageRightContainer}>
+          <View style={styles.messageRightContainer}>
             <Text style={styles.messageText}>
               {`${message.senderNickname} 님이\n편지를 보냈습니다.`}
             </Text>

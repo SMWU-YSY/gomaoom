@@ -16,6 +16,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const ReceivedMessage = ({ navigation }) => {
     const [selectedButton, setSelectedButton] = useState('picture');
+    const [selectHeight, setSelectedHeight] = useState(0.4);
     const [contentToSave, setContentToSave] = useState('');
     
     const route = useRoute();
@@ -56,8 +57,6 @@ const ReceivedMessage = ({ navigation }) => {
                     const responseData = response.data;
                     if (responseData.data) {
                         setMessage(responseData.data)
-                        // console.log(responseData.data)
-                        // console.log(responseData.data[0].letterDate)
                     }
                 })
                 .catch((error) => {
@@ -82,6 +81,13 @@ const ReceivedMessage = ({ navigation }) => {
     const letterRef = useRef(null);
 
     const handleButtonPress = (buttonType) => {
+        if(buttonType==='picture'){
+            setSelectedHeight(0.4);
+        }else if (buttonType==='all'){
+            setSelectedHeight(0.7);
+        }else if(buttonType==='letter'){
+            setSelectedHeight(0.5);
+        }
         setSelectedButton(buttonType);
     };
 
@@ -170,98 +176,87 @@ const ReceivedMessage = ({ navigation }) => {
             </View>
 
             {/* 그림, 모두, 편지 버튼 */}
-            <View style={styles.backContainer}>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    style={[
-                        styles.button,
-                        selectedButton === 'picture' && styles.buttonPressed,
-                    ]}
-                    onPress={() => handleButtonPress('picture')}
-                    >
-                    <Text style={styles.buttonText}>그림</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[
-                        styles.button,
-                        selectedButton === 'all' && styles.buttonPressed,
-                    ]}
-                    onPress={() => handleButtonPress('all')}
-                    >
-                    <Text style={styles.buttonText}>모두</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[
-                        styles.button,
-                        selectedButton === 'letter' && styles.buttonPressed,
-                    ]}
-                    onPress={() => handleButtonPress('letter')}
-                    >
-                    <Text style={styles.buttonText}>편지</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.letterContainer}>
-                <View style={styles.letter}>
-                    <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
-                    <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
-
-                    <View style={styles.letterPic}>
-                        
-                        <View style={styles.imgContainer}>
-                            <Image source={{ uri: message[0].letterImage }} style={styles.image} resizeMode='contain' />
-                        </View>
-                    </View>
-
-                    <Wtext textValue={message[0].letterText} setTextValue={null} editable={false}/>
-                    
-            
+            <View style={{height:SCREEN_HEIGHT*selectHeight,...styles.backContainer}}>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={[
+                            styles.button,
+                            selectedButton === 'picture' && styles.buttonPressed,
+                        ]}
+                        onPress={() => handleButtonPress('picture')}
+                        >
+                        <Text style={styles.buttonText}>그림</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            styles.button,
+                            selectedButton === 'all' && styles.buttonPressed,
+                        ]}
+                        onPress={() => handleButtonPress('all')}
+                        >
+                        <Text style={styles.buttonText}>모두</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            styles.button,
+                            selectedButton === 'letter' && styles.buttonPressed,
+                        ]}
+                        onPress={() => handleButtonPress('letter')}
+                        >
+                        <Text style={styles.buttonText}>편지</Text>
+                    </TouchableOpacity>
                 </View>
-            </View>
-            </View>
+
             
             
             {/* </View> */}
 
             {/* 바뀔 View */}
-            {/* {selectedButton === 'picture' && (
-                <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
-                    <View style={styles.header}>
-                        <View style={styles.dateContainer}>
-                            <Text style={styles.date}>
-                                {message[0].letterDate.slice(0,4)}년 {message[0].letterDate.slice(5,7)}월 {message[0].letterDate.slice(8,10)}일
-                            </Text>
-                        </View>
-                        <View style={styles.weatherContainer}>
-                            <Text style={styles.weather}>{message[0].letterWeather}</Text>
+            {selectedButton === 'picture' && (
+                // <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
+                    <View style={styles.letterContainer}>
+                        <View style={{height:SCREEN_HEIGHT*0.3,...styles.letter}}>
+                            <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                            <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
+                            <View style={styles.letterPic}>
+                                <View style={styles.imgContainer}>
+                                    <Image source={{ uri: message[0].letterImage }} style={styles.image} resizeMode='contain' />
+                                </View>
+                            </View>
                         </View>
                     </View>
-                    <Text style={styles.title}>제목:{message[0].letterTitle}</Text>
-                    <Image
-                        source={{ uri: message[0].letterImage }}
-                        style={styles.image}
-                    />
-                </ScrollView>
             )}
             {selectedButton === 'all' && (
-                <ScrollView ref={allRef} contentContainerStyle={styles.contentContainer}>
-                    <Text>{message[0].letterText}</Text>
-                    <Image
-                        source={{ uri: message[0].letterImage }}
-                        style={styles.image}
-                    />
-                </ScrollView>
+                <View style={styles.letterContainer}>
+                    <View style={{height:SCREEN_HEIGHT*0.6,...styles.letter}}>
+                        <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                        <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
+                        <View style={{borderBottomWidth: 1,borderBottomColor: "black",...styles.letterPic}}>
+                            <View style={styles.imgContainer}>
+                                <Image source={{ uri: message[0].letterImage }} style={styles.image} resizeMode='contain' />
+                            </View>
+                    </View>
+                    <Wtext isLast={true} textValue={message[0].letterText} setTextValue={null} editable={false}/>
+                    </View>
+                </View>
             )}
             {selectedButton === 'letter' && (
-                <ScrollView ref={letterRef} contentContainerStyle={styles.contentContainer}>
-                    <Text>{message[0].letterText}</Text>
-                </ScrollView>
-            )} */}
+                <View style={styles.letterContainer}>
+                    <View style={{height:SCREEN_HEIGHT*0.4,...styles.letter}}>
+                        <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                        <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
+                        <Wtext isLast={true} textValue={message[0].letterText} setTextValue={null} editable={false}/>
+                    </View>
+                </View>
+            )}
+        </View>
 
             {/* 저장하기 버튼 */}
             <TouchableOpacity style={styles.saveButton} onPress={handleSaveButtonPress}>
                 <Text style={styles.saveButtonText}>저장하기</Text>
             </TouchableOpacity>
         </View>
+
       );
 };
 
@@ -273,11 +268,13 @@ const styles = StyleSheet.create({
     },
     letterContainer:{
         alignItems:'center',
+        height:SCREEN_HEIGHT*0.65,
     },
     letter: {
 		backgroundColor: "white",
-		width: SCREEN_WIDTH-60,
-		height: SCREEN_HEIGHT-200,
+        // flex:1,
+		width: SCREEN_WIDTH*0.85,
+		// height: SCREEN_HEIGHT*0.55,
 		borderRadius: 15,
 		borderWidth: 1,
 		position: 'relative',
@@ -295,8 +292,26 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         marginTop:15,
         borderRadius: 15,
+        // height:"auto",
 		// borderWidth: 1,
     },
+    letterPic: {
+		flex: 3.5,
+		// borderBottomWidth: 1,
+		// borderBottomColor: "black",
+		alignItems: "center",
+		justifyContent: "center"
+	},
+	imgContainer: {
+		width: "100%",
+		height: "100%",
+		position: 'relative',
+	},
+	image: {
+		// flex: 6,
+		width: "100%",
+		height: "100%",
+	},
     imageContainer: {
       width: 100, // 사진의 가로 크기
       height: 100, // 사진의 세로 크기
@@ -304,7 +319,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#ccc', // 이미지 없을 시 배경색
     },
     contentContainer: {
-        margin:20,
+        marginTop:60,
         paddingHorizontal: 20,
         paddingVertical: 20,
         marginVertical: 10,
