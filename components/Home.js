@@ -2,6 +2,8 @@ import { Button, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-n
 import { useState, useEffect } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
+import { StatusBar } from 'expo-status-bar';
+import { commomStyle } from '../theme';
 
 const Home = ({navigation, setIsLogin}) => {
 	const [accessToken,setAccessToken]=useState('');
@@ -48,13 +50,17 @@ const Home = ({navigation, setIsLogin}) => {
 
     return (
         <View style={styles.container}>
-          <Image source={require('gomaoom/assets/blueTop.png')}/>
+            <StatusBar style="auto" />
+
+            <Image source={require('gomaoom/assets/blueTop.png')} 
+                style={{position:'absolute',top:0,left:0}}
+            ></Image>
 
             <Text style={styles.hello}>
                 {userNick}님, 안녕하세요
             </Text>
 			
-            <View style={{flex:6}}>
+            <View style={{flex:10}}>
                 <Image source={require('gomaoom/assets/profile.png')}/>
                 {/* <View style={{marginHorizontal:5,flex:1, flexDirection:'row', justifyContent:'space-between'}}>
                     <Image source={require('gomaoom/assets/icons/face.png')}/>
@@ -86,9 +92,10 @@ const styles = StyleSheet.create({
         padding:40,
     },
     hello:{
-        fontSize:20,
-        flex: 1,
-        marginVertical:30,        
+        fontSize:25,
+        flex: 2,
+        // backgroundColor:'pink',
+        marginTop:170,        
     },
 	btn: {
         flex: 0.5,
