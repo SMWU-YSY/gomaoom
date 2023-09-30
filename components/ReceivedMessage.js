@@ -22,6 +22,7 @@ const ReceivedMessage = ({ navigation }) => {
     const route = useRoute();
     const letterId = route.params.letterId;
     const messageId = route.params.messageId;
+    const characterUrl = route.params.characterUrl;
     const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
     const [message, setMessage] = useState([]);
@@ -39,7 +40,7 @@ const ReceivedMessage = ({ navigation }) => {
 		getData();
 	
 		// 데이터 지우기
-		// AsyncStorage.clear();
+		//AsyncStorage.clear();
 	}, []);
 
     useEffect(() => {
@@ -165,7 +166,7 @@ const ReceivedMessage = ({ navigation }) => {
             <View style={styles.topContainer}>
                 <View style={styles.imageContainer}>
                     <Image
-                        source={require('gomaoom/assets/images/boy.png')}
+                        source={{ uri: characterUrl }}
                         style={styles.imageContainer}
                         resizeMode="contain"
                     />

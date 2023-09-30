@@ -38,7 +38,7 @@ export default function Login({ navigation }) {
 			accessToken=response.headers.getAuthorization().split(" ");
 			await AsyncStorage.setItem("accessToken", JSON.stringify(accessToken[1]));
 			await AsyncStorage.setItem("userNick", JSON.stringify(response.data.data[0].unickname));
-
+      await AsyncStorage.setItem("characterUrl", JSON.stringify(response.data.data[0].characterUrl));
 			navigation.navigate('isLogin');
 		} catch (error) {
 			if (error.response && error.response.status === 404){

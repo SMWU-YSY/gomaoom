@@ -16,13 +16,14 @@ const Tab = createBottomTabNavigator();
 
 export default function App({navigation}) {
 
-  
   const [isLogin,setIsLogin]=useState(null);
   const [accessToken,setAccessToken]=useState('');
   const [userId,setUserId]=useState('');
+  const [characterUrl,setCharacterUrl]=useState(''); 
   const getData = async () => {
     const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
     setUserId(JSON.parse(await AsyncStorage.getItem("userId")));
+    setCharacterUrl(JSON.parse(await AsyncStorage.getItem("characterUrl")));
     if(storageData) {
         setAccessToken(storageData);
         setIsLogin(true);
@@ -74,7 +75,7 @@ export default function App({navigation}) {
             },
           })}>
 			<Tab.Screen name="홈" options={{headerShown: false,}}>
-				{() => <Home setIsLogin={setIsLogin} />}
+				{() => <Home setIsLogin={setIsLogin} characterUrl={characterUrl} />}
 			</Tab.Screen>
 			<Tab.Screen name="작성하기" options={{headerShown: false,}}>
 				{() => <StackNav screenName="write" />}

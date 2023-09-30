@@ -41,7 +41,7 @@ export default function WriteLetter({ navigation, route }) {
 		}
 		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
 		getData();
-		console.log('뭐여');
+		//console.log('뭐여');
 		// 데이터 지우기
 		// AsyncStorage.clear();
 	}, []);
