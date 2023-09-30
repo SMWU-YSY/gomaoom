@@ -18,13 +18,14 @@ export default function Outbox({navigation, route}) {
 	const [selectedData, setSelectedData] = useState([]);
 	// const isFocused = useIsFocused();
 
-	useEffect(() => {
-		const getData = async () => {
-			const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
-			if(storageData) {
-				setAccessToken(storageData);
-			}
+	const getData = async () => {
+		const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
+		if(storageData) {
+			setAccessToken(storageData);
 		}
+	}
+
+	useEffect(() => {
 		getData();
 	}, []);
 
@@ -36,7 +37,10 @@ export default function Outbox({navigation, route}) {
 
 	useFocusEffect(
 		React.useCallback(() => {
-			getSentMessage();
+			getData();
+			if(accessToken!=null){
+				getSentMessage();
+			}
 		}, [])
 	);
 
