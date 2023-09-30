@@ -5,40 +5,51 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
 
 export default function Auth({navigation}) {
-  const isAuth=()=>{
-    Alert.alert(                    
-      "회원가입이 완료되었습니다.",                    // 첫번째 text: 타이틀 제목
-      "로그인해주세요.",                         // 두번째 text: 그 밑에 작은 제목
-      [{text: '확인', onPress: () => {}}],
-      { cancelable: false }
-    );
-    navigation.navigate('login');
+	const isAuth=()=>{
+		Alert.alert(                    
+			"회원가입이 완료되었습니다.",                    // 첫번째 text: 타이틀 제목
+			"로그인해주세요.",                         // 두번째 text: 그 밑에 작은 제목
+			[{text: '확인', onPress: () => {}}],
+			{ cancelable: false }
+		);
+		navigation.navigate('login');
+	};
 
-  };
 	const onClick=async()=>{
 		try {
-		  const response = await axios.post("http://3.34.212.92:8080/api/user/signup", 
-		  {	
+			const response = await axios.post("http://3.34.212.92:8080/api/user/signup", 
+			{	
 				age: value,
 				gender: value1,
 				loginId: id,
 				nickname: nickname,
 				password:password,
 			}
-		  , 
-      {
-        headers: {
-          Accept: 'application/json',
-          "Content-Type": "application/json",
-        }
-      });
+		  	, 
+			{
+				headers: {
+				Accept: 'application/json',
+				"Content-Type": "application/json",
+				}
+			});
 	
-		  if(response){
-        isAuth();
-      }
+			if(response){
+				isAuth();
+			}
 		} catch (error) {
-			console.log(error);
-		} finally {
+			if (error.response && error.response.status === 409){
+				Alert.alert(
+					"중복된 아이디",
+					"아이디를 다시 입력해주세요.",
+					[
+						{ text: "확인" }
+					]
+				);
+				console.log("아이디 중복");
+			}
+			else {
+				console.log(error);
+			}
 		}
 	};
 

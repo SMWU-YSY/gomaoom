@@ -5,19 +5,22 @@ import axios from 'axios';
 
 const Home = ({navigation, setIsLogin}) => {
 	const [accessToken,setAccessToken]=useState('');
+	const [userNick, setUserNick] = useState('');
+
 	useEffect(() => {
 		const getData = async () => {
-			const storageData = 
-			  JSON.parse(await AsyncStorage.getItem("accessToken"));
+			const storageData = JSON.parse(await AsyncStorage.getItem("accessToken"));
+			const userData = JSON.parse(await AsyncStorage.getItem("userNick"));
+
 			if(storageData) {
 				setAccessToken(storageData);
 			}
+			if (userData){
+                setUserNick(userData);
+            }
 		}
 		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
 		getData();
-	
-		// 데이터 지우기
-		// AsyncStorage.clear();
 	}, []);
 
 	const onPress = async () => {
@@ -32,10 +35,10 @@ const Home = ({navigation, setIsLogin}) => {
 
 		} catch (error) {
 			if (error.response && error.response.status === 401) {
-			  console.log("unauth");
+			  	console.log("unauth");
 			//   navigation.navigate('login');
 			} else {
-			  console.error(error);
+			  	console.error(error);
 			}
 		} finally {
 			setIsLogin(false);
@@ -48,22 +51,19 @@ const Home = ({navigation, setIsLogin}) => {
           <Image source={require('gomaoom/assets/blueTop.png')}/>
 
             <Text style={styles.hello}>
-                눈송이님, 안녕하세요
+                {userNick}님, 안녕하세요
             </Text>
-			<TouchableOpacity onPress={onPress} style={{backgroundColor: "red", flex: 1}}>
-					<Text>logout</Text>
-				</TouchableOpacity>
+			
             <View style={{flex:6}}>
                 <Image source={require('gomaoom/assets/profile.png')}/>
-                <View style={{marginHorizontal:5,flex:1, flexDirection:'row', justifyContent:'space-between'}}>
+                {/* <View style={{marginHorizontal:5,flex:1, flexDirection:'row', justifyContent:'space-between'}}>
                     <Image source={require('gomaoom/assets/icons/face.png')}/>
                     <Image source={require('gomaoom/assets/icons/refresh.png')}/>
-                </View>
-
-				
-                
+                </View> */}
+				<TouchableOpacity onPress={onPress} style={styles.btn}>
+					<Text style={styles.btnText}>로그아웃</Text>
+				</TouchableOpacity>
             </View>
-			
         </View>
     );
 };
@@ -90,6 +90,12 @@ const styles = StyleSheet.create({
         flex: 1,
         marginVertical:30,        
     },
-    
-    
+	btn: {
+        flex: 0.5,
+        alignContent: "center",
+        justifyContent: "center",
+    },
+    btnText: {
+        textAlign: "center"
+    }    
 });
