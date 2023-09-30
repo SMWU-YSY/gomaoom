@@ -3,13 +3,13 @@ import { StyleSheet, Text, View, Image,TouchableOpacity } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from './components/Home';
 import StackNav from './StackNav';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import Login from './Login';
 import Auth from './Auth';
+import Home from './components/Home';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,20 +52,20 @@ export default function App({navigation}) {
             let iconName;
             if (route.name === '홈') {
               iconName = focused
-              ? require('./assets/icons/Home.png')
-              : require('./assets/icons/Home.png');
+              ? require('./assets/icons/Bhome.png')
+              : require('./assets/icons/Bhome.png');
             } else if (route.name === '받은 보관함') {
               iconName = focused
-              ? require('./assets/icons/mailbox.png')
-              : require('./assets/icons/mailbox.png');
+              ? require('./assets/icons/Bmailbox.png')
+              : require('./assets/icons/Bmailbox.png');
             } else if (route.name === '보낸 보관함') {
               iconName = focused
-              ? require('./assets/icons/mailbox.png')
-              : require('./assets/icons/mailbox.png');
+              ? require('./assets/icons/Bmailbox.png')
+              : require('./assets/icons/Bmailbox.png');
             } else if (route.name === '작성하기') {
               iconName = focused
-              ? require('./assets/icons/Write.png')
-              : require('./assets/icons/Write.png');
+              ? require('./assets/icons/Bwrite.png')
+              : require('./assets/icons/Bwrite.png');
             } 
 
               return (
@@ -96,8 +96,8 @@ export default function App({navigation}) {
 				let iconName;
 				if (route.name === 'login') {
 					iconName = focused
-					? require('./assets/icons/Home.png')
-					: require('./assets/icons/Home.png');
+					? require('./assets/icons/Bhome.png')
+					: require('./assets/icons/Bhome.png');
 				} 
               return (
                 <Image source={iconName} style={{width: 25, height: 25}} />
