@@ -52,20 +52,20 @@ export default function App({navigation}) {
             let iconName;
             if (route.name === '홈') {
               iconName = focused
-              ? require('./assets/icons/Bhome.png')
-              : require('./assets/icons/Bhome.png');
+              ? require('./assets/icons/dhome.png')
+              : require('./assets/icons/dhome.png');
             } else if (route.name === '받은 보관함') {
               iconName = focused
-              ? require('./assets/icons/Bmailbox.png')
-              : require('./assets/icons/Bmailbox.png');
+              ? require('./assets/icons/dmailbox.png')
+              : require('./assets/icons/dmailbox.png');
             } else if (route.name === '보낸 보관함') {
               iconName = focused
-              ? require('./assets/icons/Bmailbox.png')
-              : require('./assets/icons/Bmailbox.png');
+              ? require('./assets/icons/dmailbox.png')
+              : require('./assets/icons/dmailbox.png');
             } else if (route.name === '작성하기') {
               iconName = focused
-              ? require('./assets/icons/Bwrite.png')
-              : require('./assets/icons/Bwrite.png');
+              ? require('./assets/icons/dwrite.png')
+              : require('./assets/icons/dwrite.png');
             } 
 
               return (
@@ -96,8 +96,8 @@ export default function App({navigation}) {
 				let iconName;
 				if (route.name === 'login') {
 					iconName = focused
-					? require('./assets/icons/Bhome.png')
-					: require('./assets/icons/Bhome.png');
+					? require('./assets/icons/dhome.png')
+					: require('./assets/icons/dhome.png');
 				} 
               return (
                 <Image source={iconName} style={{width: 25, height: 25}} />
