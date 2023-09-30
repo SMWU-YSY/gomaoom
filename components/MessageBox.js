@@ -61,8 +61,11 @@ const MessageBox = ({navigation}) => {
   return (  
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Image source={images.inbox} style={commomStyle.backgroundImage}/>
-      <View style={{ marginVertical: 60 }}></View>
+      <Image source={images.blueTop} style={commomStyle.backgroundImage}/>
+      <View style={{marginTop:60,}}>
+        <Text style={{fontSize:30, fontWeight:'bold',textAlign:'center'}}>수신보관함</Text>
+      </View>
+      <View style={{ marginVertical: 20 }}></View>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       {messages.map((message) => (
         <View key={message.messageId} style={styles.messageContainer}>

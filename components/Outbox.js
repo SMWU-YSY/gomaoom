@@ -146,6 +146,9 @@ export default function Outbox({navigation, route}) {
 		<View style={styles.container}>
 			<StatusBar style="auto" />
 			<Image source={images.blueTop} style={commomStyle.backgroundImage}/>
+			<View style={{marginTop:60}}>
+        		<Text style={{fontSize:30, fontWeight:'bold',textAlign:'center'}}>발신보관함</Text>
+      		</View>
 			<View style={styles.letter}>
 				<Calendar
 					style={styles.calendar} 
@@ -184,8 +187,9 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: color.bg,
+		padding: 10,
 		alignItems: "center",
-		justifyContent: "center",
+		// justifyContent: "center",
 	},
 	calendar: {
 		// flex: 1,
@@ -206,7 +210,7 @@ const styles = StyleSheet.create({
 	},
 	letter:{
 		position: 'relative',
-		marginTop: 60
+		marginTop: 30
 	},
 	outerScrollView: {
 		flex: 1,
