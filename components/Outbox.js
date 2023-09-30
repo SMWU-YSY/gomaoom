@@ -51,7 +51,7 @@ export default function Outbox({navigation, route}) {
 		await axios.get("http://3.34.212.92:8080/api/message/outbox", 
 		{
 			headers: {
-				Authorization:`Bearer ${accessToken}`,
+				'Authorization': `Bearer ${accessToken}`
 			},
 			withCredentials:true,
 		}).then((response) => {

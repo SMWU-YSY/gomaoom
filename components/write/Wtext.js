@@ -12,6 +12,12 @@ export default function Wtext({ textValue, setTextValue, editable }) {
 	const onChangeText = (payload) => setTextValue(payload);
 	const onChangeModalText = (payload) => setModalText(payload);
 
+	useEffect(()=>{
+		// setIsNew(route.params.isNew);
+		// console.log(route.params.isNew);
+		setModalText("");
+	},[editable]);
+
 	return (
 		<View style={styles.letterText}>
 			<Modal
