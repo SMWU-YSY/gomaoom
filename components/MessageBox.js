@@ -55,8 +55,8 @@ const MessageBox = ({navigation}) => {
     
   }, [accessToken]);
 
-  const handleReceivedMessage = (letterId, messageId) => {
-    navigation.navigate('ReceivedMessage',{letterId: letterId, messageId: messageId});
+  const handleReceivedMessage = (letterId, messageId, characterUrl) => {
+    navigation.navigate('ReceivedMessage',{letterId: letterId, messageId: messageId, characterUrl: characterUrl});
   };
 
   return (  
@@ -68,13 +68,15 @@ const MessageBox = ({navigation}) => {
       </View>
       <View style={{ marginVertical: 20 }}></View>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      {messages.length === 0 && <Text>수신된 편지가 없습니다.</Text>}
       {messages.map((message) => (
         <View key={message.messageId} style={styles.messageContainer}>
           <View style={styles.messageLeftContainer}>
-            <Image
-              source={{uri: message.characterUrl}}
-              style={styles.image}
-            />
+              <Image
+                  source={{ uri: message.characterUrl }}
+                  resizeMode="contain"
+                  style={styles.imageContainer}
+              />  
           </View>
 
           <View style={styles.messageRightContainer}>
@@ -82,7 +84,7 @@ const MessageBox = ({navigation}) => {
               {`${message.senderNickname} 님이\n편지를 보냈습니다.`}
             </Text>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={()=>handleReceivedMessage(message.letterId, message.messageId)}>
+              <TouchableOpacity onPress={()=>handleReceivedMessage(message.letterId, message.messageId, message.characterUrl)}>
                 <Text style={styles.buttonText}>편지 확인하기</Text>
               </TouchableOpacity>
             </View>
@@ -127,7 +129,12 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent:'space-between',
   },
-  
+  imageContainer: {
+    width: 100, // 사진의 가로 크기
+    height: 100, // 사진의 세로 크기
+    borderRadius: 50, // 사진이 원 모양이 되도록
+    backgroundColor: '#ccc', // 이미지 없을 시 배경색
+  },
   messageText:{
     fontSize: 18,
     color: '#5E86B1',
