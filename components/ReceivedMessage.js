@@ -82,6 +82,7 @@ const ReceivedMessage = ({ navigation }) => {
     const letterRef = useRef(null);
 
     const handleButtonPress = (buttonType) => {
+        console.log('터치 안됨?');
         if(buttonType==='picture'){
             setSelectedHeight(0.4);
         }else if (buttonType==='all'){
@@ -91,7 +92,6 @@ const ReceivedMessage = ({ navigation }) => {
         }
         setSelectedButton(buttonType);
     };
-
     const handleSaveButtonPress = async () => {
         const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
         if (status !== 'granted') {
@@ -146,6 +146,60 @@ const ReceivedMessage = ({ navigation }) => {
         alert('이미지 저장에 실패했습니다.');
     }
     };
+    // const handleSaveButtonPress = async () => {
+    //     const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+    //     if (status !== 'granted') {
+    //         alert('Please grant permission to access the media library.');
+    //         return;
+    //     }
+
+    //     let contentToSaveRef;
+    //     switch (selectedButton) {
+    //         case 'picture':
+    //             contentToSaveRef = pictureRef;
+    //             break;
+    //         case 'all':
+    //             contentToSaveRef = allRef;
+    //             break;
+    //         case 'letter':
+    //             contentToSaveRef = letterRef;
+    //             break;
+    //         default:
+    //             contentToSaveRef = balloonRef;
+    //             break;
+    //     }
+    
+    //     if (contentToSaveRef && contentToSaveRef.current) {
+    //       const uri = await takeScreenshot(contentToSaveRef.current);
+    //       if (uri) {
+    //         saveToMediaLibrary(uri);
+    //       }
+    //     }
+    // };
+    
+    // const takeScreenshot = async (viewRef) => {
+    //     try {
+    //         const uri = await captureRef(viewRef, {
+    //             format: 'png',
+    //             quality: 1,
+    //         });
+    //         return uri;
+    //       } catch (error) {
+    //             console.error(error);
+    //         return null;
+    //       }
+    // };
+
+    // const saveToMediaLibrary = async (uri) => {
+    // try {
+    //     const asset = await MediaLibrary.createAssetAsync(uri);
+    //     await MediaLibrary.createAlbumAsync('YourAlbumName', asset, false);
+    //     alert('이미지가 저장되었습니다.');
+    // } catch (error) {
+    //     console.error(error);
+    //     alert('이미지 저장에 실패했습니다.');
+    // }
+    // };
 
     // 로딩 상태가 true일 때 로딩 메시지 표시
     if (isLoading | message.length == 0) {
@@ -213,9 +267,42 @@ const ReceivedMessage = ({ navigation }) => {
             {/* </View> */}
 
             {/* 바뀔 View */}
+             {/* {selectedButton === 'picture' && (
+                <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
+                    <View style={styles.header}>
+                        <View style={styles.dateContainer}>
+                            <Text style={styles.date}>
+                                {message[0].letterDate.slice(0,4)}년 {message[0].letterDate.slice(5,7)}월 {message[0].letterDate.slice(8,10)}일
+                            </Text>
+                        </View>
+                        <View style={styles.weatherContainer}>
+                            <Text style={styles.weather}>{message[0].letterWeather}</Text>
+                        </View>
+                    </View>
+                    <Text style={styles.title}>제목:{message[0].letterTitle}</Text>
+                    <Image
+                        source={{ uri: message[0].letterImage }}
+                        style={styles.image}
+                    />
+                </ScrollView>
+            )}
+            {selectedButton === 'all' && (
+                <ScrollView ref={allRef} contentContainerStyle={styles.contentContainer}>
+                    <Text>{message[0].letterText}</Text>
+                    <Image
+                        source={{ uri: message[0].letterImage }}
+                        style={styles.image}
+                    />
+                </ScrollView>
+            )}
+            {selectedButton === 'letter' && (
+                <ScrollView ref={letterRef} contentContainerStyle={styles.contentContainer}>
+                    <Text>{message[0].letterText}</Text>
+                </ScrollView>
+            )} */}
             {selectedButton === 'picture' && (
                 // <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
-                    <View style={styles.letterContainer}>
+                    <View ref={pictureRef} style={styles.letterContainer}>
                         <View style={{height:SCREEN_HEIGHT*0.3,...styles.letter}}>
                             <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
                             <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
@@ -228,7 +315,7 @@ const ReceivedMessage = ({ navigation }) => {
                     </View>
             )}
             {selectedButton === 'all' && (
-                <View style={styles.letterContainer}>
+                <View ref={allRef} style={styles.letterContainer}>
                     <View style={{height:SCREEN_HEIGHT*0.6,...styles.letter}}>
                         <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
                         <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
@@ -242,7 +329,7 @@ const ReceivedMessage = ({ navigation }) => {
                 </View>
             )}
             {selectedButton === 'letter' && (
-                <View style={styles.letterContainer}>
+                <View ref={letterRef} style={styles.letterContainer}>
                     <View style={{height:SCREEN_HEIGHT*0.4,...styles.letter}}>
                         <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
                         <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
