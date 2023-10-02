@@ -11,7 +11,7 @@ const BalloonBox = ({ content }) => {
           borderRadius={15}
           triangleDirection='left'
           triangleSize={10}
-          width={250}
+          width="100%"
         >
           <Text style={styles.text}>{content}</Text>
       </Balloon>
