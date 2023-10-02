@@ -353,6 +353,8 @@ const styles = StyleSheet.create({
         marginTop:40,    
         flex: 1,
         backgroundColor: color.bg,
+        zIndex:1,
+
     },
     letterContainer:{
         alignItems:'center',
@@ -380,6 +382,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         marginTop:15,
         borderRadius: 15,
+        zIndex:10,
+
         // height:"auto",
 		// borderWidth: 1,
     },
@@ -472,6 +476,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 10,
         marginBottom:-50,
+        zIndex:50,
+
     },
     button: {
         backgroundColor: '#E8F1F9',
@@ -481,6 +487,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#5E86B1',
         margin:3,
+        zIndex:100,
     },
     buttonPressed: {
         backgroundColor: '#5E86B1', // 눌렸을 때 초록색으로 변경
