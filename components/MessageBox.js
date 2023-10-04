@@ -87,7 +87,7 @@ const MessageBox = ({navigation}) => {
           <View style={styles.messageLeftContainer}>
               <Image
                   source={{ uri: message.characterUrl }}
-                  resizeMode="wrap"
+                  resizeMode="contain"
                   style={styles.imageContainer}
               />  
           </View>
