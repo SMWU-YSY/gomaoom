@@ -82,7 +82,6 @@ const ReceivedMessage = ({ navigation }) => {
     const letterRef = useRef(null);
 
     const handleButtonPress = (buttonType) => {
-        console.log('터치 안됨?');
         if(buttonType==='picture'){
             setSelectedHeight(0.4);
         }else if (buttonType==='all'){
@@ -93,6 +92,7 @@ const ReceivedMessage = ({ navigation }) => {
         setSelectedButton(buttonType);
     };
     const handleSaveButtonPress = async () => {
+        console.log('저장하기 버튼 눌림')
         const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
         if (status !== 'granted') {
             alert('Please grant permission to access the media library.');
@@ -146,60 +146,6 @@ const ReceivedMessage = ({ navigation }) => {
         alert('이미지 저장에 실패했습니다.');
     }
     };
-    // const handleSaveButtonPress = async () => {
-    //     const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
-    //     if (status !== 'granted') {
-    //         alert('Please grant permission to access the media library.');
-    //         return;
-    //     }
-
-    //     let contentToSaveRef;
-    //     switch (selectedButton) {
-    //         case 'picture':
-    //             contentToSaveRef = pictureRef;
-    //             break;
-    //         case 'all':
-    //             contentToSaveRef = allRef;
-    //             break;
-    //         case 'letter':
-    //             contentToSaveRef = letterRef;
-    //             break;
-    //         default:
-    //             contentToSaveRef = balloonRef;
-    //             break;
-    //     }
-    
-    //     if (contentToSaveRef && contentToSaveRef.current) {
-    //       const uri = await takeScreenshot(contentToSaveRef.current);
-    //       if (uri) {
-    //         saveToMediaLibrary(uri);
-    //       }
-    //     }
-    // };
-    
-    // const takeScreenshot = async (viewRef) => {
-    //     try {
-    //         const uri = await captureRef(viewRef, {
-    //             format: 'png',
-    //             quality: 1,
-    //         });
-    //         return uri;
-    //       } catch (error) {
-    //             console.error(error);
-    //         return null;
-    //       }
-    // };
-
-    // const saveToMediaLibrary = async (uri) => {
-    // try {
-    //     const asset = await MediaLibrary.createAssetAsync(uri);
-    //     await MediaLibrary.createAlbumAsync('YourAlbumName', asset, false);
-    //     alert('이미지가 저장되었습니다.');
-    // } catch (error) {
-    //     console.error(error);
-    //     alert('이미지 저장에 실패했습니다.');
-    // }
-    // };
 
     // 로딩 상태가 true일 때 로딩 메시지 표시
     if (isLoading | message.length == 0) {
@@ -213,7 +159,7 @@ const ReceivedMessage = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
         <StatusBar style="auto" />
 
             {/* 첫번째 맨 위 사진 왼쪽, 말풍선 오른쪽 배치 */}
@@ -343,7 +289,7 @@ const ReceivedMessage = ({ navigation }) => {
             <TouchableOpacity style={styles.saveButton} onPress={handleSaveButtonPress}>
                 <Text style={styles.saveButtonText}>저장하기</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
 
       );
 };
@@ -354,7 +300,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: color.bg,
         zIndex:1,
-
+        showsHorizontalScrollIndicator: false,
     },
     letterContainer:{
         alignItems:'center',
@@ -509,6 +455,7 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         alignSelf: 'center',
         marginVertical: 10,
+        zIndex:60,
     },
     saveButtonText: {
         color: '#333',
