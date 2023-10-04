@@ -5,6 +5,7 @@ import { color, commomStyle, images } from '../theme.js';
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -12,48 +13,60 @@ const MessageBox = ({navigation}) => {
   const [messages, setMessages] = useState([]);
   const [accessToken, setAccessToken] = useState(null);
 
-  useEffect(() => {
-		const getData = async () => {
-			const storageData = 
-			  JSON.parse(await AsyncStorage.getItem("accessToken"));
-			if(storageData) {
-				setAccessToken(storageData);
-			}
+  const getData = async () => {
+	const storageData = 
+	  	JSON.parse(await AsyncStorage.getItem("accessToken"));
+		if(storageData) {
+			setAccessToken(storageData);
 		}
-		// AsyncStorage에 저장된 데이터가 있다면, 불러온다.
+	}
+
+  	useEffect(() => {
 		getData();
-	
-		// 데이터 지우기
-		// AsyncStorage.clear();
 	}, []);
 
-  useEffect(() => {
-    const apiUrl = "http://3.34.212.92:8080/api/message/inbox"
-    if(accessToken!==null){
-      axios.get(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // Authorization 헤더 설정
-        },
-      }).then((response) => {
-          // 성공적으로 응답 받았을 때 수행할 작업
-          const responseData = response.data;
-          if (responseData.data) {
-            setMessages(responseData.data)
-            console.log(responseData.data)
-          }
-        })
-        .catch((error) => {
-          // 오류 처리
-			if (error.response && error.response.status === 401) {
-				console.log("unauth");
-				navigation.navigate('login');
-			} else {
-				console.error(error);
+	const apiUrl = "http://3.34.212.92:8080/api/message/inbox"
+	const getMessageBox = () => {
+		axios.get(apiUrl, {
+			headers: {
+			Authorization: `Bearer ${accessToken}`, // Authorization 헤더 설정
+			},
+		}).then((response) => {
+			// 성공적으로 응답 받았을 때 수행할 작업
+			const responseData = response.data;
+			if (responseData.data) {
+				setMessages(responseData.data)
+				console.log(responseData.data)
 			}
-        });
+			})
+			.catch((error) => {
+			// 오류 처리
+				if (error.response && error.response.status === 401) {
+					console.log("unauth");
+					navigation.navigate('login');
+				} else {
+					console.error(error);
+				}
+		});
+	}
+
+  useEffect(() => {
+    
+    if(accessToken!==null){
+      getMessageBox();
     }
     
   }, [accessToken]);
+
+  useFocusEffect(
+	React.useCallback(() => {
+		console.log("받은 보관함")
+		getData();
+		if(accessToken!=null){
+			getMessageBox();
+		}
+	}, [])
+);
 
   const handleReceivedMessage = (letterId, messageId, characterUrl) => {
     navigation.navigate('ReceivedMessage',{letterId: letterId, messageId: messageId, characterUrl: characterUrl});
@@ -74,7 +87,7 @@ const MessageBox = ({navigation}) => {
           <View style={styles.messageLeftContainer}>
               <Image
                   source={{ uri: message.characterUrl }}
-                  resizeMode="contain"
+                  resizeMode="wrap"
                   style={styles.imageContainer}
               />  
           </View>
@@ -156,3 +169,10 @@ const styles = StyleSheet.create({
     borderRadius: 20, 
   },
 });
+
+/** 
+안녕하세요 할아버지! 어떻게 지내시나요?
+저는 요즘 학교를 다니면서 시험 준비를 하고 있어요ㅠㅠ
+다음 주면 추석이네요. 빨리 할아버지 집에 놀러가고 싶어요~~
+그때까지 건강하게 계세요. 사랑해요~~~
+*/

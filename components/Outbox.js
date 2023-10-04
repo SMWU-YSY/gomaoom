@@ -37,6 +37,7 @@ export default function Outbox({navigation, route}) {
 
 	useFocusEffect(
 		React.useCallback(() => {
+			console.log("보낸 보관함")
 			getData();
 			if(accessToken!=null){
 				getSentMessage();
