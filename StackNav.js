@@ -17,18 +17,6 @@ const Stack = createNativeStackNavigator()
 
 export default function StackNav({ screenName,navigation }){
 
-
-	// useEffect(() => {
-	// 	// 특정 조건이 충족되거나 이벤트가 발생할 때 Stack.Screen을 리셋
-	// 	const shouldResetStack = true; // 리셋 조건 예시
-	// 	if (shouldResetStack) {
-	// 		navigation.reset({
-	// 			index: 0,
-	// 			routes: [{ name: 'write' }] // 리셋할 화면의 이름
-	// 			});
-	// 	}
-	//   }, []);
-
 	return (
 		<Stack.Navigator>
 			{/* 탭 바에서 선택 시 바로 보여지는 페이지 

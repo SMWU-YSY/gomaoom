@@ -3,6 +3,7 @@ import React,{ useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from 'axios';
+import { commomStyle, images } from './theme';
 
 export default function Auth({navigation}) {
 	const isAuth=()=>{
@@ -91,7 +92,8 @@ export default function Auth({navigation}) {
   
   return(
     <View style={styles.background}>
-      {/* <Image source={require('gomaoom/assets/blueTop.png')}/> */}
+
+	<Image source={images.blueTop} style={commomStyle.backgroundImage}/>
       <View style={styles.container}>
           <Text style={styles.desc}>
             반가워요! 함께 마음을 전해봐요!
@@ -190,7 +192,7 @@ export default function Auth({navigation}) {
               textAlign:'center',
               alignItems:'center'
             }}
-            zIndex={10}
+            zIndex={100}
             labelStyle={{
               textAlign:'center',
               alignItems:'center'
@@ -200,13 +202,13 @@ export default function Auth({navigation}) {
             }}
             containerStyle={{
               width: '50%', 
-              zIndex:10,
+              zIndex:100,
               marginBottom:10,
               alignItems:'center'
             }}
             style={{
               borderRadius: 20,
-              zIndex:10,
+              zIndex:100,
               borderBottomEndRadius:20,
               borderBottomStartRadius:20,
               backgroundColor:'#F1F1F1',
@@ -236,6 +238,16 @@ export default function Auth({navigation}) {
           </View>
         </TouchableOpacity>
       </View>
+
+	  <View style={styles.gotoback}>
+        <TouchableOpacity onPress={() => {navigation.navigate("isLogin")}}>
+          <View>
+            <Text style={styles.inputText}>
+				돌아가기
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <StatusBar style="auto" />
       <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
           <Image  source={require('gomaoom/assets/greenBottom.png')}/>
@@ -251,11 +263,17 @@ const styles = StyleSheet.create({
         flex:1,
     },
     container: {
-        flex: 1,
+        flex: 0.8,
         alignItems: 'center',
         justifyContent: 'center',
+		marginTop: 70,
+		marginBottom: 0,
+		position: "relative"
         // backgroundColor:'skyblue',
     },
+	gotoback:{
+		flex : 0.4
+	},
     desc:{
       fontSize:20,
       marginBottom:15,
@@ -264,7 +282,8 @@ const styles = StyleSheet.create({
       flex:1.5,
       justifyContent: 'center',
       alignItems:'center',
-      // backgroundColor:'pink'
+	  zIndex: 200,
+    //   backgroundColor:'pink'
     },
     btn:{
       backgroundColor:'#F1F1F1',
@@ -279,15 +298,17 @@ const styles = StyleSheet.create({
       textAlign:'center',
     },
     donecontainer:{
-      flex:1,
+      flex:0.4,
       justifyContent: 'center',
       alignItems:'center',
+	 alignContent: "center",
     },
     doneBtn:{
-      marginTop:'-10%',
+    //   marginTop:'-10%',
       backgroundColor:'#CCE0CC',
       paddingHorizontal:20,
       borderRadius:30,
       paddingVertical:15,
+	  zIndex: -1,
     },
 });
