@@ -12,6 +12,7 @@ import axios from 'axios';
 import Winfo from './write/Winfo';
 import Wtitle from './write/Wtitle';
 import Wtext from './write/Wtext';
+import { format } from 'date-fns';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -108,7 +109,7 @@ export default function WriteLetter({ navigation, route }) {
 			<StatusBar style="auto" />
 			<Image source={images.blueTop} style={commomStyle.backgroundImage}/>
 			<View style={styles.letter}>
-				<Winfo weatherValue={weatherValue} setWeatherValue={setWeatherValue} editable={isNew}/>
+				<Winfo dateValue={format(new Date(),"yyyy-MM-dd")} weatherValue={weatherValue} setWeatherValue={setWeatherValue} editable={isNew}/>
 				<Wtitle titleValue={titleValue} setTitleValue={setTitleValue} editable={isNew}/>
 
 				<View style={styles.letterPic}>

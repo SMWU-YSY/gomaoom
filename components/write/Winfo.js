@@ -3,7 +3,7 @@ import {TouchableOpacity, StyleSheet, Text, View} from 'react-native';
 import { Fontisto } from '@expo/vector-icons';
 import { format } from "date-fns"; 
 
-export default function Winfo({ weatherValue, setWeatherValue, editable }) {
+export default function Winfo({ dateValue, weatherValue, setWeatherValue, editable }) {
 
 	const date = format(new Date(),"yyyy-MM-dd");
 
@@ -27,7 +27,7 @@ export default function Winfo({ weatherValue, setWeatherValue, editable }) {
 					fontSize: 18,
 					fontWeight: "600",
 				}}>
-					{date}
+					{dateValue}
 				</Text>
 			</View>
 

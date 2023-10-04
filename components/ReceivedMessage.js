@@ -26,6 +26,7 @@ const ReceivedMessage = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
     const [message, setMessage] = useState([]);
+	const [date, setDate] = useState('');
 
     const [accessToken, setAccessToken] = useState(null);
     useEffect(() => {
@@ -58,6 +59,7 @@ const ReceivedMessage = ({ navigation }) => {
                     const responseData = response.data;
                     if (responseData.data) {
                         setMessage(responseData.data)
+						setDate(responseData.data[0].sendAt)
                     }
                 })
                 .catch((error) => {
@@ -209,48 +211,11 @@ const ReceivedMessage = ({ navigation }) => {
                 </View>
 
             
-            
-            {/* </View> */}
-
-            {/* 바뀔 View */}
-             {/* {selectedButton === 'picture' && (
-                <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
-                    <View style={styles.header}>
-                        <View style={styles.dateContainer}>
-                            <Text style={styles.date}>
-                                {message[0].letterDate.slice(0,4)}년 {message[0].letterDate.slice(5,7)}월 {message[0].letterDate.slice(8,10)}일
-                            </Text>
-                        </View>
-                        <View style={styles.weatherContainer}>
-                            <Text style={styles.weather}>{message[0].letterWeather}</Text>
-                        </View>
-                    </View>
-                    <Text style={styles.title}>제목:{message[0].letterTitle}</Text>
-                    <Image
-                        source={{ uri: message[0].letterImage }}
-                        style={styles.image}
-                    />
-                </ScrollView>
-            )}
-            {selectedButton === 'all' && (
-                <ScrollView ref={allRef} contentContainerStyle={styles.contentContainer}>
-                    <Text>{message[0].letterText}</Text>
-                    <Image
-                        source={{ uri: message[0].letterImage }}
-                        style={styles.image}
-                    />
-                </ScrollView>
-            )}
-            {selectedButton === 'letter' && (
-                <ScrollView ref={letterRef} contentContainerStyle={styles.contentContainer}>
-                    <Text>{message[0].letterText}</Text>
-                </ScrollView>
-            )} */}
             {selectedButton === 'picture' && (
                 // <ScrollView ref={pictureRef} contentContainerStyle={styles.contentContainer}>
                     <View ref={pictureRef} style={styles.letterContainer}>
                         <View style={{height:SCREEN_HEIGHT*0.3,...styles.letter}}>
-                            <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                            <Winfo dateValue={date.split('T')[0]} weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
                             <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
                             <View style={styles.letterPic}>
                                 <View style={styles.imgContainer}>
@@ -263,7 +228,7 @@ const ReceivedMessage = ({ navigation }) => {
             {selectedButton === 'all' && (
                 <View ref={allRef} style={styles.letterContainer}>
                     <View style={{height:SCREEN_HEIGHT*0.6,...styles.letter}}>
-                        <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                        <Winfo dateValue={date.split('T')[0]} weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
                         <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
                         <View style={{borderBottomWidth: 1,borderBottomColor: "black",...styles.letterPic}}>
                             <View style={styles.imgContainer}>
@@ -277,7 +242,7 @@ const ReceivedMessage = ({ navigation }) => {
             {selectedButton === 'letter' && (
                 <View ref={letterRef} style={styles.letterContainer}>
                     <View style={{height:SCREEN_HEIGHT*0.4,...styles.letter}}>
-                        <Winfo weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
+                        <Winfo dateValue={date.split('T')[0]} weatherValue={message[0].letterWeather} setWeatherValue={null} editable={false}/>
                         <Wtitle titleValue={message[0].letterTitle} setTitleValue={null} editable={false}/>
                         <Wtext isLast={true} textValue={message[0].letterText} setTextValue={null} editable={false}/>
                     </View>
