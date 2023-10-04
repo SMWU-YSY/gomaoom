@@ -84,7 +84,7 @@ export default function CreateLetterImg({ navigation, route }) {
 			<StatusBar style="auto" />
 			<Image source={images.blueTop} style={commomStyle.backgroundImage}/>
 			<View style={styles.letter}>
-				<Winfo weatherValue={letterData.lweather} setWeatherValue={null} editable={false}/>
+				<Winfo dateValue={format(new Date(),"yyyy-MM-dd")} weatherValue={letterData.lweather} setWeatherValue={null} editable={false}/>
 				<Wtitle titleValue={letterData.ltitle} setTitleValue={null} editable={false}/>
 
 				<View style={styles.letterPic}>
