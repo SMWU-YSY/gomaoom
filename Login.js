@@ -21,12 +21,7 @@ export default function Login({ navigation }) {
 	};
 
 	const onLoginClick=async()=>{
-    Alert.alert(                    
-			"로그인",                    // 첫번째 text: 타이틀 제목
-			"로그인테스트",                         // 두번째 text: 그 밑에 작은 제목
-			[{text: '확인', onPress: () => {}}],
-			{ cancelable: false }
-		);
+   
 		try {
 			const response = await axios.post("http://3.34.212.92:8080/api/user/login", 
 			{	
@@ -47,12 +42,7 @@ export default function Login({ navigation }) {
       await AsyncStorage.setItem("characterUrl", JSON.stringify(response.data.data[0].characterUrl));
 			navigation.navigate('isLogin');
 		} catch (error) {
-      Alert.alert(                    
-        `${error.response.data}`,                    // 첫번째 text: 타이틀 제목
-        "로그인테스트",                         // 두번째 text: 그 밑에 작은 제목
-        [{text: '확인', onPress: () => {}}],
-        { cancelable: false }
-      );
+      
 			if (error.response && error.response.status === 404){
 				Alert.alert(
 					"아이디 확인",
